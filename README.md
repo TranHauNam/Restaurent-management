@@ -36,7 +36,8 @@
    ```
 4. Khởi động ứng dụng React:
    ```bash
-   npm start
+   npm install
+   npx expo start
    ```
 
 ### Database
