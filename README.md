@@ -36,7 +36,6 @@
    ```
 4. Khởi động ứng dụng React:
    ```bash
-   npm install
    npx expo start
    ```
 
