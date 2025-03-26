@@ -3,6 +3,9 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 /* fonts */
 export const FontFamily = {
     segoeUI: "Segoe UI",
+    poppinsBold: "Poppins-Bold",
+    poppinsSemiBold: "Poppins-SemiBold",
+    poppinsRegular: "Poppins-Regular",
   };
   /* font sizes */
   export const FontSize = {
@@ -34,6 +37,7 @@ export const FontFamily = {
     p_150xl: 169, //padding width
     p_5xs: 8, //pading height
     p_3xs: 10,
+    p_mini: 15,
   };
 
   /* Gaps */
