@@ -1,291 +1,153 @@
-import { View, Text, StyleSheet, TextInput, Pressable, } from 'react-native'
-import React from 'react'
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { Color, FontFamily, Border, FontSize } from "@/styles/GlobalStyles"
+import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
+import React from "react";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { Color, FontFamily, Border, FontSize } from "@/styles/GlobalStyles";
 
 export default function SignUpEmail() {
-
   return (
-    <View style={styles.rootContainer}>
-      {/* <View style={styles.rectangle} /> */}
-
+    <View style={styles.container}>
+      {/* Logo */}
       <Pressable style={styles.logoContainer} onPress={() => {}}>
-        <Text style={[styles.textLogo, styles.textFlexBox]}>
-          <Text style={styles.table}>Table</Text>
-          <Text style={styles.boldFont}>Booky</Text>
+        <Text style={styles.logoText}>
+          <Text style={styles.logoTable}>Table</Text>
+          <Text style={styles.logoBooky}>Booky</Text>
         </Text>
       </Pressable>
 
-      {/* <Frame style={styles.frameIcon} width={375} height={83} />  */}
+      {/* Title */}
+      <Text style={styles.title}>Let’s get you started</Text>
 
-      <Text style={[styles.letsGetYou, styles.boldFont]}>
-        Let’s get you started
-      </Text>
-
-      <View style={[styles.fullNameContainer, styles.guidTextContainerAbsolutePosition]}>
-        <Text style={[styles.textNormalFormat, styles.textFlexBox]}>Full name</Text>
-        <View style={styles.inputContainer}>
-          <View style={[styles.customBorder, styles.customBorderLayout]} /> 
-          <TextInput style={[styles.inputTextContainter, styles.inputTextLayout]} placeholder='Thanh Nguyen' />
-        </View>
+      {/* Input Fields */}
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Full name</Text>
+        <TextInput style={styles.input} placeholder="Thanh Nguyen" />
       </View>
 
-      <View style={[styles.emailAddressContainer, styles.guidTextContainerAbsolutePosition]}>
-        <Text style={[styles.textNormalFormat, styles.textFlexBox]}>Email address</Text>
-        <View style={styles.inputContainer}>
-          <View style={[styles.customBorder, styles.customBorderLayout]} />
-          <TextInput style={[styles.inputTextContainter, styles.inputTextLayout]} placeholder='it.nguyenducthanh@gmail.com' />
-        </View>
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Email address</Text>
+        <TextInput style={styles.input} placeholder="it.nguyenducthanh@gmail.com" />
       </View>
 
-      <View style={[styles.confirmPasswordContainer, styles.guidTextContainerAbsolutePosition]}>
-        <Text style={[styles.textNormalFormat, styles.textFlexBox]}>
-          Confirm password
-        </Text>
-        <View style={styles.inputContainer}>
-          <View style={[styles.customBorder, styles.customBorderLayout]} /> 
-          <TextInput style={[styles.inputTextContainter, styles.inputTextLayout]} placeholder='' />
-        </View>
-        {/* <Group8093 style={styles.inputContainer} width={311} height={40} /> */}
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Create password</Text>
+        <TextInput style={styles.input} placeholder="Enter your password" secureTextEntry />
       </View>
 
-      <View style={[styles.createPasswordContainer, styles.guidTextContainerAbsolutePosition]}>
-        <Text style={[styles.textNormalFormat, styles.textFlexBox]}>
-          Create password
-        </Text>
-        <View style={styles.inputContainer}>
-          <View style={[styles.customBorder, styles.customBorderLayout]} /> 
-          <TextInput style={[styles.inputTextContainter, styles.inputTextLayout]} placeholder='' />
-        </View>
-        {/* <Group80931 style={styles.inputContainer} width={311} height={40} /> */}
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Confirm password</Text>
+        <TextInput style={styles.input} placeholder="Confirm your password" secureTextEntry />
       </View>
 
-
-      <View
-        style={[
-          styles.passwordMustContainAMinimuParent,
-          styles.passwordParentPosition,
-        ]}
-      >
-        <Text style={[styles.passwordMustContain, styles.inputTextLayout]}>
-          Password must contain a minimum of 8 characters
-        </Text>
-        <Text style={[styles.passwordMustContain1, styles.inputTextLayout]}>
-          Password must contain at least one symbol e.g. @, !
-        </Text>
+      {/* Password Guidelines */}
+      <View style={styles.passwordGuidelines}>
+        <Text style={styles.guidelineText}>Password must contain a minimum of 8 characters</Text>
+        <Text style={styles.guidelineText}>Password must contain at least one symbol e.g. @, !</Text>
       </View>
 
-      <Pressable
-        style={[styles.signUpWrapper, styles.customBorderLayout]}
-        onPress={() => {}}
-      >
-        <Text style={[styles.signUp, styles.signTypo]}>Sign Up</Text>
+      {/* Sign Up Button */}
+      <Pressable style={styles.signUpButton} onPress={() => {}}>
+        <Text style={styles.signUpButtonText}>Sign Up</Text>
       </Pressable>
 
-      <View style={styles.alreadyAUserParent}>
-        <Text style={[styles.alreadyAUser, styles.signTypo]}>
-          Already a user?
-        </Text>
-        <Pressable style={styles.signIn} onPress={() => {}}>
-          <Text style={[styles.signIn1, styles.signTypo]}>Sign in</Text>
+      {/* Already a User */}
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>Already a user?</Text>
+        <Pressable onPress={() => {}}>
+          <Text style={styles.signInText}>Sign in</Text>
         </Pressable>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
-  textFlexBox: {
-    textAlign: 'left',
-    // color: Color.primary,
-  },
-  boldFont: {
-    fontWeight: '700',
-    fontFamily: FontFamily.segoeUI,
-  },
-  guidTextContainerAbsolutePosition: {
-    position: 'absolute',
-  },
-  inputTextLayout: {
-    // color: Color.sub,
-    fontColor: Color.secondary,
-    width: wp('73.33%'), // 275 / 375 * 100
-    textAlign: 'left',
-    position: 'absolute', 
-  },
-  customBorderLayout: {
-    borderRadius: Border.br_9xs,
-    width: wp('82.93%'), // 311 / 375 * 100
-    position: 'absolute',
-  },
-  // passwordParentPosition: {
-  //   // display: 'none',
-  //   position: 'absolute',
-  // },
-  signTypo: {
-    lineHeight: hp('2.96%'), // 24 / 812 * 100
-    fontSize: FontSize.size_base,
-    fontWeight: '700',
-    fontFamily: FontFamily.segoeUI,
-  },
-  // rectangle: {
-  //   height: '100%',
-  //   top: 0,
-  //   right: 0,
-  //   bottom: 0,
-  //   left: 0,
-  //   backgroundColor: Color.white,
-  //   position: 'absolute',
-  //   width: '100%',
-  // },
-  table: {
-    fontFamily: FontFamily.segoeUI,
-  },
-  textLogo: {
-    fontSize: wp('6.4%'), // 24 / 375 * 100
-    lineHeight: hp('3.94%'), // 32 / 812 * 100
-    color: Color.primary,
+  container: {
+    flex: 1,
+    backgroundColor: Color.white,
+    paddingHorizontal: wp("8%"),
+    justifyContent: "center",
   },
   logoContainer: {
-    left: wp('32.8%'), // 123 / 375 * 100
-    top: hp('6.16%'), // 50 / 812 * 100
-    position: 'absolute',
+    alignItems: "center",
+    marginBottom: hp("4%"),
   },
-  frameIcon: {
-    top: hp('87.93%'), // 714 / 812 * 100
-    opacity: 0.2,
-    left: 0,
-    position: 'absolute',
-    overflow: 'hidden',
-  },
-  letsGetYou: {
-    top: hp('13.79%'), // 112 / 812 * 100
-    left: wp('27.2%'), // 102 / 375 * 100
-    fontSize: wp('4.8%'), // 18 / 375 * 100
-    lineHeight: hp('4.43%'), // 36 / 812 * 100
-    color: Color.secondary,
-    textAlign: 'center',
-    position: 'absolute',
-  },
-  textNormalFormat: {
-    fontSize: FontSize.size_sm,
-    lineHeight: hp('2.46%'), // 20 / 812 * 100
-    top: 0,
-    left: 0,
-    fontFamily: FontFamily.segoeUI,
-    position: 'absolute',
-  },
-  inputTextContainter: {
-    top: hp('1.48%'), // 12 / 812 * 100
-    left: wp('4.27%'), // 16 / 375 * 100
-    lineHeight: hp('1.97%'), // 16 / 812 * 100
-    fontSize: FontSize.size_xs,
-    fontFamily: FontFamily.segoeUI,
-  },
-  customBorder: {
-    borderStyle: 'solid',
-    borderColor: Color.sub,
-    borderWidth: 0.7,
-    height: hp('4.93%'), // 40 / 812 * 100
-    top: 0,
-    left: 0,
-  },
-  inputContainer: {
-    top: hp('3.45%'), // 28 / 812 * 100
-    left: 0,
-    position: 'absolute',
-  },
-  fullNameContainer: {
-    top: hp('32.76%'), // 266 / 812 * 100
-    height: hp('8.37%'), // 68 / 812 * 100
-    width: wp('82.93%'), // 311 / 375 * 100
-    left: wp('8.8%'), // 33 / 375 * 100
-  },
-  passwordMustContain: {
-    lineHeight: hp('1.97%'), // 16 / 812 * 100
-    fontSize: FontSize.size_xs,
-    color: Color.sub,
-    fontFamily: FontFamily.segoeUI,
-    top: 0,
-    left: 0,
-  },
-  passwordMustContain1: {
-    top: hp('2.96%'), // 24 / 812 * 100
-    lineHeight: hp('1.97%'), // 16 / 812 * 100
-    fontSize: FontSize.size_xs,
-    color: Color.sub,
-    fontFamily: FontFamily.segoeUI,
-    left: 0,
-  },
-  passwordMustContainAMinimuParent: {
-    top: hp('65.27%'), // 530 / 812 * 100
-    left: wp('9.07%'), // 34 / 375 * 100
-    width: wp('73.33%'), // 275 / 375 * 100
-    height: hp('4.93%'), // 40 / 812 * 100
-  },
-  emailAddressContainer: {
-    top: hp('21.92%'), // 178 / 812 * 100
-    height: hp('8.37%'), // 68 / 812 * 100
-    width: wp('82.93%'), // 311 / 375 * 100
-    left: wp('8.8%'), // 33 / 375 * 100
-  },
-  confirmPasswordContainer: {
-    top: hp('54.43%'), // 442 / 812 * 100
-    height: hp('8.37%'), // 68 / 812 * 100
-    width: wp('82.93%'), // 311 / 375 * 100
-    left: wp('8.8%'), // 33 / 375 * 100
-  },
-  createPasswordContainer: {
-    top: hp('43.6%'), // 354 / 812 * 100
-    height: hp('8.37%'), // 68 / 812 * 100
-    width: wp('82.93%'), // 311 / 375 * 100
-    left: wp('8.8%'), // 33 / 375 * 100
-  },
-  signUp: {
-    color: Color.secondary,
-    textAlign: 'center',
-  },
-  signUpWrapper: {
-    height: hp('4.92%'), 
-    top: hp('71.66%'), // 590 / 812 * 100
-    backgroundColor: Color.primary,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // paddingHorizontal: wp('45.07%'), // 169 / 375 * 100
-    // paddingVertical: hp('0.99%'), // 8 / 812 * 100
-    left: wp('8.8%'), // 33 / 375 * 100
-    borderRadius: Border.br_9xs,
-  },
-  alreadyAUser: {
-    color: Color.sub,
-    textAlign: 'left',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  signIn1: {
-    textDecoration: 'underline',
-    textAlign: 'left',
+  logoText: {
+    fontSize: wp("6%"),
     color: Color.primary,
+    fontFamily: FontFamily.segoeUI,
+    fontWeight: "700",
   },
-  signIn: {
-    left: wp('31%'), // 128 / 375 * 100
-    top: 0,
-    position: 'absolute',
+  logoTable: {
+    fontWeight: "400",
   },
-  alreadyAUserParent: {
-    top: hp('77.58%'), // 630 / 812 * 100 = 
-    left: wp('28.0%'), //
-    width: wp('48%'), // 180 / 375 * 100
-    height: hp('2.96%'), // 24 / 812 * 100
-    position: 'absolute',
+  logoBooky: {
+    fontWeight: "700",
   },
-  rootContainer: {
-    backgroundColor: Color.white,
-    flex: 1,
-    height: hp('100%'), // 812 / 812 * 100
-    overflow: 'hidden',
-    width: wp('100%'), // 375 / 375 * 100
+  title: {
+    fontSize: wp("5%"),
+    color: Color.secondary,
+    fontFamily: FontFamily.segoeUI,
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: hp("4%"),
   },
-})
+  inputGroup: {
+    marginBottom: hp("3%"),
+  },
+  label: {
+    fontSize: FontSize.size_sm,
+    color: Color.secondary,
+    fontFamily: FontFamily.segoeUI,
+    marginBottom: hp("1%"),
+  },
+  input: {
+    height: hp("5%"),
+    borderWidth: 1,
+    borderColor: Color.sub,
+    borderRadius: Border.br_9xs,
+    paddingHorizontal: wp("4%"),
+    fontSize: FontSize.size_sm,
+    fontFamily: FontFamily.segoeUI,
+    color: Color.secondary,
+  },
+  passwordGuidelines: {
+    marginBottom: hp("4%"),
+  },
+  guidelineText: {
+    fontSize: FontSize.size_xs,
+    color: Color.sub,
+    fontFamily: FontFamily.segoeUI,
+    marginBottom: hp("1%"),
+  },
+  signUpButton: {
+    backgroundColor: Color.primary,
+    borderRadius: Border.br_9xs,
+    alignItems: "center",
+    justifyContent: "center",
+    height: hp("5%"),
+    marginBottom: hp("4%"),
+  },
+  signUpButtonText: {
+    color: Color.white,
+    fontSize: FontSize.size_base,
+    fontFamily: FontFamily.segoeUI,
+    fontWeight: "700",
+  },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  footerText: {
+    fontSize: FontSize.size_sm,
+    color: Color.sub,
+    fontFamily: FontFamily.segoeUI,
+  },
+  signInText: {
+    fontSize: FontSize.size_sm,
+    color: Color.primary,
+    fontFamily: FontFamily.segoeUI,
+    textDecorationLine: "underline",
+    marginLeft: wp("2%"),
+  },
+});
