@@ -53,26 +53,6 @@ const Notifications = () => {
         <Text style={styles.timeAgo}>3 days ago</Text>
         <View style={styles.notificationLine} />
       </View>
-
-      {/* Footer Navigation */}
-      <View style={styles.footer}>
-        <Pressable style={styles.footerItem}>
-          <Ionicons name="home-outline" size={24} color={Color.sub} />
-          <Text style={styles.footerText}>Home</Text>
-        </Pressable>
-        <Pressable style={styles.footerItem}>
-          <Ionicons name="notifications-outline" size={24} color={Color.primary} />
-          <Text style={[styles.footerText, styles.activeFooterText]}>Notifications</Text>
-        </Pressable>
-        <Pressable style={styles.footerItem}>
-          <MaterialIcons name="history" size={24} color={Color.sub} />
-          <Text style={styles.footerText}>History</Text>
-        </Pressable>
-        <Pressable style={styles.footerItem}>
-          <FontAwesome5 name="ellipsis-h" size={24} color={Color.sub} />
-          <Text style={styles.footerText}>More</Text>
-        </Pressable>
-      </View>
     </View>
   );
 };
