@@ -2,7 +2,7 @@
 //Khởi tạo mongoose
 const mongoose = require('mongoose');
 
-module.exports.connect = async () => {
+module.exports.connectDB = async () => {
     try {
         //Kết nối đến MongoDB
         await mongoose.connect(process.env.MONGO_URL);
