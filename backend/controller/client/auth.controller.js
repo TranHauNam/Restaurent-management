@@ -38,72 +38,6 @@ module.exports.registerWithEmail = async (req, res) => {
   }
 };
 
-// Đăng ký bằng Số điện thoại
-module.exports.registerWithPhone = async (req, res) => {
-    // const { fullName, phone } = req.body;
-
-    // if (!fullName || !phone) {
-    //     return res.status(400).json({ message: 'Vui lòng nhập họ tên và số điện thoại' });
-    // }
-
-    // try {
-    //     const existingUser = await User.findOne({ phone });
-    //     if (existingUser) {
-    //         return res.status(400).json({ message: 'Số điện thoại đã được đăng ký' });
-    //     }
-    
-    //     // const otp = generateOTP();
-    
-    //     // await TempUser.findOneAndUpdate(
-    //     //     { phone },
-    //     //     { fullName, phone, otp, createdAt: new Date() },
-    //     //     { upsert: true }
-    //     // );
-
-        
-    //     const apiKey = process.env.ESMS_API_KEY;
-    // const secretKey = process.env.ESMS_SECRET_KEY;
-    // //const brandName = process.env.ESMS_BRAND_NAME;
-
-    // const otpLength = 6;
-    // const timeAlive = 300; // OTP sống trong 5 phút
-    // const messageTemplate = 'Mã xác thực của bạn là {code}';
-
-    // const url = `http://api.esms.vn/MainService.svc/json/SendMessageAutoGenCode_V4_get?` +
-    //   `Phone=${phone}` +
-    //   `&ApiKey=${apiKey}` +
-    //   `&SecretKey=${secretKey}` +
-    //   `&TimeAlive=${timeAlive}` +
-    //   `&NumCharOfCode=${otpLength}` +
-    //   `&Language=VN` +
-    //   //`&Brandname=${brandName}` +
-    //   `&Type=1` +
-    //   `&message=${encodeURIComponent(messageTemplate)}` +
-    //   `&IsNumber=true`;
-
-    // const response = await axios.get(url);
-    
-    // const { CodeResult, Code, SMSID, ErrorMessage } = response.data;
-    // console.log(response);
-    // if (CodeResult === '100') {
-    //     await TempUser.findOneAndUpdate(
-    //         { phone },
-    //         { fullName: fullName, phone: phone, otp: Code, createdAt: new Date() },
-    //         { upsert: true }
-    //     );
-    //   return res.status(200).json({ message: 'OTP đã được gửi', otpCode: Code, smsId: SMSID });
-    // } else {
-    //   return res.status(500).json({ message: 'Gửi OTP thất bại', error: ErrorMessage });
-    // }
-    // } catch (err) {
-    //     console.log(err)
-    //     return res.status(500).json({ 
-    //         message: 'Lỗi server', 
-    //         error: err.message
-    //     });
-    // }
-};
-
 // Xác minh OTP
 module.exports.verifyOTP = async (req, res) => {
     const { otp } = req.body;
@@ -166,7 +100,7 @@ module.exports.verifyOTP = async (req, res) => {
     }
 };
 
-module.exports.login = async (req, res) => {
+module.exports.login  = async (req, res) => {
   const email = req.body.email;
   if (!email) {
     return res.status(400).json({message: "Vui lòng nhập email"});
