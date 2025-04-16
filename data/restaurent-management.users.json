@@ -1,0 +1,17 @@
+[{
+  "_id": {
+    "$oid": "67f788599750d4015affa4ba"
+  },
+  "fullName": "Trần Hậu Nam",
+  "email": "haunam3112@gmail.com",
+  "phone": null,
+  "status": "active",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2025-04-10T08:59:05.978Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-10T08:59:05.978Z"
+  },
+  "__v": 0
+}]

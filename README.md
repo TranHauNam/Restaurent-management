@@ -43,4 +43,6 @@
 1. Tải mongodb compass
 2. Tạo database restaurent-management
 
+### Tải các file json trong folder data về rồi import vào database ở mongodb compass
+
 

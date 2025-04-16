@@ -3,6 +3,10 @@ const dotenv = require('dotenv');
 const database = require('./config/database');
 const clientRoutes = require('./routes/client/index.route');
 const cors = require('cors'); 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./config/swagger');
+
+
 
 // Load biến môi trường từ file .env
 dotenv.config();
@@ -12,6 +16,9 @@ database.connectDB();
 
 // Khởi tạo ứng dụng express
 const app = express();
+
+// Sử dụng swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Cấu hình CORS để cho phép frontend gọi API
 app.use(cors());

@@ -1,0 +1,131 @@
+[{
+  "_id": {
+    "$oid": "67fe00af53a92ee3d434263d"
+  },
+  "restaurantId": {
+    "$oid": "67fdcee953a92ee3d4342629"
+  },
+  "date": "2025-04-21",
+  "timeSlots": [
+    {
+      "time": "10:30",
+      "tables": [
+        {
+          "people": 2,
+          "quantity": 3,
+          "booked": 1
+        },
+        {
+          "people": 4,
+          "quantity": 2,
+          "booked": 0
+        },
+        {
+          "people": 6,
+          "quantity": 1,
+          "booked": 0
+        }
+      ]
+    },
+    {
+      "time": "11:00",
+      "tables": [
+        {
+          "people": 2,
+          "quantity": 3,
+          "booked": 0
+        },
+        {
+          "people": 4,
+          "quantity": 2,
+          "booked": 1
+        },
+        {
+          "people": 6,
+          "quantity": 1,
+          "booked": 0
+        }
+      ]
+    },
+    {
+      "time": "11:30",
+      "tables": [
+        {
+          "people": 2,
+          "quantity": 3,
+          "booked": 0
+        },
+        {
+          "people": 4,
+          "quantity": 2,
+          "booked": 0
+        },
+        {
+          "people": 6,
+          "quantity": 1,
+          "booked": 1
+        }
+      ]
+    },
+    {
+      "time": "12:00",
+      "tables": [
+        {
+          "people": 2,
+          "quantity": 3,
+          "booked": 0
+        },
+        {
+          "people": 4,
+          "quantity": 2,
+          "booked": 1
+        },
+        {
+          "people": 6,
+          "quantity": 1,
+          "booked": 1
+        }
+      ]
+    },
+    {
+      "time": "13:00",
+      "tables": [
+        {
+          "people": 2,
+          "quantity": 3,
+          "booked": 0
+        },
+        {
+          "people": 4,
+          "quantity": 2,
+          "booked": 0
+        },
+        {
+          "people": 6,
+          "quantity": 1,
+          "booked": 0
+        }
+      ]
+    },
+    {
+      "time": "18:00",
+      "tables": [
+        {
+          "people": 2,
+          "quantity": 3,
+          "booked": 1
+        },
+        {
+          "people": 4,
+          "quantity": 2,
+          "booked": 2
+        },
+        {
+          "people": 6,
+          "quantity": 1,
+          "booked": 1
+        }
+      ]
+    }
+  ]
+}]
