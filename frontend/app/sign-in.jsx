@@ -1,11 +1,62 @@
+// turn those file to tab 4 space
+
 import React from "react";
-import { StyleSheet, View, Text, Pressable, TextInput } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { StyleSheet, View, Text, Pressable, TextInput, Alert } from "react-native";
 import { Padding, Color, Border, FontSize, FontFamily } from "@/styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { useRef } from "react";
+import { useRouter } from "expo-router";
+import { OtpInput } from "react-native-otp-entry";
+import { useAuthContext } from "@/contexts/auth-context";
+
 
 const SignIn = () => {
-  const navigation = useNavigation();
+  const router = useRouter();
+  const emailRef = useRef("");
+  const otpRef = useRef("");
+  const { login, verifyOTP, setLoading, setAuthenticated } = useAuthContext();
+
+  const handleSignIn = async () => {
+    if (!emailRef.current) {
+      Alert.alert("Please enter Email");
+      console.log("Please enter Email");
+      return;
+    }
+
+    if (otpRef.current.length < 6) {
+      Alert.alert("Please enter Send OTP button");
+      console.log("Please enter Send OTP button");
+      return;
+    }
+
+    let otpResponse = await verifyOTP(otpRef.current);
+    if (!otpResponse.success) {
+      Alert.alert(otpResponse.message);
+      console.log(otpResponse.message);
+    } else if (otpResponse.success) {
+      // router.push("/(app)/(tabs)/");
+      setAuthenticated(true);
+      router.replace("/");
+    }
+  }
+
+  const handleSendOTP = async () => {
+    if (!emailRef.current) {
+      Alert.alert("Please enter Email");
+      console.log("Please enter Email");
+      return;
+    }
+
+    let emailResponse = await login(emailRef.current);
+    if (emailResponse.success) {
+      Alert.alert("Please check the email for OTP");
+      console.log("Please check the email for OTP");
+      
+    } else if (!emailResponse.success) {
+      Alert.alert(emailResponse.message);
+      console.log(emailResponse.message);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -27,39 +78,42 @@ const SignIn = () => {
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Email or Phone Number</Text>
         <View style={styles.inputField}>
-          <TextInput style={styles.inputText} placeholder="it.nguyenducthanh@gmail.com"/>
+          <TextInput 
+            style={styles.inputText} 
+            placeholder="Enter" 
+            placeholderTextColor={Color.sub} 
+            onChangeText={(text) => { emailRef.current = text}}
+          />
         </View>
       </View>
 
       {/* OTP Section */}
       <Text style={styles.label}>Enter OTP Received</Text>
       <View style={styles.otpContainer}>
-        <View style={styles.otpBox}>
-          <Text style={styles.otpText}>9</Text>
-        </View>
-        <View style={styles.otpBox}>
-          <Text style={styles.otpText}>9</Text>
-        </View>
-        <View style={styles.otpBox}>
-          <Text style={styles.otpText}>9</Text>
-        </View>
-        <View style={styles.otpBox}>
-          <Text style={styles.otpText}>9</Text>
-        </View>
+        <OtpInput 
+          numberOfDigits={6}
+          focusColor= {Color.primary}
+          onTextChange={(text) => {
+            otpRef.current = text;
+            console.log("OTP entered: ", text);
+          }} 
+        />
       </View>
 
       {/* Buttons */}
-      <Pressable style={styles.signInButton} onPress={() => {}}>
+      <Pressable style={styles.signInButton} onPress={() => {handleSignIn()}}>
         <Text style={styles.buttonText}>Sign In</Text>
       </Pressable>
-      <Pressable style={styles.sendOtpButton} onPress={() => {}}>
+      <Pressable style={styles.sendOtpButton} onPress={() => {handleSendOTP()}}>
         <Text style={styles.buttonText}>Send OTP</Text>
       </Pressable>
 
       {/* Footer */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>Don’t have an account?</Text>
-        <Pressable onPress={() => {}}>
+        <Pressable onPress={() => {
+          router.push("/sign-up-email");
+        }}>
           <Text style={styles.signUpText}>Sign Up</Text>
         </Pressable>
       </View>
@@ -127,24 +181,10 @@ const styles = StyleSheet.create({
     color: Color.secondary,
   },
   otpContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    marginVertical: wp("3%"),
     marginBottom: hp("4%"),
   },
-  otpBox: {
-    width: wp("15%"),
-    height: hp("6%"),
-    borderWidth: 1,
-    borderColor: Color.sub,
-    borderRadius: Border.br_9xs,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  otpText: {
-    fontSize: FontSize.size_base,
-    fontFamily: FontFamily.segoeUI,
-    color: Color.secondary,
-  },
+
   signInButton: {
     backgroundColor: Color.primary,
     borderRadius: Border.br_9xs,

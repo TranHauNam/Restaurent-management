@@ -1,8 +1,10 @@
 import React from "react";
-import { StyleSheet, View, Text, Pressable, Image, FlatList } from "react-native";
+import { StyleSheet, View, Text, Pressable, Image, FlatList, } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, Border, FontSize } from "@/styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { useNavigation } from "@react-navigation/native";
+import { router } from "expo-router";
 
 const restaurants = [
   {
@@ -43,24 +45,37 @@ const restaurants = [
 ];
 
 const HomeGridView = () => {
+  const navigation = useNavigation();
   const renderRestaurantCard = ({ item }) => (
-    <View style={styles.card}>
+    // <View style={styles.card}>
+    //   <Image style={styles.cardImage} source={item.image} />
+    //   <Text style={styles.cardTitle}>{item.name}</Text>
+    //   <Text style={styles.cardAddress}>{item.address}</Text>
+    //   <Text style={styles.cardHours}>{item.hours}</Text>
+    //   <View style={styles.timeSlots}>
+    //     <Pressable style={styles.timeSlot}>
+    //       <Text style={styles.timeSlotText}>11:15</Text>
+    //     </Pressable>
+    //     <Pressable style={styles.timeSlot}>
+    //       <Text style={styles.timeSlotText}>11:15</Text>
+    //     </Pressable>
+    //     <Pressable style={styles.timeSlot}>
+    //       <Text style={styles.timeSlotText}>11:15</Text>
+    //     </Pressable>
+    //   </View>
+    // </View>
+
+    <Pressable
+      style={styles.card}
+      onPress={() => {
+        router.navigate(`/restaurants/${item.id}`); // Navigate to restaurant details
+      }}
+    >
       <Image style={styles.cardImage} source={item.image} />
       <Text style={styles.cardTitle}>{item.name}</Text>
       <Text style={styles.cardAddress}>{item.address}</Text>
       <Text style={styles.cardHours}>{item.hours}</Text>
-      <View style={styles.timeSlots}>
-        <Pressable style={styles.timeSlot}>
-          <Text style={styles.timeSlotText}>11:15</Text>
-        </Pressable>
-        <Pressable style={styles.timeSlot}>
-          <Text style={styles.timeSlotText}>11:15</Text>
-        </Pressable>
-        <Pressable style={styles.timeSlot}>
-          <Text style={styles.timeSlotText}>11:15</Text>
-        </Pressable>
-      </View>
-    </View>
+    </Pressable>
   );
 
   return (
