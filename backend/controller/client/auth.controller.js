@@ -56,10 +56,7 @@ module.exports.verifyOTP = async (req, res) => {
   
       // Kiểm tra xem đã có tài khoản thật chưa
       const existingUser = await User.findOne({
-        $or: [
-          { email: otpReceived.email },
-          { phone: otpReceived.phone }
-        ]
+        email: otpReceived.email
       });
   
       let user = null;
