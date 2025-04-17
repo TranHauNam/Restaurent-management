@@ -1,11 +1,16 @@
 import * as React from "react";
-import { Text, StyleSheet, View, Pressable, Image } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { Text, StyleSheet, View, Pressable, Image, Alert } from "react-native";
 import { FontFamily, FontSize, Color } from "@/styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { useAuthContext } from "@/contexts/auth-context"; // Import AuthContext
+import { router, useRouter } from "expo-router"; // Import useRouter for navigation
 
 const Profile = () => {
-  const navigation = useNavigation();
+  const { logout } = useAuthContext(); // Destructure logout function from AuthContext
+  const handleLogout = async () => {
+    await logout();
+    router.replace("/");
+  };
 
   return (
     <View style={styles.container}>
@@ -41,7 +46,7 @@ const Profile = () => {
       </View>
 
       {/* Logout Button */}
-      <Pressable style={styles.logoutButton}>
+      <Pressable style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutText}>LogOut</Text>
       </Pressable>
     </View>

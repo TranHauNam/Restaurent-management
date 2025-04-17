@@ -5,6 +5,8 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { Color } from "@/styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
+
+
 const TabIcon = ({ name, label, focused }) => {
   return (
     <View style={styles.iconContainer}>
@@ -23,10 +25,11 @@ export default function TabsLayout() {
         tabBarStyle: {
           height: hp("8.62%"),
         },
+        headerShown: false,
       }}
     >
       <Tabs.Screen
-        name="home"
+        name="index"
         options={{
           title: "Home",
           tabBarIcon: ({ focused }) => <TabIcon name="home" label="Home" focused={focused} />,
@@ -53,12 +56,6 @@ export default function TabsLayout() {
         options={{
           title: "More",
           tabBarIcon: ({ focused }) => <TabIcon name="ellipsis1" label="More" focused={focused} />,
-        }}
-      />
-      <Tabs.Screen
-        name="index"
-        options={{
-          href: null,
         }}
       />
     </Tabs>

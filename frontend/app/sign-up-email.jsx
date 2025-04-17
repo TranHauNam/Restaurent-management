@@ -1,12 +1,39 @@
-import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
+import { View, Text, StyleSheet, TextInput, Pressable, Alert } from "react-native";
 import React from "react";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Color, FontFamily, Border, FontSize } from "@/styles/GlobalStyles";
+import { useRouter } from "expo-router";
+import { useRef } from "react";
+import { useAuthContext } from "@/contexts/auth-context";
+
 
 export default function SignUpEmail() {
+  const router = useRouter();
+  const emailRef = useRef("");
+  const fullNameRef = useRef("");
+
+  const { register, setLoading, setAuthenticated } = useAuthContext();
+
+  const handleSignUp = async () => {
+    if (!emailRef.current || !fullNameRef.current) {
+      Alert.alert("Sign Up", "Please fill in all fields!");
+      console.log("Please fill in all fields!");
+      return;
+    }
+
+    let response = await register(fullNameRef.current, emailRef.current);
+    if (!response.success) {
+      Alert.alert("Sign Up", response.message);
+      console.log(response.message);
+    } else if (response.success) {
+      console.log(response.message);
+      router.push("/submit-OTP");
+    }
+  }
+
   return (
     <View style={styles.container}>
-      {/* Logo */}
+      {/* Logo need to fix => Change to TableBooky */}
       <Pressable style={styles.logoContainer} onPress={() => {}}>
         <Text style={styles.logoText}>
           <Text style={styles.logoTable}>Table</Text>
@@ -20,15 +47,25 @@ export default function SignUpEmail() {
       {/* Input Fields */}
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Full name</Text>
-        <TextInput style={styles.input} placeholder="Thanh Nguyen" />
+        <TextInput 
+          style={styles.input} 
+          placeholder="Your usename" 
+          placeholderTextColor={Color.sub}
+          onChangeText={(text) => { fullNameRef.current = text; }}
+       />
       </View>
 
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Email address</Text>
-        <TextInput style={styles.input} placeholder="it.nguyenducthanh@gmail.com" />
+        <TextInput 
+          style={styles.input} 
+          placeholder="Enter your email" 
+          placeholderTextColor={Color.sub} 
+          onChangeText={(text) => { emailRef.current = text; }}
+        />
       </View>
 
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <Text style={styles.label}>Create password</Text>
         <TextInput style={styles.input} placeholder="Enter your password" secureTextEntry />
       </View>
@@ -36,23 +73,27 @@ export default function SignUpEmail() {
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Confirm password</Text>
         <TextInput style={styles.input} placeholder="Confirm your password" secureTextEntry />
-      </View>
+      </View> */}
 
-      {/* Password Guidelines */}
+      {/* Password Guidelines
       <View style={styles.passwordGuidelines}>
         <Text style={styles.guidelineText}>Password must contain a minimum of 8 characters</Text>
         <Text style={styles.guidelineText}>Password must contain at least one symbol e.g. @, !</Text>
-      </View>
+      </View> */}
 
       {/* Sign Up Button */}
-      <Pressable style={styles.signUpButton} onPress={() => {}}>
+      <Pressable style={styles.signUpButton} onPress={() => {
+        handleSignUp();
+      }}>
         <Text style={styles.signUpButtonText}>Sign Up</Text>
       </Pressable>
 
       {/* Already a User */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>Already a user?</Text>
-        <Pressable onPress={() => {}}>
+        <Pressable onPress={() => {
+          router.push("/sign-in");
+        }}>
           <Text style={styles.signInText}>Sign in</Text>
         </Pressable>
       </View>
