@@ -5,6 +5,8 @@ import { Color, FontFamily, Border, FontSize } from "@/styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 import { router } from "expo-router";
+import { useState, useEffect } from "react";
+import { fetchRestaurants } from "@/services/api";
 
 const restaurants = [
   {
@@ -45,7 +47,23 @@ const restaurants = [
 ];
 
 const HomeGridView = () => {
-  const navigation = useNavigation();
+  const [restaurantData, setRestaurantData] = useState([]);
+
+  useEffect(() => {
+    fetchRestaurants().then((data) => {
+      setRestaurantData(data);
+      console.log("Fetched restaurants:", restaurantData);
+    }).catch((error) => {
+      console.error("Error fetching restaurants:", error);
+    });
+  }, []);
+
+  // Add this useEffect to log the updated restaurantData
+  useEffect(() => {
+    console.log("Updated restaurantData:", restaurantData);
+  }, [restaurantData]);
+
+  
   const renderRestaurantCard = ({ item }) => (
     // <View style={styles.card}>
     //   <Image style={styles.cardImage} source={item.image} />
