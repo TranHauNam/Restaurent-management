@@ -70,13 +70,11 @@ module.exports.verifyOTP = async (req, res) => {
         });
     
         // Tạo token đăng nhập
-        const tokenUser = jwt.sign(
+        tokenUser = jwt.sign(
           { id: user._id }, 
           process.env.JWT_SECRET, 
           { expiresIn: '7d' }
         );
-
-        console.log(tokenUser);
 
         user.tokenUser = tokenUser;
 
