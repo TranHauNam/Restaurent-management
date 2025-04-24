@@ -14,6 +14,15 @@ const options = {
         url: 'http://localhost:5001',
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
   apis: ['./routes/**/*.js'], // <-- match tất cả các file .js trong /routes và các thư mục con
 };
