@@ -62,7 +62,7 @@ module.exports.verifyOTP = async (req, res) => {
       });
   
       let user = null;
-
+      let tokenUser = null;
       if (!existingUser) {
         // Tạo tài khoản chính thức
         user = new User({
@@ -71,9 +71,19 @@ module.exports.verifyOTP = async (req, res) => {
           phone: otpReceived.phone || null,
         });
     
+        // Tạo token đăng nhập
+        tokenUser = jwt.sign(
+          { id: user._id }, 
+          process.env.JWT_SECRET, 
+          { expiresIn: '7d' }
+        );
+
+        user.tokenUser = tokenUser;
+
         await user.save();
       } else {
         user = existingUser;
+        tokenUser = user.tokenUser;
       }
   
       
@@ -81,14 +91,15 @@ module.exports.verifyOTP = async (req, res) => {
   
       // Tạo token đăng nhập
       const token = jwt.sign(
-        { id: user._id, email: user.email }, 
+        { id: user._id }, 
         process.env.JWT_SECRET, 
         { expiresIn: '7d' }
       );
   
       return res.status(200).json({
         message: existingUser ? 'Đăng nhập thành công' : 'Đăng ký thành công',
-        user: user
+        user,
+        token
       });
     } catch (error) {
       return res.status(500).json({ 
