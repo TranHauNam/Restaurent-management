@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema(
         password: String,
         tokenUser: {
             type: String,
+            required: true
         }, 
         phone: String,
         avatar: String,

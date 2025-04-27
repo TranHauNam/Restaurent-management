@@ -54,13 +54,15 @@ module.exports.verifyOTP = async (req, res) => {
         return res.status(400).json({ message: 'Mã OTP không chính xác hoặc đã hết hạn' });
       }
   
+      const otpStorage = otpReceived.otp;
+
       // Kiểm tra xem đã có tài khoản thật chưa
       const existingUser = await User.findOne({
         email: otpReceived.email
       });
   
       let user = null;
-
+      let tokenUser = null;
       if (!existingUser) {
         // Tạo tài khoản chính thức
         user = new User({
@@ -69,9 +71,19 @@ module.exports.verifyOTP = async (req, res) => {
           phone: otpReceived.phone || null,
         });
     
+        // Tạo token đăng nhập
+        tokenUser = jwt.sign(
+          { id: user._id }, 
+          process.env.JWT_SECRET, 
+          { expiresIn: '7d' }
+        );
+
+        user.tokenUser = tokenUser;
+
         await user.save();
       } else {
         user = existingUser;
+        tokenUser = user.tokenUser;
       }
   
       
