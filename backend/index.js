@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const database = require('./config/database');
 const clientRoutes = require('./routes/client/index.route');
+const adminRoutes = require('./routes/admin/index.route');
 const cors = require('cors'); 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swagger');
@@ -28,6 +29,7 @@ app.use(express.json());
 
 // Thiết lập các route bên phía client (ví dụ: /api/auth, /api/courses, ...)
 clientRoutes(app);
+adminRoutes(app);
 
 // Chạy server tại cổng PORT (mặc định là 5000 nếu không có trong .env)
 const PORT = process.env.PORT || 5000;
