@@ -19,7 +19,7 @@ export default function AppLayout() {
 
     useFocusEffect(() => {
         if (isAuthenticated == false) {
-            console.log("isAuthentiacted: ", isAuthenticated);
+            console.log("isAuthentiacted in app: ", isAuthenticated);
             router.replace("/sign-in");
         }
     });

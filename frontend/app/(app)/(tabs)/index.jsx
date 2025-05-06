@@ -5,81 +5,153 @@ import { Color, FontFamily, Border, FontSize } from "@/styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 import { router } from "expo-router";
+import { useState, useEffect } from "react";
+import { fetchRestaurants } from "@/services/api";
+import Entypo from '@expo/vector-icons/Entypo';
+import { StatusBar } from "expo-status-bar";
 
-const restaurants = [
-  {
-    id: "1",
-    name: "Sea Grill of Merrick Park",
-    address: "4250 Salzedo Street, Suite 1425 Coral Gables, FL 33146",
-    hours: "11:30 AM - 11:00 PM",
-    image: require("@/assets/images/image.png"),
-  },
-  {
-    id: "2",
-    name: "Sea Grill North Miami Beach",
-    address: "3913 NE 163rd St North Miami Beach, FL 33160",
-    hours: "11:30 AM - 11:00 PM",
-    image: require("@/assets/images/image.png"),
-  },
-  {
-    id: "3",
-    name: "Villagio Restaurant and Bar",
-    address: "344 Plaza Real, Suite 1433 Boca Raton, FL 33432-3937",
-    hours: "11:30 AM - 11:00 PM",
-    image: require("@/assets/images/image.png"),
-  },
-  {
-    id: "4",
-    name: "Villagio Restaurant and Bar",
-    address: "1760 Sawgrass Mills Circle Sunrise, FL 33323-3912",
-    hours: "11:30 AM - 11:00 PM",
-    image: require("@/assets/images/image.png"),
-  },
-  {
-    id: "5",
-    name: "Carpaccio American Dream",
-    address: "1 American Dream Way. #F225 East Rutherford, NJ 07073",
-    hours: "11:30 AM - 11:00 PM",
-    image: require("@/assets/images/image.png"),
-  },
-];
+const Divider = ({ color = "#ccc", thickness = 1, marginVertical = 10 }) => (
+  <View
+    style={{
+      height: thickness,
+      backgroundColor: color,
+      marginVertical: marginVertical,
+      width: "100%",
+    }}
+  />
+);
 
 const HomeGridView = () => {
-  const navigation = useNavigation();
-  const renderRestaurantCard = ({ item }) => (
-    // <View style={styles.card}>
-    //   <Image style={styles.cardImage} source={item.image} />
-    //   <Text style={styles.cardTitle}>{item.name}</Text>
-    //   <Text style={styles.cardAddress}>{item.address}</Text>
-    //   <Text style={styles.cardHours}>{item.hours}</Text>
-    //   <View style={styles.timeSlots}>
-    //     <Pressable style={styles.timeSlot}>
-    //       <Text style={styles.timeSlotText}>11:15</Text>
-    //     </Pressable>
-    //     <Pressable style={styles.timeSlot}>
-    //       <Text style={styles.timeSlotText}>11:15</Text>
-    //     </Pressable>
-    //     <Pressable style={styles.timeSlot}>
-    //       <Text style={styles.timeSlotText}>11:15</Text>
-    //     </Pressable>
-    //   </View>
-    // </View>
+  const [restaurantData, setRestaurantData] = useState([]);
 
-    <Pressable
-      style={styles.card}
-      onPress={() => {
-        router.navigate(`/restaurants/${item.id}`); // Navigate to restaurant details
-      }}
-    >
-      <Image style={styles.cardImage} source={item.image} />
-      <Text style={styles.cardTitle}>{item.name}</Text>
-      <Text style={styles.cardAddress}>{item.address}</Text>
-      <Text style={styles.cardHours}>{item.hours}</Text>
-    </Pressable>
+  useEffect(() => {
+    fetchRestaurants().then((data) => {
+      setRestaurantData(data.restaurents);
+      console.log("Fetched restaurants:", restaurantData);
+    }).catch((error) => {
+      console.error("Error fetching restaurants:", error);
+    });
+  }, []);
+
+  // useEffect(() => {
+  //   console.log("Restaurant data time available updated:", restaurantData.availableTimes);
+  // }, [restaurantData]);
+
+  
+  const renderRestaurantCard = ({ item }) => (
+    <View style={{
+      marginBottom: hp("2%"),
+      minWidth: "100%",
+      height: hp("20%"),
+
+
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "flex-start",
+      alignItems: "baseline",
+      
+    }}>
+      <Pressable
+        style={{
+          
+          minWidth: "100%",
+          height: "50%",    
+          
+          
+
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+        }}
+        onPress={() => {
+          router.navigate(`/restaurants/${item._id}`); // Navigate to restaurant details
+        }}
+      >
+        <Image style={{
+          width: wp("20%"),
+          height: hp("10%"),
+
+          borderRadius: 10,
+          
+        }}
+        source={{uri : `${item.imageUrl}`}}/>
+
+        <View style={{
+          
+          minWidth: "70%",
+
+
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+          gap: 2,
+        }}>
+          <Text style={{
+            fontSize: FontSize.size_lg,
+            fontWeight: "700",
+          }}>{item.name}</Text>
+          <View style={{
+
+            display: "flex",
+            flexDirection: "row",
+            gap: 4,
+          }}>
+
+            <Entypo name="location-pin" size={22} color="black" />  
+            <Text>{item.address}</Text>
+
+          </View>
+
+        </View>
+      </Pressable>
+      <FlatList
+        data={item.availableTimes}
+        renderItem={({ item }) => (
+          
+          <View style={{
+            marginHorizontal: wp("3%"),
+            width: wp("18%"),
+            minHeight: "50%",
+
+            backgroundColor: Color.primary,
+            borderRadius: 4,
+
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            
+          }}>
+            <Text style={{
+              fontSize: FontSize.size_sm,
+              fontWeight: "700",
+              color: Color.white,
+              textAlign: "center",
+            }}>{item}</Text>
+          </View>
+        )}
+        keyExtractor={(slot, index) => `${slot}-${index}`}
+        horizontal={true}
+      
+        contentContainerStyle={{
+          minWidth: "100%",
+        
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          alignItems: "center",
+        }}
+      />
+      <Divider color="gray" thickness={1} marginVertical={4} />
+
+    </View>
   );
 
   return (
     <View style={styles.container}>
+      <StatusBar style="dark" backgroundColor={Color.white} />
       {/* Header */}
       <LinearGradient
         style={styles.headerBanner}
@@ -94,15 +166,28 @@ const HomeGridView = () => {
       </Text>
       <Text style={styles.sectionTitle}>Our Restaurants</Text>
 
-      {/* Restaurant List */}
-      <FlatList
-        data={restaurants}
-        renderItem={renderRestaurantCard}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        contentContainerStyle={styles.listContainer}
-        columnWrapperStyle={styles.columnWrapper}
-      />
+       {/* Restaurant List */}
+      <View style={{
+        width: "100%",
+        height: "100%", 
+        flexDirection: "column",
+
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "baseline",
+        
+        
+      }}> 
+        <FlatList
+          data={restaurantData}
+          renderItem={renderRestaurantCard}
+          keyExtractor={(item) => item.id}
+          numColumns={1}
+          contentContainerStyle={styles.listContainer}
+          
+        />
+
+      </View>
     </View>
   );
 };
@@ -111,6 +196,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Color.white,
+    
     paddingHorizontal: wp("4%"),
     paddingTop: hp("6%"),
   },
@@ -152,21 +238,13 @@ const styles = StyleSheet.create({
     marginBottom: hp("2%"),
   },
   card: {
-    backgroundColor: Color.white,
-    borderRadius: Border.br_8xs,
-    shadowColor: "rgba(0, 0, 0, 0.1)",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 4,
-    elevation: 4,
-    width: wp("45%"),
-    padding: wp("2%"),
+    width: "90%",
+    height: hp("20%"),
   },
   cardImage: {
     width: "100%",
     height: hp("15%"),
-    borderRadius: Border.br_8xs,
-    marginBottom: hp("1%"),
+    
   },
   cardTitle: {
     fontSize: FontSize.size_sm,
