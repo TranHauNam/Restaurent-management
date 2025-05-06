@@ -7,8 +7,7 @@ const restaurantSchema = new mongoose.Schema(
         image: String,
         openTime: String,
         closeTime: String,
-        description: String,
-        availableTimes: [String]
+        description: String
     },
     {
         timestamps: true
