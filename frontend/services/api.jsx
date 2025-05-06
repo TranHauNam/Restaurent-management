@@ -1,5 +1,5 @@
 export const API_CONFIG = {
-    BASE_URL: "http://localhost:5001",
+    BASE_URL: "http://192.168.0.101:5001",
     headers: {
       accept: "application/json",
     },

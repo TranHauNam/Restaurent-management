@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 
-const APILINK="http://127.0.0.1:5001";
+const APILINK="http://192.168.0.101:5001";
 export const AuthContext = createContext(undefined);
 
 export function useAuthContext() {
@@ -19,17 +19,17 @@ export function AuthContextProvider({children}) {
 
 
 
-    useEffect(() => {
-        if (user) {
-            setUser(user);
-            setAuthenticated(true);
-            console.log("Set User and autheticated", user);
-        } else {
-            setUser(null);  
-            setAuthenticated(false);
-            console.log("Authenticated false");
-        }
-    }, [user]);
+    // useEffect(() => {
+    //     if (user) {
+    //         setUser(user);
+    //         setAuthenticated(true);
+    //         console.log("Set User and autheticated", user);
+    //     } else {
+    //         setUser(null);  
+    //         setAuthenticated(false);
+    //         console.log("Authenticated false");
+    //     }
+    // }, [user]);
 
     const login = async (email) => {
         try {
