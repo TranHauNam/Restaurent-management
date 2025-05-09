@@ -110,13 +110,23 @@ const SignIn = () => {
 
       {/* Footer */}
       <View style={styles.footer}>
-        <Text style={styles.footerText}>Don’t have an account?</Text>
+        <Text style={styles.footerText}>Don't have an account?</Text>
         <Pressable onPress={() => {
           router.push("/sign-up-email");
         }}>
           <Text style={styles.signUpText}>Sign Up</Text>
         </Pressable>
       </View>
+
+      {/* Admin Login Button */}
+      <Pressable 
+        style={[styles.signInButton, { marginTop: hp("2%") }]} 
+        onPress={() => {
+          router.push("/admin-sign-in");
+        }}
+      >
+        <Text style={styles.buttonText}>Đăng nhập Admin</Text>
+      </Pressable>
     </View>
   );
 };

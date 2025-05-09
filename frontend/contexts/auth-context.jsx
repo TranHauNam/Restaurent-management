@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const APILINK="http://192.168.0.101:5001";
+const APILINK = "http://192.168.1.142:5001";
 export const AuthContext = createContext(undefined);
 
 export function useAuthContext() {
@@ -16,6 +17,7 @@ export function AuthContextProvider({children}) {
     const [isLoading, setLoading] = useState(true);
     const [isAuthenticated, setAuthenticated] = useState(true);
     const [user, setUser] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(false);
 
 
 
@@ -56,9 +58,51 @@ export function AuthContextProvider({children}) {
         }
     }
 
+    const loginAdmin = async (email, password) => {
+        try {
+            console.log("Attempting to login admin with:", { email, password });
+            console.log("API URL:", `${APILINK}/api/admin/auth/login`);
+            
+            const response = await fetch(`${APILINK}/api/admin/auth/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({ 
+                    email: email,
+                    password: password
+                }),
+            }); 
+
+            console.log("Response status:", response.status);
+            console.log("Response headers:", response.headers);
+            
+            const data = await response.json();
+            console.log("Admin login response:", data);
+    
+            if (response.ok && data.tokenAdmin) {
+                await AsyncStorage.setItem('adminToken', data.tokenAdmin);
+                setUser(data);
+                setAuthenticated(true);
+                setIsAdmin(true);
+                return { success: true, message: data.message };
+            } else {
+                return { success: false, message: data.message || "Đăng nhập thất bại" };
+            }
+        } catch (e) {
+            console.error("Error logging in admin:", e);
+            return { 
+                success: false, 
+                message: "Không thể kết nối đến server. Vui lòng kiểm tra:\n1. Server backend đã được khởi động\n2. IP address chính xác\n3. Port 5001 đã được mở" 
+            };
+        }
+    }
+
     const logout = async () => {
         setAuthenticated(false);
         setUser(null);
+        setIsAdmin(false);
     }
 
     const register = async (fullName, email) => {
@@ -125,7 +169,9 @@ export function AuthContextProvider({children}) {
             logout,
             register,
             verifyOTP,
+            loginAdmin,
             user,
+            isAdmin,
         }}>
             {children}
         </AuthContext.Provider>
