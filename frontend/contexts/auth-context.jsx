@@ -1,8 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_URL } from '../services/config';
 
 
-const APILINK = "http://192.168.0.100:5001";
+const APILINK = API_URL;
 export const AuthContext = createContext(undefined);
 
 export function useAuthContext() {

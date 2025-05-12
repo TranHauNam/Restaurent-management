@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Pressable, TextInput, Alert, ScrollView } from "react-native";
+import { StyleSheet, View, Text, Pressable, TextInput, Alert, ScrollView, SafeAreaView } from "react-native";
 import { Color, Border, FontSize, FontFamily } from "../../../styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { useRouter } from "expo-router";
 import { useAuthContext } from "../../../contexts/auth-context";
 import { API_URL } from "../../../services/config";
+import { FontAwesome } from '@expo/vector-icons';
 
 const EditRestaurant = () => {
   const router = useRouter();
@@ -35,7 +36,7 @@ const EditRestaurant = () => {
       }
 
       try {
-        const response = await fetch('http://192.168.0.100:5001/api/admin/restaurant/update', {
+        const response = await fetch(`${API_URL}/api/admin/restaurant/update`, {
           method: 'PATCH',
           headers: {
             'Authorization': `Bearer ${adminToken}`,
@@ -90,7 +91,7 @@ const EditRestaurant = () => {
 
     setLoading(true);
     try {
-      const response = await fetch('http://192.168.0.100:5001/api/admin/restaurant/update', {
+      const response = await fetch(`${API_URL}/api/admin/restaurant/update`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${adminToken}`,
@@ -139,119 +140,181 @@ const EditRestaurant = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Chỉnh sửa thông tin nhà hàng</Text>
-      </View>
-
-      <View style={styles.form}>
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Tên nhà hàng *</Text>
-          <TextInput
-            style={styles.input}
-            value={restaurant.name}
-            onChangeText={(text) => setRestaurant(prev => ({ ...prev, name: text }))}
-            placeholder="Nhập tên nhà hàng"
-          />
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <View style={styles.headerContent}>
+            <FontAwesome name="edit" size={24} color={Color.primary} />
+            <Text style={styles.title}>Chỉnh sửa thông tin nhà hàng</Text>
+          </View>
+          <Text style={styles.subtitle}>Cập nhật thông tin cơ bản của nhà hàng</Text>
         </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Địa chỉ *</Text>
-          <TextInput
-            style={styles.input}
-            value={restaurant.address}
-            onChangeText={(text) => setRestaurant(prev => ({ ...prev, address: text }))}
-            placeholder="Nhập địa chỉ"
-          />
-        </View>
-
-        <View style={styles.timeContainer}>
-          <View style={[styles.inputGroup, { flex: 1, marginRight: 10 }]}>
-            <Text style={styles.label}>Giờ mở cửa *</Text>
-            <TextInput
-              style={styles.input}
-              value={restaurant.openTime}
-              onChangeText={(text) => setRestaurant(prev => ({ ...prev, openTime: text }))}
-              placeholder="HH:MM"
-            />
+        <View style={styles.form}>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Tên nhà hàng <Text style={styles.required}>*</Text></Text>
+            <View style={styles.inputWrapper}>
+              <FontAwesome name="home" size={20} color={Color.sub} style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                value={restaurant.name}
+                onChangeText={(text) => setRestaurant(prev => ({ ...prev, name: text }))}
+                placeholder="Nhập tên nhà hàng"
+                placeholderTextColor={Color.sub}
+              />
+            </View>
           </View>
 
-          <View style={[styles.inputGroup, { flex: 1 }]}>
-            <Text style={styles.label}>Giờ đóng cửa *</Text>
-            <TextInput
-              style={styles.input}
-              value={restaurant.closeTime}
-              onChangeText={(text) => setRestaurant(prev => ({ ...prev, closeTime: text }))}
-              placeholder="HH:MM"
-            />
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Địa chỉ <Text style={styles.required}>*</Text></Text>
+            <View style={styles.inputWrapper}>
+              <FontAwesome name="map-marker" size={20} color={Color.sub} style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                value={restaurant.address}
+                onChangeText={(text) => setRestaurant(prev => ({ ...prev, address: text }))}
+                placeholder="Nhập địa chỉ"
+                placeholderTextColor={Color.sub}
+              />
+            </View>
           </View>
-        </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Mô tả</Text>
-          <TextInput
-            style={[styles.input, styles.textArea]}
-            value={restaurant.description}
-            onChangeText={(text) => setRestaurant(prev => ({ ...prev, description: text }))}
-            placeholder="Nhập mô tả"
-            multiline
-            numberOfLines={4}
-          />
-        </View>
+          <View style={styles.timeContainer}>
+            <View style={[styles.inputGroup, { flex: 1, marginRight: 10 }]}>
+              <Text style={styles.label}>Giờ mở cửa <Text style={styles.required}>*</Text></Text>
+              <View style={styles.inputWrapper}>
+                <FontAwesome name="clock-o" size={20} color={Color.sub} style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  value={restaurant.openTime}
+                  onChangeText={(text) => setRestaurant(prev => ({ ...prev, openTime: text }))}
+                  placeholder="HH:MM"
+                  placeholderTextColor={Color.sub}
+                />
+              </View>
+            </View>
 
-        <Pressable 
-          style={[styles.updateButton, loading && styles.disabledButton]} 
-          onPress={handleUpdate}
-          disabled={loading}
-        >
-          <Text style={styles.buttonText}>
-            {loading ? "Đang cập nhật..." : "Cập nhật thông tin"}
-          </Text>
-        </Pressable>
-      </View>
-    </ScrollView>
+            <View style={[styles.inputGroup, { flex: 1 }]}>
+              <Text style={styles.label}>Giờ đóng cửa <Text style={styles.required}>*</Text></Text>
+              <View style={styles.inputWrapper}>
+                <FontAwesome name="clock-o" size={20} color={Color.sub} style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  value={restaurant.closeTime}
+                  onChangeText={(text) => setRestaurant(prev => ({ ...prev, closeTime: text }))}
+                  placeholder="HH:MM"
+                  placeholderTextColor={Color.sub}
+                />
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Mô tả</Text>
+            <View style={[styles.inputWrapper, styles.textAreaWrapper]}>
+              <FontAwesome name="file-text-o" size={20} color={Color.sub} style={[styles.inputIcon, {marginTop: 10}]} />
+              <TextInput
+                style={[styles.input, styles.textArea]}
+                value={restaurant.description}
+                onChangeText={(text) => setRestaurant(prev => ({ ...prev, description: text }))}
+                placeholder="Nhập mô tả về nhà hàng của bạn"
+                placeholderTextColor={Color.sub}
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+              />
+            </View>
+          </View>
+
+          <Pressable 
+            style={[styles.updateButton, loading && styles.disabledButton]} 
+            onPress={handleUpdate}
+            disabled={loading}
+          >
+            <FontAwesome name="save" size={20} color={Color.white} style={styles.buttonIcon} />
+            <Text style={styles.buttonText}>
+              {loading ? "Đang cập nhật..." : "Cập nhật thông tin"}
+            </Text>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: Color.white,
   },
+  container: {
+    flex: 1,
+  },
   header: {
     padding: wp("5%"),
+    backgroundColor: '#f8f9fa',
     borderBottomWidth: 1,
-    borderBottomColor: Color.sub,
+    borderBottomColor: '#e9ecef',
+  },
+  headerContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: hp("1%"),
   },
   title: {
-    fontSize: FontSize.size_xl,
+    fontSize: wp("6%"),
     color: Color.primary,
     fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
+    marginLeft: wp("2%"),
+  },
+  subtitle: {
+    fontSize: wp("3.5%"),
+    color: Color.sub,
+    fontFamily: FontFamily.segoeUI,
   },
   form: {
     padding: wp("5%"),
   },
   inputGroup: {
-    marginBottom: hp("2%"),
+    marginBottom: hp("2.5%"),
   },
   label: {
-    fontSize: FontSize.size_sm,
+    fontSize: wp("4%"),
     color: Color.secondary,
     fontFamily: FontFamily.segoeUI,
     marginBottom: hp("1%"),
+    fontWeight: "600",
+  },
+  required: {
+    color: '#FF3B30',
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    borderRadius: Border.br_9xs,
+    backgroundColor: '#f8f9fa',
+    paddingHorizontal: wp("3%"),
+  },
+  inputIcon: {
+    marginRight: wp("2%"),
   },
   input: {
-    borderWidth: 1,
-    borderColor: Color.sub,
-    borderRadius: Border.br_9xs,
+    flex: 1,
     padding: wp("3%"),
-    fontSize: FontSize.size_sm,
+    fontSize: wp("4%"),
     fontFamily: FontFamily.segoeUI,
+    color: Color.secondary,
+  },
+  textAreaWrapper: {
+    alignItems: 'flex-start',
+    paddingVertical: wp("2%"),
   },
   textArea: {
     height: hp("15%"),
-    textAlignVertical: "top",
+    paddingTop: 0,
   },
   timeContainer: {
     flexDirection: "row",
@@ -261,15 +324,28 @@ const styles = StyleSheet.create({
     backgroundColor: Color.primary,
     borderRadius: Border.br_9xs,
     padding: wp("4%"),
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: hp("2%"),
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  buttonIcon: {
+    marginRight: wp("2%"),
   },
   disabledButton: {
     opacity: 0.7,
   },
   buttonText: {
     color: Color.white,
-    fontSize: FontSize.size_base,
+    fontSize: wp("4%"),
     fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
   },
