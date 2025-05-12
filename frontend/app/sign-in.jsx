@@ -118,14 +118,12 @@ const SignIn = () => {
         </Pressable>
       </View>
 
-      {/* Admin Login Button */}
+      {/* Back to Client Login */}
       <Pressable 
-        style={[styles.signInButton, { marginTop: hp("2%") }]} 
-        onPress={() => {
-          router.push("/admin-sign-in");
-        }}
+        style={styles.backButton} 
+        onPress={() => router.push("/admin/sign-in")}
       >
-        <Text style={styles.buttonText}>Đăng nhập Admin</Text>
+        <Text style={styles.backButtonText}>Đăng nhập Admin</Text>
       </Pressable>
     </View>
   );
@@ -233,6 +231,20 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.segoeUI,
     textDecorationLine: "underline",
     marginLeft: wp("2%"),
+  },
+  backButton: {
+    backgroundColor: Color.primary,
+    borderRadius: Border.br_9xs,
+    alignItems: "center",
+    justifyContent: "center",
+    height: hp("5%"),
+    marginTop: hp("2%"),
+  },
+  backButtonText: {
+    color: Color.white,
+    fontSize: FontSize.size_base,
+    fontFamily: FontFamily.segoeUI,
+    fontWeight: "700",
   },
 });
 

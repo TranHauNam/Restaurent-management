@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const APILINK = "http://192.168.1.142:5001";
+const APILINK = "http://192.168.0.100:5001";
 export const AuthContext = createContext(undefined);
 
 export function useAuthContext() {
@@ -15,23 +15,28 @@ export function useAuthContext() {
 
 export function AuthContextProvider({children}) {
     const [isLoading, setLoading] = useState(true);
-    const [isAuthenticated, setAuthenticated] = useState(true);
+    const [isAuthenticated, setAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [adminToken, setAdminToken] = useState(null);
 
-
-
-    // useEffect(() => {
-    //     if (user) {
-    //         setUser(user);
-    //         setAuthenticated(true);
-    //         console.log("Set User and autheticated", user);
-    //     } else {
-    //         setUser(null);  
-    //         setAuthenticated(false);
-    //         console.log("Authenticated false");
-    //     }
-    // }, [user]);
+    useEffect(() => {
+        const loadToken = async () => {
+            try {
+                const token = await AsyncStorage.getItem('adminToken');
+                if (token) {
+                    setAdminToken(token);
+                    setIsAdmin(true);
+                    setAuthenticated(true);
+                }
+            } catch (error) {
+                console.error('Error loading token:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadToken();
+    }, []);
 
     const login = async (email) => {
         try {
@@ -74,15 +79,13 @@ export function AuthContextProvider({children}) {
                     password: password
                 }),
             }); 
-
-            console.log("Response status:", response.status);
-            console.log("Response headers:", response.headers);
             
             const data = await response.json();
             console.log("Admin login response:", data);
     
             if (response.ok && data.tokenAdmin) {
                 await AsyncStorage.setItem('adminToken', data.tokenAdmin);
+                setAdminToken(data.tokenAdmin);
                 setUser(data);
                 setAuthenticated(true);
                 setIsAdmin(true);
@@ -100,9 +103,15 @@ export function AuthContextProvider({children}) {
     }
 
     const logout = async () => {
-        setAuthenticated(false);
-        setUser(null);
-        setIsAdmin(false);
+        try {
+            await AsyncStorage.removeItem('adminToken');
+            setAdminToken(null);
+            setAuthenticated(false);
+            setUser(null);
+            setIsAdmin(false);
+        } catch (error) {
+            console.error('Error during logout:', error);
+        }
     }
 
     const register = async (fullName, email) => {
@@ -148,7 +157,7 @@ export function AuthContextProvider({children}) {
             if (response.ok && data.user && data.token) {
                 setUser(data.user);
                 setAuthenticated(true);
-                console.log("Verigy successful:", data.user);
+                console.log("Verify successful:", data.user);
                 return { success: true, message: "Login successful" };
             } else {
                 return { success: false, message: data.message || "OTP Check failed" };
@@ -172,6 +181,7 @@ export function AuthContextProvider({children}) {
             loginAdmin,
             user,
             isAdmin,
+            adminToken
         }}>
             {children}
         </AuthContext.Provider>
