@@ -21,11 +21,6 @@ module.exports.updatedRestaurant = async (req, res) => {
         if (closeTime !== undefined) updateData.closeTime = closeTime;
         if (description !== undefined) updateData.description = description;
 
-        // Nếu có ảnh mới
-        if (req.file) {
-            updateData.image = `/uploads/${req.file.filename}`;
-        }
-
         const updatedRestaurant = await Restaurant.findByIdAndUpdate(
             restaurantId,
             updateData,
@@ -41,6 +36,7 @@ module.exports.updatedRestaurant = async (req, res) => {
             restaurant: updatedRestaurant
         });
     } catch (error) {
+        console.error('Lỗi khi cập nhật nhà hàng:', error);
         res.status(500).json({ message: 'Lỗi server', error: error.message });
     }
 };

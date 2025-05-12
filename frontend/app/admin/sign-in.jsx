@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import { StyleSheet, View, Text, Pressable, TextInput, Alert } from "react-native";
-import { Color, Border, FontSize, FontFamily } from "@/styles/GlobalStyles";
+import { Color, Border, FontSize, FontFamily } from "../../styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { useRouter } from "expo-router";
-import { useAuthContext } from "@/contexts/auth-context";
+import { useAuthContext } from "../../contexts/auth-context";
 
 const AdminSignIn = () => {
   const router = useRouter();
@@ -22,12 +22,7 @@ const AdminSignIn = () => {
       console.log("Login response:", response);
       
       if (response.success) {
-        Alert.alert("Thành công", "Đăng nhập thành công", [
-          {
-            text: "OK",
-            onPress: () => router.replace("/admin")
-          }
-        ]);
+        router.replace("/admin/(tabs)/statistics");
       } else {
         Alert.alert("Đăng nhập thất bại", response.message);
       }
@@ -62,6 +57,8 @@ const AdminSignIn = () => {
             placeholder="Nhập email" 
             placeholderTextColor={Color.sub} 
             onChangeText={(text) => { emailRef.current = text}}
+            autoCapitalize="none"
+            keyboardType="email-address"
           />
         </View>
       </View>
@@ -87,7 +84,7 @@ const AdminSignIn = () => {
       {/* Back to Client Login */}
       <Pressable 
         style={styles.backButton} 
-        onPress={() => router.back()}
+        onPress={() => router.replace("/sign-in")}
       >
         <Text style={styles.backButtonText}>Quay lại đăng nhập khách hàng</Text>
       </Pressable>
