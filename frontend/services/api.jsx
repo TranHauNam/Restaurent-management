@@ -1,5 +1,7 @@
+import { API_URL } from './config';
+
 export const API_CONFIG = {
-    BASE_URL: "http://192.168.0.100:5001",
+    BASE_URL: API_URL,
     headers: {
       accept: "application/json",
     },
