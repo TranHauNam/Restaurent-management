@@ -5,7 +5,11 @@ import { Slot } from "expo-router";
 export default function Layout() {
   return (
     <AuthContextProvider>
-      <Stack>
+      <Stack
+        screenOptions={{
+          headerShown: false, // This hides the header
+        }}
+      >
         <Stack.Screen 
           name="index" 
           options={{ 

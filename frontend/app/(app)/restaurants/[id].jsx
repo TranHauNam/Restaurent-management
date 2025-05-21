@@ -5,10 +5,13 @@ import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { MaterialIcons } from '@expo/vector-icons';
 import DatePicker from 'react-native-date-picker';
+import { fetchRestaurantById } from "@/services/api";
+import { useLocalSearchParams } from "expo-router";
+import { set } from "date-fns";
 
 const SingleRestaurant = () => {
   const route = useRoute();
-  const { id } = route.params; // Get restaurant ID from route params
+  const id = useLocalSearchParams().id; // Get restaurant ID from route params
   const eatTime = 60 * 60 * 1000; // 1 hour in milliseconds
   const [restaurant, setRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -19,55 +22,67 @@ const SingleRestaurant = () => {
   const [showTimeGrid, setShowTimeGrid] = useState(false);
   const [selectedPeople, setSelectedPeople] = useState(null); // State for selected number of people
   const [showPeoplePicker, setShowPeoplePicker] = useState(false); // State to toggle People Picker visibility
-
+  
 
 
 
   const showDatePicker = () => setDatePickerVisibility(true);
   const hideDatePicker = () => setDatePickerVisibility(false);
   
-
   useEffect(() => {
-    // Simulate fetching restaurant data
-    const fetchRestaurant = async () => {
-      setLoading(true);
-      // Replace this with your API call
-
-      // Generate orderTime array dynamically
-      const generateOrderTimes = (start, end, interval) => {
-        const times = [];
-        let current = new Date();
-        current.setHours(start, 15, 0, 0); // Set start time
-        const endTime = new Date();
-        endTime.setHours(end, 0, 0, 0); // Set end time
-
-        while (current <= endTime) {
-          const hours = current.getHours().toString().padStart(2, "0");
-          const minutes = current.getMinutes().toString().padStart(2, "0");
-          times.push(`${hours}:${minutes}`);
-          current.setMinutes(current.getMinutes() + interval); // Increment by interval
-        }
-
-        return times;
-      };
-
-
-      const data = {
-        id,
-        name: "Sea Grill North Miami Beach",
-        address: "3913 NE 163rd St North Miami Beach, FL 33160",
-        hours: "10:30 AM - 11:00 PM",
-        description:
-          "Seagrill Restaurant and bar has one mission: to provide guests with a fine and fresh seafood experience. Featuring seasonal and sustainable seafood that is flown in fresh daily, our chef-driven menu proves that no matter when you're dining, seafood can be truly exceptional.",
-        image: require("@/assets/images/image.png"),
-        orderTime: generateOrderTimes(11, 13, 15), // Generate times from 10:00 to 13:00 with 15-minute intervals
-      };
-      setRestaurant(data);
+    setLoading(true);
+    fetchRestaurantById(id).then((data) => {
+      setRestaurant(data.restaurent);
       setLoading(false);
-    };
-
-    fetchRestaurant();
+      console.log("id", id);
+      console.log("Fetched restaurant:", restaurant);
+    }).catch((error) => {
+      console.error("Error fetching restaurant:", error);
+      setLoading(false);
+    });
   }, [id]);
+
+  // useEffect(() => {
+  //   // Simulate fetching restaurant data
+  //   const fetchRestaurant = async () => {
+  //     setLoading(true);
+  //     // Replace this with your API call
+
+  //     // Generate orderTime array dynamically
+  //     const generateOrderTimes = (start, end, interval) => {
+  //       const times = [];
+  //       let current = new Date();
+  //       current.setHours(start, 15, 0, 0); // Set start time
+  //       const endTime = new Date();
+  //       endTime.setHours(end, 0, 0, 0); // Set end time
+
+  //       while (current <= endTime) {
+  //         const hours = current.getHours().toString().padStart(2, "0");
+  //         const minutes = current.getMinutes().toString().padStart(2, "0");
+  //         times.push(`${hours}:${minutes}`);
+  //         current.setMinutes(current.getMinutes() + interval); // Increment by interval
+  //       }
+
+  //       return times;
+  //     };
+
+
+  //     const data = {
+  //       id,
+  //       name: "Sea Grill North Miami Beach",
+  //       address: "3913 NE 163rd St North Miami Beach, FL 33160",
+  //       hours: "10:30 AM - 11:00 PM",
+  //       description:
+  //         "Seagrill Restaurant and bar has one mission: to provide guests with a fine and fresh seafood experience. Featuring seasonal and sustainable seafood that is flown in fresh daily, our chef-driven menu proves that no matter when you're dining, seafood can be truly exceptional.",
+  //       image: require("@/assets/images/image.png"),
+  //       orderTime: generateOrderTimes(11, 13, 15), // Generate times from 10:00 to 13:00 with 15-minute intervals
+  //     };
+  //     // setRestaurant(data);
+  //     setLoading(false);
+  //   };
+
+  //   fetchRestaurant();
+  // }, [id]);
 
   if (loading) {
     return (
@@ -84,7 +99,7 @@ const SingleRestaurant = () => {
       <View style={styles.headerLine} />
 
       {/* Restaurant Image */}
-      <Image style={styles.restaurantImage} source={restaurant.image} />
+      <Image style={styles.restaurantImage} source={{uri: `${restaurant.imageUrl}`}} />
 
       {/* Address and Time */}
       <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
@@ -94,7 +109,9 @@ const SingleRestaurant = () => {
       
       <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
         <MaterialIcons name="access-time-filled" size={hp("2%")} color={Color.primary} />
-        <Text style={styles.operatingHours}>{restaurant.hours}</Text>
+        <Text style={styles.operatingHours}>{restaurant.openTime}</Text>
+        <Text style={[styles.operatingHours]}>-</Text>
+        <Text style={styles.operatingHours}>{restaurant.closeTime}</Text>
       </View>
       
 
