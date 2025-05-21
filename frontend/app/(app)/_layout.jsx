@@ -9,7 +9,7 @@ export default function AppLayout() {
 
     const { isAuthenticated, isLoading, setAuthenticated } = useAuthContext();
 
-    if (!isLoading) {
+    if (isLoading) {
         return (
             <View>
                 <Text>Loading...</Text>
@@ -31,8 +31,7 @@ export default function AppLayout() {
             screenOptions={{
                 headerShown: false, // This hides the header
             }}
-        >
-            
+        >          
         </Stack>
     );
 }

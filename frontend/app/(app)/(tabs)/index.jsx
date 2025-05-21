@@ -27,7 +27,7 @@ const HomeGridView = () => {
   useEffect(() => {
     fetchRestaurants().then((data) => {
       setRestaurantData(data.restaurents);
-      console.log("Fetched restaurants:", restaurantData);
+      // console.log("Fetched restaurants:", restaurantData);
     }).catch((error) => {
       console.error("Error fetching restaurants:", error);
     });
@@ -36,64 +36,45 @@ const HomeGridView = () => {
   // useEffect(() => {
   //   console.log("Restaurant data time available updated:", restaurantData.availableTimes);
   // }, [restaurantData]);
-
-  
-  const renderRestaurantCard = ({ item }) => (
+  const renderTimeSlot = ({ item }) => (
     <View style={{
-      marginBottom: hp("2%"),
-      minWidth: "100%",
-      height: hp("20%"),
+      marginHorizontal: wp("3%"),
+      width: wp("18%"),
+      minHeight: "50%",
 
+      backgroundColor: Color.primary,
+      borderRadius: 4,
 
       display: "flex",
-      flexDirection: "column",
-      justifyContent: "flex-start",
-      alignItems: "baseline",
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
       
     }}>
+      <Text style={{
+        fontSize: FontSize.size_sm,
+        fontWeight: "700",
+        color: Color.white,
+        textAlign: "center",
+      }}>{item}</Text>
+    </View>
+  );
+  
+  const renderRestaurantCard = ({ item }) => (
+    <View style={styles.cardContainer}>
       <Pressable
-        style={{
-          
-          minWidth: "100%",
-          height: "50%",    
-          
-          
-
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-        }}
+        style={styles.cardPressable}
         onPress={() => {
           router.navigate(`/restaurants/${item._id}`); // Navigate to restaurant details
         }}
       >
-        <Image style={{
-          width: wp("20%"),
-          height: hp("10%"),
+        <Image style={styles.cardImage}
+               source={{uri : `${item.imageUrl}`}}
+        />
 
-          borderRadius: 10,
-          
-        }}
-        source={{uri : `${item.imageUrl}`}}/>
-
-        <View style={{
-          
-          minWidth: "70%",
-
-
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-start",
-          alignItems: "flex-start",
-          gap: 2,
-        }}>
-          <Text style={{
-            fontSize: FontSize.size_lg,
-            fontWeight: "700",
-          }}>{item.name}</Text>
+        <View style={styles.cardAddress}>
+          <Text style={styles.cardTitle}>{item.name}</Text>
           <View style={{
-
             display: "flex",
             flexDirection: "row",
             gap: 4,
@@ -101,40 +82,14 @@ const HomeGridView = () => {
 
             <Entypo name="location-pin" size={22} color="black" />  
             <Text>{item.address}</Text>
-
           </View>
-
         </View>
       </Pressable>
       <FlatList
         data={item.availableTimes}
-        renderItem={({ item }) => (
-          
-          <View style={{
-            marginHorizontal: wp("3%"),
-            width: wp("18%"),
-            minHeight: "50%",
-
-            backgroundColor: Color.primary,
-            borderRadius: 4,
-
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            
-          }}>
-            <Text style={{
-              fontSize: FontSize.size_sm,
-              fontWeight: "700",
-              color: Color.white,
-              textAlign: "center",
-            }}>{item}</Text>
-          </View>
-        )}
+        renderItem={renderTimeSlot}
         keyExtractor={(slot, index) => `${slot}-${index}`}
-        horizontal={true}
-      
+        horizontal={true}      
         contentContainerStyle={{
           minWidth: "100%",
         
@@ -181,7 +136,7 @@ const HomeGridView = () => {
         <FlatList
           data={restaurantData}
           renderItem={renderRestaurantCard}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item._id}
           numColumns={1}
           contentContainerStyle={styles.listContainer}
           
@@ -237,27 +192,47 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: hp("2%"),
   },
-  card: {
-    width: "90%",
+  cardContainer: {
+    marginBottom: hp("2%"),
+    minWidth: "100%",
     height: hp("20%"),
-  },
-  cardImage: {
-    width: "100%",
-    height: hp("15%"),
+
+
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "baseline",
     
   },
-  cardTitle: {
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
-    color: Color.secondary,
-    marginBottom: hp("0.5%"),
+
+  cardPressable: {
+    minWidth: "100%",
+    height: "50%",    
+    
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
   },
-  cardAddress: {
-    fontSize: FontSize.size_xs,
-    fontFamily: FontFamily.segoeUI,
-    color: Color.tertiary,
-    marginBottom: hp("0.5%"),
+
+  cardImage: {
+    width: wp("20%"),
+    height: hp("10%"),
+
+    borderRadius: 10,    
+  },
+  cardTitle: {
+    fontSize: FontSize.size_lg,
+    fontWeight: "700",
+  },
+  cardAddress: {          
+    minWidth: "70%",
+
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    gap: 2,
   },
   cardHours: {
     fontSize: FontSize.size_xs,

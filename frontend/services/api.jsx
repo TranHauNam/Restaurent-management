@@ -20,3 +20,15 @@ export const fetchRestaurants = async () => {
     
 }
 
+export const fetchRestaurantById = async (id) => {
+    const response = await fetch(`${API_CONFIG.BASE_URL}/api/restaurant/${id}`, {
+        method: "GET",
+        headers: API_CONFIG.headers,
+    });
+    if (!response.ok) {
+        throw new Error("Failed to fetch restaurant");
+    }
+    const data = await response.json();
+    return data;
+}
+

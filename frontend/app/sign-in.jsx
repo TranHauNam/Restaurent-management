@@ -8,6 +8,7 @@ import { useRef } from "react";
 import { useRouter } from "expo-router";
 import { OtpInput } from "react-native-otp-entry";
 import { useAuthContext } from "@/contexts/auth-context";
+import { set } from "date-fns";
 
 
 const SignIn = () => {
@@ -17,27 +18,31 @@ const SignIn = () => {
   const { login, verifyOTP, setLoading, setAuthenticated } = useAuthContext();
 
   const handleSignIn = async () => {
-    if (!emailRef.current) {
-      Alert.alert("Please enter Email");
-      console.log("Please enter Email");
-      return;
-    }
+    // if (!emailRef.current) {
+    //   Alert.alert("Please enter Email");
+    //   console.log("Please enter Email");
+    //   return;
+    // }
 
-    if (otpRef.current.length < 6) {
-      Alert.alert("Please enter Send OTP button");
-      console.log("Please enter Send OTP button");
-      return;
-    }
+    // if (otpRef.current.length < 6) {
+    //   Alert.alert("Please enter Send OTP button");
+    //   console.log("Please enter Send OTP button");
+    //   return;
+    // }
 
-    let otpResponse = await verifyOTP(otpRef.current);
-    if (!otpResponse.success) {
-      Alert.alert(otpResponse.message);
-      console.log(otpResponse.message);
-    } else if (otpResponse.success) {
-      // router.push("/(app)/(tabs)/");
-      setAuthenticated(true);
-      router.replace("/");
-    }
+    // let otpResponse = await verifyOTP(otpRef.current);
+    // if (!otpResponse.success) {
+    //   Alert.alert(otpResponse.message);
+    //   console.log(otpResponse.message);
+    // } else if (otpResponse.success) {
+    //   // router.push("/(app)/(tabs)/");
+    //   setAuthenticated(true);
+    //   router.replace("/");
+    // }
+
+    setLoading(false);
+    setAuthenticated(true);
+    router.replace("/");
   }
 
   const handleSendOTP = async () => {

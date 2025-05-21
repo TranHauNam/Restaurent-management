@@ -15,7 +15,7 @@ export function useAuthContext() {
 }
 
 export function AuthContextProvider({children}) {
-    const [isLoading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(false);
     const [isAuthenticated, setAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
