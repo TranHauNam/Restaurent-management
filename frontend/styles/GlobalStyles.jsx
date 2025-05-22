@@ -24,6 +24,7 @@ export const FontFamily = {
     primary: "#F49B33",
     colorGray_100: "rgba(255, 255, 255, 0.13)",
     tertiary: "#5e5e5e",
+    black: "#000",
   };
   /* border radiuses */
   export const Border = {
