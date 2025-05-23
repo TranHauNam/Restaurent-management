@@ -22,7 +22,7 @@ export const TimeOrder = ({selectedTime, setShowTimeGrid, showTimeGrid}) => {
   );
 }
 
-export const ShowTimeSelection = ({availableTimes, selectedTime}) => {
+export const ShowTimeSelection = ({availableTimes, setSelectedTime, selectedTime, orderDateTime, setOrderDateTime}) => {
   return (
     <>
       <Text style={styles.sectionTitle}>Select a time you like</Text>
@@ -189,6 +189,9 @@ export const BookingOptions = ({availableTimes}) => {
         <ShowTimeSelection 
           availableTimes={availableTimes} 
           setSelectedTime={setSelectedTime}
+          selectedTime={selectedTime}
+          orderDateTime={orderDateTime}
+          setOrderDateTime={setOrderDateTime}
         /> 
       )}
 
