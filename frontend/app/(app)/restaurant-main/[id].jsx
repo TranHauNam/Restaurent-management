@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image, ActivityIndicator, Pressable, TouchableOpacity, ScrollView } from "react-native";
-import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { View, Text, Image, ActivityIndicator, Pressable, TouchableOpacity, ScrollView } from "react-native";
+
 import { MaterialIcons } from '@expo/vector-icons';
 import { fetchRestaurantById } from "@/services/api";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { BookingOptions } from "./show-picker";
-// import { set } from "date-fns";
+import { BookingOptions } from "../../../components/restaurant_main/find-slot-option";
+import { styles } from "@/styles/restaurant-main/restaurant-main";
 
-const SingleRestaurant = () => {
+export const RestaurantMain = () => {
   const route = useRouter();
   const id = useLocalSearchParams().id; // Get restaurant ID from route params
   const [restaurant, setRestaurant] = useState(null);
@@ -101,96 +100,6 @@ const SingleRestaurant = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Color.white,
-    paddingHorizontal: wp("6%"),
-    paddingTop: hp("6%"),
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  headerContainer: {
-    marginBottom: hp("2%"),
-
-    flexDirection: "row",
-    gap: wp("2%"),
-  },
-  restaurantTitle: {
-    fontSize: wp("5%"),
-    color: Color.secondary,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
-    // marginBottom: hp("2%"),
-  },
-  headerLine: {
-    height: 1,
-    backgroundColor: Color.primary,
-    marginBottom: hp("2%"),
-  },
-  restaurantImage: {
-    width: "100%",
-    height: hp("24%"),
-    borderRadius: Border.br_8xs,
-    marginBottom: hp("2%"),
-  },
-  address: {
-    fontSize: FontSize.size_sm,
-    color: Color.tertiary,
-    fontFamily: FontFamily.segoeUI,
-    // marginBottom: hp("1%"),
-    marginLeft: wp("2%"),
-  },
-  operatingHours: {
-    fontSize: FontSize.size_sm,
-    color: Color.tertiary,
-    fontFamily: FontFamily.segoeUI,
-    // marginBottom: hp("2%"),
-    marginLeft: wp("2%"),
-  },
-  menuLink: {
-    fontSize: FontSize.size_sm,
-    color: Color.primary,
-    textDecorationLine: "underline",
-    // marginBottom: hp("4%"),
-    marginLeft: wp("2%"),
-  },
-  sectionTitle: {
-    fontSize: FontSize.size_sm,
-    color: Color.primary,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
-    marginBottom: hp("1%"),
-  },
-  description: {
-    fontSize: FontSize.size_xs,
-    color: Color.tertiary,
-    fontFamily: FontFamily.segoeUI,
-    
-  },
-  readMore: {
-    fontSize: FontSize.size_sm,
-    color: Color.primary,
-    textDecorationLine: "underline",
-    marginBottom: hp("4%"),
-  },
-
-  findSlotsButton: {
-    backgroundColor: Color.primary,
-    paddingVertical: hp("1.5%"),
-    borderRadius: Border.br_8xs,
-    alignItems: "center",
-  },
-  findSlotsText: {
-    fontSize: FontSize.size_sm,
-    color: Color.white,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
-  },
-});
-
-export default SingleRestaurant;
+// const styles = StyleSheet.create({
+  
+// });
