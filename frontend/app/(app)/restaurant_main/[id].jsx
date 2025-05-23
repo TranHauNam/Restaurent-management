@@ -6,8 +6,11 @@ import { fetchRestaurantById } from "@/services/api";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { BookingOptions } from "../../../components/restaurant_main/find-slot-option";
 import { styles } from "@/styles/restaurant-main/restaurant-main";
+import { Color } from "@/styles/GlobalStyles";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
-export const RestaurantMain = () => {
+
+const RestaurantMain = () => {
   const route = useRouter();
   const id = useLocalSearchParams().id; // Get restaurant ID from route params
   const [restaurant, setRestaurant] = useState(null);
@@ -100,6 +103,4 @@ export const RestaurantMain = () => {
   );
 };
 
-// const styles = StyleSheet.create({
-  
-// });
+export default RestaurantMain;

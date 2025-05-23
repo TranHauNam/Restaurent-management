@@ -1,14 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text, Pressable, Image, FlatList, } from "react-native";
+import {  View, Text, Pressable, Image, FlatList, } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Color, FontFamily, Border, FontSize } from "@/styles/GlobalStyles";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { useNavigation } from "@react-navigation/native";
 import { router } from "expo-router";
 import { useState, useEffect } from "react";
 import { fetchRestaurants } from "@/services/api";
 import Entypo from '@expo/vector-icons/Entypo';
 import { StatusBar } from "expo-status-bar";
+import { styles } from "@/styles/tabs/home";
 
 const Divider = ({ color = "#ccc", thickness = 1, marginVertical = 10 }) => (
   <View
@@ -21,7 +19,7 @@ const Divider = ({ color = "#ccc", thickness = 1, marginVertical = 10 }) => (
   />
 );
 
-const HomeGridView = () => {
+const HomeView = () => {
   const [restaurantData, setRestaurantData] = useState([]);
 
   useEffect(() => {
@@ -37,26 +35,8 @@ const HomeGridView = () => {
   //   console.log("Restaurant data time available updated:", restaurantData.availableTimes);
   // }, [restaurantData]);
   const renderTimeSlot = ({ item }) => (
-    <View style={{
-      marginHorizontal: wp("3%"),
-      width: wp("18%"),
-      minHeight: "50%",
-
-      backgroundColor: Color.primary,
-      borderRadius: 4,
-
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center",
-      
-    }}>
-      <Text style={{
-        fontSize: FontSize.size_sm,
-        fontWeight: "700",
-        color: Color.white,
-        textAlign: "center",
-      }}>{item}</Text>
+    <View style={styles.timeSlotContainer}>
+      <Text style={styles.timeSlotText}>{item}</Text>
     </View>
   );
   
@@ -65,7 +45,7 @@ const HomeGridView = () => {
       <Pressable
         style={styles.cardPressable}
         onPress={() => {
-          router.push(`/restaurants/${item._id}`); // Navigate to restaurant details
+          router.push(`/restaurant_main/${item._id}`); // Navigate to restaurant details
         }}
       >
         <Image style={styles.cardImage}
@@ -106,156 +86,25 @@ const HomeGridView = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar style="dark" backgroundColor={Color.white} />
-      {/* Header */}
-      <LinearGradient
-        style={styles.headerBanner}
-        colors={["#faff00", "#ed994c"]}
-      >
-        <Text style={styles.headerText}>
-          Sign up for an account to receive 2% off your bill on every reservation!
-        </Text>
-      </LinearGradient>
+      <StatusBar style="dark" backgroundColor="white" />
+
       <Text style={styles.welcomeText}>
         Welcome to <Text style={styles.highlightText}>Dine-in Florida</Text>
       </Text>
       <Text style={styles.sectionTitle}>Our Restaurants</Text>
 
        {/* Restaurant List */}
-      <View style={{
-        width: "100%",
-        height: "100%", 
-        flexDirection: "column",
-
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "baseline",
-        
-        
-      }}> 
+      <View style={styles.restaurantListContainer}> 
         <FlatList
           data={restaurantData}
           renderItem={renderRestaurantCard}
           keyExtractor={(item) => item._id}
           numColumns={1}
-          contentContainerStyle={styles.listContainer}
-          
+          contentContainerStyle={styles.listContainer}   
         />
-
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Color.white,
-    
-    paddingHorizontal: wp("4%"),
-    paddingTop: hp("6%"),
-  },
-  headerBanner: {
-    paddingVertical: hp("2%"),
-    paddingHorizontal: wp("4%"),
-    borderRadius: Border.br_8xs,
-    marginBottom: hp("4%"),
-  },
-  headerText: {
-    color: Color.white,
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
-    textAlign: "center",
-  },
-  welcomeText: {
-    fontSize: wp("4.5%"),
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
-    color: Color.secondary,
-    marginBottom: hp("2%"),
-  },
-  highlightText: {
-    color: Color.primary,
-  },
-  sectionTitle: {
-    fontSize: wp("4.5%"),
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
-    color: Color.primary,
-    marginBottom: hp("2%"),
-  },
-  listContainer: {
-    paddingBottom: hp("4%"),
-  },
-  columnWrapper: {
-    justifyContent: "space-between",
-    marginBottom: hp("2%"),
-  },
-  cardContainer: {
-    marginBottom: hp("2%"),
-    minWidth: "100%",
-    height: hp("20%"),
-
-
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "baseline",
-    
-  },
-
-  cardPressable: {
-    minWidth: "100%",
-    height: "50%",    
-    
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-  },
-
-  cardImage: {
-    width: wp("20%"),
-    height: hp("10%"),
-
-    borderRadius: 10,    
-  },
-  cardTitle: {
-    fontSize: FontSize.size_lg,
-    fontWeight: "700",
-  },
-  cardAddress: {          
-    minWidth: "70%",
-
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    gap: 2,
-  },
-  cardHours: {
-    fontSize: FontSize.size_xs,
-    fontFamily: FontFamily.segoeUI,
-    color: Color.tertiary,
-    marginBottom: hp("1%"),
-  },
-  timeSlots: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  timeSlot: {
-    backgroundColor: Color.primary,
-    borderRadius: Border.br_8xs,
-    paddingVertical: hp("0.5%"),
-    paddingHorizontal: wp("2%"),
-  },
-  timeSlotText: {
-    fontSize: FontSize.size_3xs,
-    fontFamily: FontFamily.segoeUI,
-    color: Color.white,
-    textAlign: "center",
-  },
-});
-
-export default HomeGridView;
+export default HomeView;

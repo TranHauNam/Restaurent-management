@@ -31,7 +31,6 @@ export default function AppLayout() {
             screenOptions={{
                 headerShown: false, // This hides the header
             }}
-        >          
-        </Stack>
+        />
     );
 }
