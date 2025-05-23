@@ -65,7 +65,7 @@ const HomeGridView = () => {
       <Pressable
         style={styles.cardPressable}
         onPress={() => {
-          router.navigate(`/restaurants/${item._id}`); // Navigate to restaurant details
+          router.push(`/restaurants/${item._id}`); // Navigate to restaurant details
         }}
       >
         <Image style={styles.cardImage}

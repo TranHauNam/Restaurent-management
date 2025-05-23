@@ -1,33 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, ActivityIndicator, Pressable, TouchableOpacity, ScrollView } from "react-native";
-import { useRoute } from "@react-navigation/native"; // Get route params
 import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { MaterialIcons } from '@expo/vector-icons';
-import DatePicker from 'react-native-date-picker';
 import { fetchRestaurantById } from "@/services/api";
-import { useLocalSearchParams } from "expo-router";
-import { set } from "date-fns";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { BookingOptions } from "./show-picker";
+// import { set } from "date-fns";
 
 const SingleRestaurant = () => {
-  const route = useRoute();
+  const route = useRouter();
   const id = useLocalSearchParams().id; // Get restaurant ID from route params
-  const eatTime = 60 * 60 * 1000; // 1 hour in milliseconds
   const [restaurant, setRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [orderDateTime, setOrderDateTime] = useState('');
   const [isDescriptionExpanded, setDescriptionExpanded] = useState(false); // State for description toggle
-  const [selectedTime, setSelectedTime] = useState(null); // State for selected time
-  const [showTimeGrid, setShowTimeGrid] = useState(false);
-  const [selectedPeople, setSelectedPeople] = useState(null); // State for selected number of people
-  const [showPeoplePicker, setShowPeoplePicker] = useState(false); // State to toggle People Picker visibility
-  
-
-
-
-  const showDatePicker = () => setDatePickerVisibility(true);
-  const hideDatePicker = () => setDatePickerVisibility(false);
   
   useEffect(() => {
     setLoading(true);
@@ -35,54 +21,11 @@ const SingleRestaurant = () => {
       setRestaurant(data.restaurent);
       setLoading(false);
       console.log("id", id);
-      console.log("Fetched restaurant:", restaurant);
     }).catch((error) => {
       console.error("Error fetching restaurant:", error);
       setLoading(false);
     });
   }, [id]);
-
-  // useEffect(() => {
-  //   // Simulate fetching restaurant data
-  //   const fetchRestaurant = async () => {
-  //     setLoading(true);
-  //     // Replace this with your API call
-
-  //     // Generate orderTime array dynamically
-  //     const generateOrderTimes = (start, end, interval) => {
-  //       const times = [];
-  //       let current = new Date();
-  //       current.setHours(start, 15, 0, 0); // Set start time
-  //       const endTime = new Date();
-  //       endTime.setHours(end, 0, 0, 0); // Set end time
-
-  //       while (current <= endTime) {
-  //         const hours = current.getHours().toString().padStart(2, "0");
-  //         const minutes = current.getMinutes().toString().padStart(2, "0");
-  //         times.push(`${hours}:${minutes}`);
-  //         current.setMinutes(current.getMinutes() + interval); // Increment by interval
-  //       }
-
-  //       return times;
-  //     };
-
-
-  //     const data = {
-  //       id,
-  //       name: "Sea Grill North Miami Beach",
-  //       address: "3913 NE 163rd St North Miami Beach, FL 33160",
-  //       hours: "10:30 AM - 11:00 PM",
-  //       description:
-  //         "Seagrill Restaurant and bar has one mission: to provide guests with a fine and fresh seafood experience. Featuring seasonal and sustainable seafood that is flown in fresh daily, our chef-driven menu proves that no matter when you're dining, seafood can be truly exceptional.",
-  //       image: require("@/assets/images/image.png"),
-  //       orderTime: generateOrderTimes(11, 13, 15), // Generate times from 10:00 to 13:00 with 15-minute intervals
-  //     };
-  //     // setRestaurant(data);
-  //     setLoading(false);
-  //   };
-
-  //   fetchRestaurant();
-  // }, [id]);
 
   if (loading) {
     return (
@@ -90,12 +33,21 @@ const SingleRestaurant = () => {
         <ActivityIndicator size="large" color={Color.primary} />
       </View>
     );
-  }
+  };
+
+  const handleBackPress = () => {
+    route.back();
+  };
 
   return (
     <ScrollView style={styles.container}>
       {/* Header */}
-      <Text style={styles.restaurantTitle}>{restaurant.name}</Text>
+      <View style={styles.headerContainer}>
+        <TouchableOpacity  onPress={handleBackPress}>
+          <MaterialIcons name="arrow-back" size={hp("3.5%")} color={Color.black} />
+        </TouchableOpacity>
+        <Text style={styles.restaurantTitle}>{restaurant.name}</Text>
+      </View>
       <View style={styles.headerLine} />
 
       {/* Restaurant Image */}
@@ -103,12 +55,12 @@ const SingleRestaurant = () => {
 
       {/* Address and Time */}
       <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
-        <MaterialIcons name="location-on" size={hp("2%")} color={Color.primary} />  
+        <MaterialIcons name="location-on" size={hp("3%")} color={Color.primary} />  
         <Text style={styles.address}>{restaurant.address}</Text>
       </View>
       
       <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
-        <MaterialIcons name="access-time-filled" size={hp("2%")} color={Color.primary} />
+        <MaterialIcons name="access-time-filled" size={hp("3%")} color={Color.primary} />
         <Text style={styles.operatingHours}>{restaurant.openTime}</Text>
         <Text style={[styles.operatingHours]}>-</Text>
         <Text style={styles.operatingHours}>{restaurant.closeTime}</Text>
@@ -117,7 +69,7 @@ const SingleRestaurant = () => {
 
       {/* Menu and Description */}
       <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
-        <MaterialIcons name="menu-book" size={hp("2%")} color={Color.primary} />
+        <MaterialIcons name="menu-book" size={hp("3%")} color={Color.primary} />
         <Text style={styles.menuLink}>Menu</Text>
       </View>
 
@@ -136,121 +88,10 @@ const SingleRestaurant = () => {
       </Text>
 
       {/* Booking Options */}
-      <View style={styles.bookingOptions}>
-        {/* Date Picker */}
-        <TouchableOpacity 
-          style={[styles.bookingOption, { flexDirection: "row", justifyContent: "center" }]}
-          onPress={showDatePicker}
-        >
-          
-          <MaterialIcons name="calendar-today" size={hp("2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
-          <Text 
-            style={[styles.bookingOptionText, {marginHorizontal: wp('1%')}]}>
-            {orderDateTime ? 
-            `${orderDateTime.getDate().toString().padStart(2, '0')}/${(orderDateTime.getMonth() + 1)
-                .toString().padStart(2, '0')}/${orderDateTime.getFullYear()}`
-             : 'Date'}
-          </Text>
-          <DatePicker
-            modal
-            open={isDatePickerVisible}
-            date={orderDateTime ? new Date(orderDateTime) : new Date()}
-            onConfirm={(date) => {
-                hideDatePicker();
-                setOrderDateTime(date);
-            }}
-            onCancel={hideDatePicker}
-            mode="date"
-          />
-        </TouchableOpacity>
-
-        {/* Time Picker */}
-        <TouchableOpacity 
-          style={[styles.bookingOption, { flexDirection: "row", justifyContent: "center" }]}
-          onPress={() => setShowTimeGrid(!showTimeGrid)} // Toggle time grid visibility
-        >
-          <MaterialIcons name="access-time" size={hp("2.2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
-          <Text style={[styles.bookingOptionText, { marginHorizontal: wp("1%") }]}>
-            {selectedTime ? selectedTime : "Time"} 
-          </Text>          
-        </TouchableOpacity>
-
-        {/* People Picker */}
-        <TouchableOpacity 
-          style={[styles.bookingOption, { flexDirection: "row", justifyContent: "center" }]}
-          onPress={() => setShowPeoplePicker(!showPeoplePicker)} // Toggle people picker visibility
-        >
-
-          <MaterialIcons name="people-alt" size={hp("2.2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
-          <Text style={[styles.bookingOptionText, { marginHorizontal: wp("1%") }]}>
-              {selectedPeople ? `${selectedPeople} People` : "People"} {/* Show selected number or default text */}
-          </Text>        
-        </TouchableOpacity>
-      </View>
-
-      {showTimeGrid && ( // Only show Time Grid View when showTimeGrid is true
-        <>
-          <Text style={styles.sectionTitle}>Select a time you like</Text>
-          <View style={styles.timeGrid}>
-            {restaurant.orderTime.map((time, index) => (
-              <Pressable
-                key={index}
-                style={[
-                  styles.timeSlot,
-                  selectedTime === time && styles.selectedTimeSlot, 
-                ]}
-                onPress={() => {
-                  setSelectedTime(selectedTime === time ? null : time)
-                  if (selectedTime !== time) {
-                    // Update orderDateTime with the selected time
-                    const [hours, minutes] = time.split(":");
-                    const updatedDateTime = new Date(orderDateTime || new Date());
-                    updatedDateTime.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
-                    setOrderDateTime(updatedDateTime);
-                  }
-                }} 
-              >
-                <Text
-                  style={[
-                    styles.timeSlotText,
-                    selectedTime === time ? styles.selectedTimeSlotText : styles.unselectedTimeSlotText, 
-                  ]}
-                >
-                  {time}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
-        </>
-      )}
-
-      {/* People Picker Dropdown */}
-      {showPeoplePicker && (
-        <View style={styles.peoplePicker}>
-          {[...Array(10).keys()].map((num) => (
-            <Pressable
-              key={num + 1}
-              style={[
-                styles.peopleOption,
-                selectedPeople === num + 1 && styles.selectedPeopleOption, // Highlight selected option
-              ]}
-              onPress={() => {
-                setSelectedPeople(num + 1); // Set selected number of people
-                setShowPeoplePicker(false); // Close the dropdown
-              }}
-            >
-              <Text
-                style={[
-                  styles.peopleOptionText,
-                  selectedPeople === num + 1 && styles.selectedPeopleOptionText, // Highlight selected text
-                ]}
-              >
-                {num + 1}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
-      )}
+      <BookingOptions 
+        availableTimes={restaurant.availableTimes}
+      />
+      
 
       {/* Find Slots Button */}
       <Pressable style={styles.findSlotsButton}>
@@ -272,40 +113,47 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
+  headerContainer: {
+    marginBottom: hp("2%"),
+
+    flexDirection: "row",
+    gap: wp("2%"),
+  },
   restaurantTitle: {
     fontSize: wp("5%"),
     color: Color.secondary,
     fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
-    marginBottom: hp("2%"),
+    // marginBottom: hp("2%"),
   },
   headerLine: {
     height: 1,
     backgroundColor: Color.primary,
-    marginBottom: hp("4%"),
+    marginBottom: hp("2%"),
   },
   restaurantImage: {
     width: "100%",
-    height: hp("22%"),
+    height: hp("24%"),
     borderRadius: Border.br_8xs,
     marginBottom: hp("2%"),
   },
   address: {
-    fontSize: FontSize.size_xs,
+    fontSize: FontSize.size_sm,
     color: Color.tertiary,
     fontFamily: FontFamily.segoeUI,
     // marginBottom: hp("1%"),
     marginLeft: wp("2%"),
   },
   operatingHours: {
-    fontSize: FontSize.size_xs,
+    fontSize: FontSize.size_sm,
     color: Color.tertiary,
     fontFamily: FontFamily.segoeUI,
     // marginBottom: hp("2%"),
     marginLeft: wp("2%"),
   },
   menuLink: {
-    fontSize: FontSize.size_xs,
+    fontSize: FontSize.size_sm,
     color: Color.primary,
     textDecorationLine: "underline",
     // marginBottom: hp("4%"),
@@ -330,25 +178,7 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     marginBottom: hp("4%"),
   },
-  bookingOptions: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: hp("4%"),
-  },
-  bookingOption: {
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: hp("1%"),
-    borderWidth: 1,
-    borderColor: Color.sub,
-    borderRadius: Border.br_8xs,
-    marginHorizontal: wp("1%"),
-  },
-  bookingOptionText: {
-    fontSize: FontSize.size_xs,
-    color: Color.tertiary,
-    fontFamily: FontFamily.segoeUI,
-  },
+
   findSlotsButton: {
     backgroundColor: Color.primary,
     paddingVertical: hp("1.5%"),
@@ -360,67 +190,6 @@ const styles = StyleSheet.create({
     color: Color.white,
     fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
-  },
-  timeGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    marginBottom: hp("4%"),
-  },
-  timeSlot: {
-    backgroundColor: Color.sub,
-    borderRadius: Border.br_8xs,
-    paddingVertical: hp("1%"),
-    paddingHorizontal: wp("4%"),
-    marginBottom: hp("1%"),
-    marginHorizontal: wp("3%"),
-  },
-  selectedTimeSlot: {
-    backgroundColor: Color.primary,
-  },
-  unselectedTimeSlot: {
-    backgroundColor: Color.sub, 
-  },
-  timeSlotText: {
-    fontSize: FontSize.size_xs,
-    fontFamily: FontFamily.segoeUI,
-    color: Color.tertiary,
-    textAlign: "center",
-  },
-  selectedTimeSlotText: {
-    color: Color.white,
-  },
-  unselectedTimeSlotText: {
-    color: Color.tertiary,
-  },
-  peoplePicker: {
-    backgroundColor: Color.white,
-    borderRadius: Border.br_8xs,
-    padding: wp("2%"),
-    marginTop: hp("1%"),
-    shadowColor: "rgba(0, 0, 0, 0.1)",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  peopleOption: {
-    paddingVertical: hp("1%"),
-    paddingHorizontal: wp("4%"),
-    borderBottomWidth: 1,
-    borderBottomColor: Color.sub,
-  },
-  selectedPeopleOption: {
-    backgroundColor: Color.primary,
-  },
-  peopleOptionText: {
-    fontSize: FontSize.size_xs,
-    fontFamily: FontFamily.segoeUI,
-    color: Color.tertiary,
-    textAlign: "center",
-  },
-  selectedPeopleOptionText: {
-    color: Color.white,
   },
 });
 
