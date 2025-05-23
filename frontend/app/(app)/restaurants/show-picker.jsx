@@ -1,19 +1,28 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import DatePicker from 'react-native-date-picker';
 import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
+import { MaterialIcons } from '@expo/vector-icons';
 
+export const TimeOrder = ({selectedTime, setShowTimeGrid, showTimeGrid}) => {
+  return (
+    <>
+      <TouchableOpacity 
+          style={[styles.bookingOption, { flexDirection: "row", justifyContent: "center" }]}
+          onPress={() => setShowTimeGrid(!showTimeGrid)} // Toggle time grid visibility
+      >
+          <MaterialIcons name="access-time" size={hp("2.2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
+          <Text style={[styles.bookingOptionText, { marginHorizontal: wp("1%") }]}>
+            {selectedTime ? selectedTime : "Time"} 
+          </Text>          
+      </TouchableOpacity>
+    </>
+  );
+}
 
-export const ShowTimePiker = ({availableTimes}) => {
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [orderDateTime, setOrderDateTime] = useState('');
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-  const showDatePicker = () => setDatePickerVisibility(true);
-  const hideDatePicker = () => setDatePickerVisibility(false);
-
+export const ShowTimeSelection = ({availableTimes, selectedTime}) => {
   return (
     <>
       <Text style={styles.sectionTitle}>Select a time you like</Text>
@@ -51,7 +60,34 @@ export const ShowTimePiker = ({availableTimes}) => {
   )
 }
 
-export const showDatePicker = () => {
+export const DateOrder = ({orderDateTime, isDatePickerVisible, hideDatePicker, setOrderDateTime, showDatePicker}) => {
+  return (
+    <>
+      <TouchableOpacity 
+        style={[styles.bookingOption, { flexDirection: "row", justifyContent: "center" }]}
+        onPress={showDatePicker}
+      >
+        
+        <MaterialIcons name="calendar-today" size={hp("2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
+        <Text 
+          style={[styles.bookingOptionText, {marginHorizontal: wp('1%')}]}>
+          {orderDateTime ? 
+          `${orderDateTime.getDate().toString().padStart(2, '0')}/${(orderDateTime.getMonth() + 1)
+              .toString().padStart(2, '0')}/${orderDateTime.getFullYear()}`
+            : 'Date'}
+        </Text>
+        <ShowDateSelection
+          isDatePickerVisible={isDatePickerVisible}
+          orderDateTime={orderDateTime}
+          hideDatePicker={hideDatePicker}
+          setOrderDateTime={setOrderDateTime}
+        />
+      </TouchableOpacity>
+    </>
+  );
+}
+
+export const ShowDateSelection = ({isDatePickerVisible, orderDateTime, hideDatePicker, setOrderDateTime}) => {
   return (
     <DatePicker
       modal
@@ -67,7 +103,24 @@ export const showDatePicker = () => {
   );
 }
 
-export const showPeoplePicker = () => {
+export const PeopleOrder = ({setShowPeoplePicker, showPeoplePicker, selectedPeople}) => {
+  return (
+    <>
+      <TouchableOpacity 
+        style={[styles.bookingOption, { flexDirection: "row", justifyContent: "center" }]}
+        onPress={() => setShowPeoplePicker(!showPeoplePicker)} // Toggle people picker visibility
+      >
+
+        <MaterialIcons name="people-alt" size={hp("2.2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
+        <Text style={[styles.bookingOptionText, { marginHorizontal: wp("1%") }]}>
+            {selectedPeople ? `${selectedPeople} People` : "People"} {/* Show selected number or default text */}
+        </Text>        
+      </TouchableOpacity>
+    </>
+  );
+}
+
+export const ShowPeopleSelection = ({selectedPeople, setSelectedPeople, setShowPeoplePicker}) => {
   <View style={styles.peoplePicker}>
     {[...Array(10).keys()].map((num) => (
       <Pressable
@@ -94,58 +147,60 @@ export const showPeoplePicker = () => {
   </View>
 }
 
-export const BookingOptions = () => {
-    <View style={styles.bookingOptionList}>
-      {/* Date Picker */}
-      <TouchableOpacity 
-        style={[styles.bookingOption, { flexDirection: "row", justifyContent: "center" }]}
-        onPress={showDatePicker}
-      >
-        
-        <MaterialIcons name="calendar-today" size={hp("2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
-        <Text 
-          style={[styles.bookingOptionText, {marginHorizontal: wp('1%')}]}>
-          {orderDateTime ? 
-          `${orderDateTime.getDate().toString().padStart(2, '0')}/${(orderDateTime.getMonth() + 1)
-              .toString().padStart(2, '0')}/${orderDateTime.getFullYear()}`
-            : 'Date'}
-        </Text>
-        <DatePicker
-          modal
-          open={isDatePickerVisible}
-          date={orderDateTime ? new Date(orderDateTime) : new Date()}
-          onConfirm={(date) => {
-              hideDatePicker();
-              setOrderDateTime(date);
-          }}
-          onCancel={hideDatePicker}
-          mode="date"
+export const BookingOptions = ({availableTimes}) => {
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [orderDateTime, setOrderDateTime] = useState('');
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [showTimeGrid, setShowTimeGrid] = useState(false);
+  const [selectedPeople, setSelectedPeople] = useState(null); 
+  const [showPeoplePicker, setShowPeoplePicker] = useState(false);
+
+  const showDatePicker = () => setDatePickerVisibility(true);
+  const hideDatePicker = () => setDatePickerVisibility(false);
+
+  return (
+    <>
+      <View style={styles.bookingOptionList}>
+        {/* Date Picker */}
+        <DateOrder 
+          orderDateTime={orderDateTime}
+          isDatePickerVisible={isDatePickerVisible}
+          hideDatePicker={hideDatePicker}
+          setOrderDateTime={setOrderDateTime}
+          showDatePicker={showDatePicker}
+        /> 
+
+        {/* Time Picker */}
+        <TimeOrder 
+          selectedTime={selectedTime} 
+          setShowTimeGrid={setShowTimeGrid}
+          showTimeGrid={showTimeGrid} 
         />
-      </TouchableOpacity>
 
-      {/* Time Picker */}
-      <TouchableOpacity 
-        style={[styles.bookingOption, { flexDirection: "row", justifyContent: "center" }]}
-        onPress={() => setShowTimeGrid(!showTimeGrid)} // Toggle time grid visibility
-      >
-        <MaterialIcons name="access-time" size={hp("2.2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
-        <Text style={[styles.bookingOptionText, { marginHorizontal: wp("1%") }]}>
-          {selectedTime ? selectedTime : "Time"} 
-        </Text>          
-      </TouchableOpacity>
+        {/* People Picker */}
+        <PeopleOrder
+          setShowPeoplePicker={setShowPeoplePicker}
+          showPeoplePicker={showPeoplePicker}
+          selectedPeople={selectedPeople}
+        />
+      </View>
 
-      {/* People Picker */}
-      <TouchableOpacity 
-        style={[styles.bookingOption, { flexDirection: "row", justifyContent: "center" }]}
-        onPress={() => setShowPeoplePicker(!showPeoplePicker)} // Toggle people picker visibility
-      >
+      {showTimeGrid && (
+        <ShowTimeSelection 
+          availableTimes={availableTimes} 
+          setSelectedTime={setSelectedTime}
+        /> 
+      )}
 
-        <MaterialIcons name="people-alt" size={hp("2.2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
-        <Text style={[styles.bookingOptionText, { marginHorizontal: wp("1%") }]}>
-            {selectedPeople ? `${selectedPeople} People` : "People"} {/* Show selected number or default text */}
-        </Text>        
-      </TouchableOpacity>
-    </View>
+      {showPeoplePicker && (
+        <ShowPeopleSelection
+          selectedPeople={selectedPeople}
+          setSelectedPeople={setSelectedPeople}
+          setShowPeoplePicker={setShowPeoplePicker}
+        />
+      )}
+    </>
+  );
 }
 
 const styles = StyleSheet.create({

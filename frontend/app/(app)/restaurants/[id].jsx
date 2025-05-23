@@ -3,27 +3,17 @@ import { View, Text, StyleSheet, Image, ActivityIndicator, Pressable, TouchableO
 import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { MaterialIcons } from '@expo/vector-icons';
-import DatePicker from 'react-native-date-picker';
 import { fetchRestaurantById } from "@/services/api";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { ShowTimePiker } from "./show-time-picker"; // Import the ShowTimePiker component
+import { BookingOptions } from "./show-picker";
 // import { set } from "date-fns";
 
 const SingleRestaurant = () => {
   const route = useRouter();
   const id = useLocalSearchParams().id; // Get restaurant ID from route params
-  const eatTime = 60 * 60 * 1000; // 1 hour in milliseconds
   const [restaurant, setRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [orderDateTime, setOrderDateTime] = useState('');
   const [isDescriptionExpanded, setDescriptionExpanded] = useState(false); // State for description toggle
-  const [showTimeGrid, setShowTimeGrid] = useState(false);
-  const [selectedPeople, setSelectedPeople] = useState(null); // State for selected number of people
-  const [showPeoplePicker, setShowPeoplePicker] = useState(false); // State to toggle People Picker visibility
-  
-  const showDatePicker = () => setDatePickerVisibility(true);
-  const hideDatePicker = () => setDatePickerVisibility(false);
   
   useEffect(() => {
     setLoading(true);
@@ -98,89 +88,10 @@ const SingleRestaurant = () => {
       </Text>
 
       {/* Booking Options */}
-      <View style={styles.bookingOptionList}>
-        {/* Date Picker */}
-        <TouchableOpacity 
-          style={[styles.bookingOption, { flexDirection: "row", justifyContent: "center" }]}
-          onPress={showDatePicker}
-        >
-          
-          <MaterialIcons name="calendar-today" size={hp("2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
-          <Text 
-            style={[styles.bookingOptionText, {marginHorizontal: wp('1%')}]}>
-            {orderDateTime ? 
-            `${orderDateTime.getDate().toString().padStart(2, '0')}/${(orderDateTime.getMonth() + 1)
-                .toString().padStart(2, '0')}/${orderDateTime.getFullYear()}`
-             : 'Date'}
-          </Text>
-          <DatePicker
-            modal
-            open={isDatePickerVisible}
-            date={orderDateTime ? new Date(orderDateTime) : new Date()}
-            onConfirm={(date) => {
-                hideDatePicker();
-                setOrderDateTime(date);
-            }}
-            onCancel={hideDatePicker}
-            mode="date"
-          />
-        </TouchableOpacity>
-
-        {/* Time Picker */}
-        <TouchableOpacity 
-          style={[styles.bookingOption, { flexDirection: "row", justifyContent: "center" }]}
-          onPress={() => setShowTimeGrid(!showTimeGrid)} // Toggle time grid visibility
-        >
-          <MaterialIcons name="access-time" size={hp("2.2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
-          <Text style={[styles.bookingOptionText, { marginHorizontal: wp("1%") }]}>
-            {selectedTime ? selectedTime : "Time"} 
-          </Text>          
-        </TouchableOpacity>
-
-        {/* People Picker */}
-        <TouchableOpacity 
-          style={[styles.bookingOption, { flexDirection: "row", justifyContent: "center" }]}
-          onPress={() => setShowPeoplePicker(!showPeoplePicker)} // Toggle people picker visibility
-        >
-
-          <MaterialIcons name="people-alt" size={hp("2.2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
-          <Text style={[styles.bookingOptionText, { marginHorizontal: wp("1%") }]}>
-              {selectedPeople ? `${selectedPeople} People` : "People"} {/* Show selected number or default text */}
-          </Text>        
-        </TouchableOpacity>
-      </View>
-
-      {showTimeGrid && (
-        <ShowTimePiker availableTimes={restaurant.availableTimes} /> // Use the ShowTimePiker component
-      )}
-
-      {/* People Picker Dropdown */}
-      {showPeoplePicker && (
-        <View style={styles.peoplePicker}>
-          {[...Array(10).keys()].map((num) => (
-            <Pressable
-              key={num + 1}
-              style={[
-                styles.peopleOption,
-                selectedPeople === num + 1 && styles.selectedPeopleOption, // Highlight selected option
-              ]}
-              onPress={() => {
-                setSelectedPeople(num + 1); // Set selected number of people
-                setShowPeoplePicker(false); // Close the dropdown
-              }}
-            >
-              <Text
-                style={[
-                  styles.peopleOptionText,
-                  selectedPeople === num + 1 && styles.selectedPeopleOptionText, // Highlight selected text
-                ]}
-              >
-                {num + 1}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
-      )}
+      <BookingOptions 
+        availableTimes={restaurant.availableTimes}
+      />
+      
 
       {/* Find Slots Button */}
       <Pressable style={styles.findSlotsButton}>
@@ -267,25 +178,7 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     marginBottom: hp("4%"),
   },
-  bookingOptionList: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: hp("4%"),
-  },
-  bookingOption: {
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: hp("1%"),
-    borderWidth: 1,
-    borderColor: Color.sub,
-    borderRadius: Border.br_8xs,
-    marginHorizontal: wp("1%"),
-  },
-  bookingOptionText: {
-    fontSize: FontSize.size_xs,
-    color: Color.tertiary,
-    fontFamily: FontFamily.segoeUI,
-  },
+
   findSlotsButton: {
     backgroundColor: Color.primary,
     paddingVertical: hp("1.5%"),
@@ -297,36 +190,6 @@ const styles = StyleSheet.create({
     color: Color.white,
     fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
-  },
-  
-  peoplePicker: {
-    backgroundColor: Color.white,
-    borderRadius: Border.br_8xs,
-    padding: wp("2%"),
-    marginTop: hp("1%"),
-    shadowColor: "rgba(0, 0, 0, 0.1)",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  peopleOption: {
-    paddingVertical: hp("1%"),
-    paddingHorizontal: wp("4%"),
-    borderBottomWidth: 1,
-    borderBottomColor: Color.sub,
-  },
-  selectedPeopleOption: {
-    backgroundColor: Color.primary,
-  },
-  peopleOptionText: {
-    fontSize: FontSize.size_xs,
-    fontFamily: FontFamily.segoeUI,
-    color: Color.tertiary,
-    textAlign: "center",
-  },
-  selectedPeopleOptionText: {
-    color: Color.white,
   },
 });
 
