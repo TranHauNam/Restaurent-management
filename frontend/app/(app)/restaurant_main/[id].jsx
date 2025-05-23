@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { fetchRestaurantById } from "@/services/api";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { BookingOptions } from "../../../components/restaurant_main/find-slot-option";
-import { styles } from "@/styles/restaurant-main/restaurant-main";
+import { styles } from "@/styles/restaurant_main/restaurant-main";
 import { Color } from "@/styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
