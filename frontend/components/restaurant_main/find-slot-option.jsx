@@ -5,6 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 import DatePicker from 'react-native-date-picker';
 import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
 import { MaterialIcons } from '@expo/vector-icons';
+import { ShowPeopleSelection } from './people-selection';
 
 export const TimeOrder = ({selectedTime, setShowTimeGrid, showTimeGrid}) => {
   return (
@@ -120,32 +121,34 @@ export const PeopleOrder = ({setShowPeoplePicker, showPeoplePicker, selectedPeop
   );
 }
 
-export const ShowPeopleSelection = ({selectedPeople, setSelectedPeople, setShowPeoplePicker}) => {
-  <View style={styles.peoplePicker}>
-    {[...Array(10).keys()].map((num) => (
-      <Pressable
-        key={num + 1}
-        style={[
-          styles.peopleOption,
-          selectedPeople === num + 1 && styles.selectedPeopleOption, // Highlight selected option
-        ]}
-        onPress={() => {
-          setSelectedPeople(num + 1); // Set selected number of people
-          setShowPeoplePicker(false); // Close the dropdown
-        }}
-      >
-        <Text
-          style={[
-            styles.peopleOptionText,
-            selectedPeople === num + 1 && styles.selectedPeopleOptionText, // Highlight selected text
-          ]}
-        >
-          {num + 1}
-        </Text>
-      </Pressable>
-    ))}
-  </View>
-}
+// export const ShowPeopleSelection = ({selectedPeople, setSelectedPeople, setShowPeoplePicker}) => {
+//   return (
+//     <View style={styles.peoplePicker}>
+//       {[...Array(10).keys()].map((num) => (
+//         <Pressable
+//           key={num + 1}
+//           style={[
+//             styles.peopleOption,
+//             selectedPeople === num + 1 && styles.selectedPeopleOption, // Highlight selected option
+//           ]}
+//           onPress={() => {
+//             setSelectedPeople(num + 1); // Set selected number of people
+//             setShowPeoplePicker(false); // Close the dropdown
+//           }}
+//         >
+//           <Text
+//             style={[
+//               styles.peopleOptionText,
+//               selectedPeople === num + 1 && styles.selectedPeopleOptionText, // Highlight selected text
+//             ]}
+//           >
+//             {num + 1}
+//           </Text>
+//         </Pressable>
+//       ))}
+//     </View>
+//   );
+// }
 
 export const BookingOptions = ({availableTimes}) => {
   const [selectedTime, setSelectedTime] = useState(null);
@@ -200,8 +203,10 @@ export const BookingOptions = ({availableTimes}) => {
           selectedPeople={selectedPeople}
           setSelectedPeople={setSelectedPeople}
           setShowPeoplePicker={setShowPeoplePicker}
+          showPeoplePicker={showPeoplePicker}
         />
       )}
+
     </>
   );
 }
