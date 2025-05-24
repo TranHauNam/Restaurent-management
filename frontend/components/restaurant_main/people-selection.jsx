@@ -1,16 +1,19 @@
 import { View, Text, Modal, ScrollView, TextInput, TouchableOpacity } from "react-native";
+import { useEffect, useState } from "react";
 import { styles } from "@/styles/restaurant_main/people-selection";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
-export const ShowPeopleSelection = ({selectedPeople, setSelectedPeople, setShowPeoplePicker}) => {
+export const ShowPeopleSelection = ({selectedPeople, setSelectedPeople, setShowPeoplePicker, showPeoplePicker }) => {
 
   const quickPeopleList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+  
+  const [tempOrderPeople, setTempOrderPeople] = useState();
 
   return (
     <>
       <Modal 
-        visible={true} 
+        visible={showPeoplePicker} 
         transparent 
         animationType="fade" 
         onRequestClose={() => setShowPeoplePicker(false)}
@@ -36,12 +39,11 @@ export const ShowPeopleSelection = ({selectedPeople, setSelectedPeople, setShowP
                     <View 
                       key={index} 
                       style={[styles.quickPeopleSelectBut, {
-                        borderWidth: selectedPeople === item ? 2 : 1,
-                        borderColor: selectedPeople === item ? "orange" : "gray",
+                        borderWidth: tempOrderPeople === item ? 2 : 1,
+                        borderColor: tempOrderPeople === item ? "orange" : "gray",
                       }]}
                       onTouchEnd={() => {
-                        setSelectedPeople(item);
-                        setShowPeoplePicker(false);
+                        setTempOrderPeople(item);                        
                       }}
                     >
                       <View style={{flexDirection: "row", alignItems: "center"}}>
@@ -56,11 +58,28 @@ export const ShowPeopleSelection = ({selectedPeople, setSelectedPeople, setShowP
               <TextInput
                 style={styles.textInput}
                 placeholder="Enter number of people"
+                keyboardType="numeric"
+                value={tempOrderPeople ? String(tempOrderPeople) : ""}
+                onChangeText={text => {
+                  const num = parseInt(text, 10);
+                  if (!isNaN(num)) {
+                    setTempOrderPeople(num);
+                  } else {
+                    setTempOrderPeople("");
+                  }
+                }}
               />
               
               {/* Agree Button */}
               <TouchableOpacity
                 style={styles.confirmButton}
+                onPress={() => {
+                  const num = parseInt(tempOrderPeople)
+                  if (!isNaN(num)) {
+                    setSelectedPeople(num);                    
+                  }
+                  setShowPeoplePicker(false);
+                }}
               >
                 <Text style={styles.confirmButText}>Confirm</Text>
               </TouchableOpacity>

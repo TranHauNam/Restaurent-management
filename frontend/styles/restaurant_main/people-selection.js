@@ -21,6 +21,8 @@ export const styles = StyleSheet.create({
     },
 
     headerText: {
+        width: wp("70%"),
+
         marginTop: 20, 
         marginLeft: 30,
         marginBottom: 10,
@@ -81,6 +83,8 @@ export const styles = StyleSheet.create({
     },
 
     confirmButText: {
-        color: "white", fontSize: 16, fontWeight: 600,
+        fontSize: 16,
+        color: "white",
+        fontWeight: "bold",
     },
 });

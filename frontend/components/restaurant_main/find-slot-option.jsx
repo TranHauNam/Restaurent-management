@@ -203,6 +203,7 @@ export const BookingOptions = ({availableTimes}) => {
           selectedPeople={selectedPeople}
           setSelectedPeople={setSelectedPeople}
           setShowPeoplePicker={setShowPeoplePicker}
+          showPeoplePicker={showPeoplePicker}
         />
       )}
 
