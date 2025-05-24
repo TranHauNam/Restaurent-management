@@ -45,7 +45,7 @@ const HomeView = () => {
       <Pressable
         style={styles.cardPressable}
         onPress={() => {
-          router.push(`/restaurant-main/${item._id}`); // Navigate to restaurant details
+          router.push(`/restaurant_main/${item._id}`); // Navigate to restaurant details
         }}
       >
         <Image style={styles.cardImage}
