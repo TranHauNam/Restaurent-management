@@ -1,6 +1,7 @@
-import { View, Text, Modal, ScrollView } from "react-native";
+import { View, Text, Modal, ScrollView, TextInput, TouchableOpacity } from "react-native";
 import { styles } from "@/styles/restaurant_main/people-selection";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 export const ShowPeopleSelection = ({selectedPeople, setSelectedPeople, setShowPeoplePicker}) => {
 
@@ -25,24 +26,19 @@ export const ShowPeopleSelection = ({selectedPeople, setSelectedPeople, setShowP
           onPress={() => setShowPeoplePicker(false)}
         />
             <Text style={styles.headerText}>Select Number of People</Text>
-            <View style={{flexDirection: "column", alignItems: "flex-start", justifyContent: "space-between", marginHorizontal: 20}}>
+            <View style={styles.contentContainer}>
+              {/* Quick selection */}
               <ScrollView
-                style={{height: "30%",}}
+                style={{maxHeight: hp("12%"), }}
               >
-                <View style={{flexDirection: "row", flexWrap: "wrap", justifyContent: "flex-start", alignItems: "center"}}>
+                <View style={styles.quickScrollSelect}>
                   {quickPeopleList.map((item, index) => (
                     <View 
                       key={index} 
-                      style={{
-                        margin: 4,
-
-                        backgroundColor: "white", 
+                      style={[styles.quickPeopleSelectBut, {
                         borderWidth: selectedPeople === item ? 2 : 1,
                         borderColor: selectedPeople === item ? "orange" : "gray",
-                        borderRadius: 40, 
-
-                        padding: 10, 
-                      }}
+                      }]}
                       onTouchEnd={() => {
                         setSelectedPeople(item);
                         setShowPeoplePicker(false);
@@ -56,6 +52,18 @@ export const ShowPeopleSelection = ({selectedPeople, setSelectedPeople, setShowP
                   ))}
                 </View>
               </ScrollView>
+              {/* People Number Input */}              
+              <TextInput
+                style={styles.textInput}
+                placeholder="Enter number of people"
+              />
+              
+              {/* Agree Button */}
+              <TouchableOpacity
+                style={styles.confirmButton}
+              >
+                <Text style={styles.confirmButText}>Confirm</Text>
+              </TouchableOpacity>
             </View>
         </View>
       </View>
