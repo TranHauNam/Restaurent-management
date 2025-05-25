@@ -1,5 +1,9 @@
 import React from 'react'
-import { View, Text, Modal, TouchableOpacity, Pressable } from 'react-native'
+import { 
+    View, Text, Modal, 
+    TouchableOpacity, Pressable, 
+    ScrollView, Image, 
+} from 'react-native'
 
 import { styles } from '../../styles/booking-modal/booking-modal';
 
@@ -9,6 +13,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 
 export const BookingModal = ({restaurant, onClose}) => {
+
+    // console.log("restaurant", restaurant); // correct
+
   return (
     <>
         <Modal
@@ -27,6 +34,21 @@ export const BookingModal = ({restaurant, onClose}) => {
 
                     <Text style={styles.headerText}>Tables Booking Information</Text>
                 </View>
+
+                {/* Scorll View  */}
+                <ScrollView 
+                    style={styles.mainScrollView}
+                    contentContainerStyle={styles.scrollViewContent}
+                >
+                    {/* Restaurant Info  */}
+                    <Text style={styles.restaurantText}>Restaurant:</Text>
+                    <View style={styles.restaurantBox}>
+                        <Image
+                            style={styles.restaurantImage}
+                            source={{uri: `${restaurant.imageUrl}`}}
+                        />
+                    </View>
+                </ScrollView>
             </View>
         </Modal>
     </>

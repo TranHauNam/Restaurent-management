@@ -14,8 +14,8 @@ export const styles = StyleSheet.create({
         alignItems: "center",
         position: "relative", 
 
-        //debug
-        borderWidth: 1,
+        // //debug
+        // borderWidth: 1,
     },
 
     headerContainer: {
@@ -23,14 +23,12 @@ export const styles = StyleSheet.create({
         width: wp("100%"),
         position: "absolute",
 
-        borderBottomWidth: 1,
-
         flexDirection: "row",
         justifyContent: "center",
         alignContent: "center",
 
-        //debug
-        borderWidth: 1,
+        // //debug
+        // borderWidth: 1,
     },
 
     backBut: {
@@ -43,8 +41,8 @@ export const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
 
-       //debug
-        borderWidth: 1, 
+        // //debug
+        // borderWidth: 1, 
     },
 
     headerText: {
@@ -55,8 +53,61 @@ export const styles = StyleSheet.create({
         textAlign: "center",
         lineHeight: hp("6%"),
 
-        //debug
+        // //debug
+        // borderWidth: 1,
+    },
+
+    mainScrollView: {
+        width: wp("100%"),
+        height: hp("100%"),
+        marginTop: hp("6%"), // To avoid header overlap
+
+        // //debug
+        // borderWidth: 1,
+        // borderColor: "red",
+    },
+    
+    scrollViewContent: {
+        
+        paddingHorizontal: wp("6%"),
+        paddingVertical: hp("2%"),
+
+        // //debug
+        // borderWidth: 1,
+        // borderColor: "darkred",
+    },
+
+    restaurantText: {
+        
+        fontSize: hp("2.4%"),
+        fontWeight: "440",
+        color: "black",
+
+        // //debug
+        // borderWidth: 1,
+    },
+
+    restaurantBox: {
+        width: wp("88%"),
+        height: hp("18%"),
+        marginVertical: hp("1%"),
+        
+        backgroundColor: "#white",
+        borderColor: "#ccc",
+        borderRadius: 10,
         borderWidth: 1,
+        
+        position: "relative",
+    },
+
+    restaurantImage: {
+        position: "absolute",
+        top: hp("1.6%"),
+        left: wp("3.2%"),
+        width: wp("14%"),
+        height: hp("6.8%"),
+
+        borderRadius: 999, // Circular image  
     },
 });
 
