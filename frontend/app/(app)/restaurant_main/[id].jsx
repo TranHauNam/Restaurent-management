@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, ActivityIndicator, Pressable, TouchableOpacity, ScrollView } from "react-native";
-
-import { MaterialIcons } from '@expo/vector-icons';
-import { fetchRestaurantById } from "@/services/api";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { BookingOptions } from "../../../components/restaurant_main/find-slot-option";
+
+import { fetchRestaurantById } from "@/services/api";
 import { styles } from "@/styles/restaurant_main/restaurant-main";
 import { Color } from "@/styles/GlobalStyles";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { BookingOptions } from "../../../components/restaurant_main/find-slot-option";
+import { BookingModal } from "../../../components/booking-modal/booking-modal";
 
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { MaterialIcons } from '@expo/vector-icons';
 
 const RestaurantMain = () => {
   const route = useRouter();
@@ -16,7 +17,8 @@ const RestaurantMain = () => {
   const [restaurant, setRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDescriptionExpanded, setDescriptionExpanded] = useState(false); // State for description toggle
-  
+  const [isBookingModalVisible, setBookingModalVisible] = useState(false); 
+
   useEffect(() => {
     setLoading(true);
     fetchRestaurantById(id).then((data) => {
@@ -41,65 +43,83 @@ const RestaurantMain = () => {
     route.back();
   };
 
+  const handleFindSlots = () => {
+    setBookingModalVisible(true);
+  }
+
   return (
-    <ScrollView style={styles.container}>
-      {/* Header */}
-      <View style={styles.headerContainer}>
-        <TouchableOpacity  onPress={handleBackPress}>
-          <MaterialIcons name="arrow-back" size={hp("3.5%")} color={Color.black} />
-        </TouchableOpacity>
-        <Text style={styles.restaurantTitle}>{restaurant.name}</Text>
-      </View>
-      <View style={styles.headerLine} />
+    <>
+    
+      <ScrollView style={styles.container}>
+        {/* Header */}
+        <View style={styles.headerContainer}>
+          <TouchableOpacity  onPress={handleBackPress}>
+            <MaterialIcons name="arrow-back" size={hp("3.5%")} color={Color.black} />
+          </TouchableOpacity>
+          <Text style={styles.restaurantTitle}>{restaurant.name}</Text>
+        </View>
+        <View style={styles.headerLine} />
 
-      {/* Restaurant Image */}
-      <Image style={styles.restaurantImage} source={{uri: `${restaurant.imageUrl}`}} />
+        {/* Restaurant Image */}
+        <Image style={styles.restaurantImage} source={{uri: `${restaurant.imageUrl}`}} />
 
-      {/* Address and Time */}
-      <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
-        <MaterialIcons name="location-on" size={hp("3%")} color={Color.primary} />  
-        <Text style={styles.address}>{restaurant.address}</Text>
-      </View>
-      
-      <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
-        <MaterialIcons name="access-time-filled" size={hp("3%")} color={Color.primary} />
-        <Text style={styles.operatingHours}>{restaurant.openTime}</Text>
-        <Text style={[styles.operatingHours]}>-</Text>
-        <Text style={styles.operatingHours}>{restaurant.closeTime}</Text>
-      </View>
-      
+        {/* Address and Time */}
+        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
+          <MaterialIcons name="location-on" size={hp("3%")} color={Color.primary} />  
+          <Text style={styles.address}>{restaurant.address}</Text>
+        </View>
+        
+        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
+          <MaterialIcons name="access-time-filled" size={hp("3%")} color={Color.primary} />
+          <Text style={styles.operatingHours}>{restaurant.openTime}</Text>
+          <Text style={[styles.operatingHours]}>-</Text>
+          <Text style={styles.operatingHours}>{restaurant.closeTime}</Text>
+        </View>
+        
 
-      {/* Menu and Description */}
-      <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
-        <MaterialIcons name="menu-book" size={hp("3%")} color={Color.primary} />
-        <Text style={styles.menuLink}>Menu</Text>
-      </View>
+        {/* Menu and Description */}
+        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
+          <MaterialIcons name="menu-book" size={hp("3%")} color={Color.primary} />
+          <Text style={styles.menuLink}>Menu</Text>
+        </View>
 
-      <Text style={styles.sectionTitle}>Description</Text>
-      <Text 
-        style={styles.description}
-        numberOfLines={isDescriptionExpanded ? undefined : 1} 
-      >
-        {restaurant.description}
-      </Text>
-      <Text
-        style={styles.readMore}
-        onPress={() => setDescriptionExpanded(!isDescriptionExpanded)} // Toggle description
-      >
-        {isDescriptionExpanded ? "Show Less" : "Read More"}
-      </Text>
+        <Text style={styles.sectionTitle}>Description</Text>
+        <Text 
+          style={styles.description}
+          numberOfLines={isDescriptionExpanded ? undefined : 1} 
+        >
+          {restaurant.description}
+        </Text>
+        <Text
+          style={styles.readMore}
+          onPress={() => setDescriptionExpanded(!isDescriptionExpanded)} // Toggle description
+        >
+          {isDescriptionExpanded ? "Show Less" : "Read More"}
+        </Text>
 
-      {/* Booking Options */}
-      <BookingOptions 
-        availableTimes={restaurant.availableTimes}
-      />
-      
+        {/* Booking Options */}
+        <BookingOptions 
+          availableTimes={restaurant.availableTimes}
+        />
+        
 
-      {/* Find Slots Button */}
-      <Pressable style={styles.findSlotsButton}>
-        <Text style={styles.findSlotsText}>Find Slots</Text>
-      </Pressable>
-    </ScrollView>
+        {/* Find Slots Button */}
+        <Pressable 
+          style={styles.findSlotsButton}
+          onPress={() => handleFindSlots()}
+        >
+          <Text style={styles.findSlotsText}>Find Slots</Text>
+        </Pressable>
+      </ScrollView>
+
+      {/* Booking Modal */}
+      {isBookingModalVisible && (
+        <BookingModal 
+          restaurant={restaurant}
+          onClose={() => setBookingModalVisible(false)}
+        />
+      )}
+    </>
   );
 };
 

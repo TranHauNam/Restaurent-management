@@ -1,11 +1,13 @@
-import { StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
+import { StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native'
+
+import { ShowPeopleSelection } from './people-selection';
+import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
+
+import { MaterialIcons } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import DatePicker from 'react-native-date-picker';
-import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
-import { MaterialIcons } from '@expo/vector-icons';
-import { ShowPeopleSelection } from './people-selection';
 
 export const TimeOrder = ({selectedTime, setShowTimeGrid, showTimeGrid}) => {
   return (
