@@ -47,7 +47,7 @@ export const BookingModal = ({
                     contentContainerStyle={styles.scrollViewContent}
                 >
                     {/* Restaurant Info  */}
-                    <Text style={styles.restaurantText}>Restaurant:</Text>
+                    <Text style={styles.restaurantText}>Restaurant</Text>
                     <View style={styles.restaurantBox}>
                         <Image
                             style={styles.restaurantImage}
@@ -107,15 +107,57 @@ export const BookingModal = ({
                     </View>
 
                     {/* Phone  */}
+                    <Text style={styles.labelText}>Your Phone Number</Text>
+                    <View style={styles.selectionContainer}>
+                        <View style={styles.longSelectorBox}>
+                            <Octicons name="device-mobile" size={24} color="black" />
+                            <Text style={styles.selectedText}>0123456789</Text>
+                        </View>
+                    </View>
 
                     {/* Email  */}
+                    <Text style={styles.labelText}>Your Email</Text>
+                    <View style={styles.selectionContainer}>
+                        <View style={styles.longSelectorBox}>
+                            <Octicons name="mail" size={24} color="black" />
+                            <Text style={styles.selectedText}>useremail@gmail.com</Text>
+                        </View>
+                    </View>
+                        
 
                     {/* Note  */}
                     {/* Type Note  */}
+                    <Text style={styles.labelText}>Note - Not Require</Text>
+                    <View style={styles.selectionContainer}>
+                        <View style={styles.longSelectorBox}>
+                            <Octicons name="note" size={24} color="black" />
+                            <Text style={styles.selectedText}></Text>
+                        </View>
+                    </View>
+
                     {/* Quick Note  */}
+                    <ScrollView 
+                        style={styles.quickSelectNoteView}
+                        contentContainerStyle={styles.quickSelectNoteContainer}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                    >
+                        <View style={styles.quickSelectCard}>
+                            <Text>Children</Text>
+                        </View>
+                        <View style={styles.quickSelectCard}>
+                            <Text>Happy Birthday</Text>
+                        </View>
+                        <View style={styles.quickSelectCard}>
+                            <Text>Window View</Text>
+                        </View>
+
+                    </ScrollView>
 
                     {/* Reserve Now Button  */}
-
+                    <TouchableOpacity style={styles.reserveButton}>
+                        <Text style={styles.reserveButtonText}>Reserve Now</Text>
+                    </TouchableOpacity>
                 </ScrollView>
             </View>
         </Modal>

@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
 
 
 export const styles = StyleSheet.create({
@@ -80,7 +81,7 @@ export const styles = StyleSheet.create({
     restaurantText: {
         
         fontSize: hp("2.4%"),
-        fontWeight: "440",
+        fontWeight: "600",
         color: "black",
 
         // //debug
@@ -165,6 +166,26 @@ export const styles = StyleSheet.create({
         flexDirection: "row", 
         alignItems: "center", 
         justifyContent: "space-between", 
+
+        // //debug
+        // borderWidth: 1,
+    },
+
+    quickSelectNoteView: {
+        marginBottom: hp("2%"),
+        marginTop: -hp("1.2%"),
+        maxWidth: wp("88%"),
+        minHeight: hp("8%"),
+        
+        // //debug
+        // borderWidth: 1,
+    },
+    
+    quickSelectNoteContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+
     },
 
     shortSelectorBox: {
@@ -201,7 +222,7 @@ export const styles = StyleSheet.create({
     selectedText: {
         fontSize: hp("2%"),
         color: "black",
-        fontWeight: "500",
+        fontWeight: "450",
     },
 
     dropdownIcon: {
@@ -218,5 +239,37 @@ export const styles = StyleSheet.create({
         // borderWidth: 1,
     },
 
+    quickSelectCard: {
+        marginRight: wp("2%"),
+
+        borderWidth: 1.4,
+        borderColor: "#ddd",
+        borderRadius: 90,
+
+        paddingHorizontal: wp("3.2%"),
+        paddingVertical: hp("1.2%"),
+
+    },
+
+    reserveButton: {
+        width: wp("88%"),
+        height: hp("6%"),
+        marginBottom: hp("2%"),
+
+        backgroundColor: Color.primary,
+        borderRadius: 8,
+
+        justifyContent: "center",
+        alignItems: "center",
+
+        // //debug
+        // borderWidth: 1,
+    },
+
+    reserveButtonText: {
+        fontSize: hp("2.2%"),
+        color: "white",
+        fontWeight: "bold",
+    },
 });
 
