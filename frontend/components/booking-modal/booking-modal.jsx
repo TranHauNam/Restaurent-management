@@ -15,6 +15,7 @@ import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import DatePicker from 'react-native-date-picker';
+import { set } from 'date-fns';
 
 
 
@@ -34,13 +35,20 @@ export const BookingModal = ({
     const showTimePickerBM = () => setTimePickerVisibilityBM(true);
     const hideTimePickerBM = () => setTimePickerVisibilityBM(false);
 
-    // Input values
+    // Input Sates
+    // Note States
     const [noteInput, setNoteInput] = useState("");
     const [note, setNote] = useState([]);
     const [noteChildren, setNoteChildren] = useState(false);
     const [noteBirthday, setNoteBirthday] = useState(false);
     const [noteWindowView, setNoteWindowView] = useState(false);
     const [quickNoteView, setQuickNoteView] = useState(true);
+
+    //Name, Phone, Email States
+    const [name, setName] = useState("User Name");
+    const [phone, setPhone] = useState("0123456789");
+    const [email, setEmail] = useState("example@email.com");
+
     
 
     // Helper for min/max time
@@ -96,6 +104,9 @@ export const BookingModal = ({
         if (noteInput.length == 0 && quickNoteView == false) {
             setQuickNoteView(true);
             setNote([]);
+            setNoteChildren(false);
+            setNoteBirthday(false);
+            setNoteWindowView(false);
         }
     }, [noteInput]);
 
@@ -111,7 +122,6 @@ export const BookingModal = ({
     const handleAddTypedNote = (text) => {
         setQuickNoteView(false);
         setNoteInput(text);
-        setNote(text);
     }
 
     //show Notes
@@ -123,7 +133,8 @@ export const BookingModal = ({
                 return "";
             }
         }
-        else {
+        else {            
+            note.push(noteInput);
             return noteInput;
         }
     };
@@ -215,7 +226,11 @@ export const BookingModal = ({
                     <View style={styles.selectionContainer}>
                         <View style={styles.longSelectorBox}>
                             <Octicons name="person" size={24} color="black" />
-                            <Text style={styles.longSelectedText}>User Name</Text>
+                            <TextInput 
+                                style={styles.longSelectedText}
+                                value={name}
+                                onChangeText={(text) => setName(text)} 
+                            />
                         </View>
                     </View>
 
@@ -224,7 +239,11 @@ export const BookingModal = ({
                     <View style={styles.selectionContainer}>
                         <View style={styles.longSelectorBox}>
                             <Octicons name="device-mobile" size={24} color="black" />
-                            <Text style={styles.longSelectedText}>0123456789</Text>
+                            <TextInput 
+                                style={styles.longSelectedText} 
+                                value={phone}
+                                onChangeText={(text) => setPhone(text)}
+                            />
                         </View>
                     </View>
 
@@ -233,7 +252,11 @@ export const BookingModal = ({
                     <View style={styles.selectionContainer}>
                         <View style={styles.longSelectorBox}>
                             <Octicons name="mail" size={24} color="black" />
-                            <Text style={styles.longSelectedText}>useremail@gmail.com</Text>
+                            <TextInput 
+                                style={styles.longSelectedText} 
+                                value={email}
+                                onChangeText={(text) => setEmail(text)}
+                            />
                         </View>
                     </View>
                         
