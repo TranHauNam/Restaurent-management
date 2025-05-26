@@ -8,6 +8,7 @@ import {
 
 import { styles } from '../../styles/booking-modal/booking-modal';
 import { Color } from '../../styles/GlobalStyles';
+import { NoteManager } from './note-bm';
 
 import { MaterialIcons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -323,6 +324,8 @@ export const BookingModal = ({
                     <TouchableOpacity style={styles.reserveButton}>
                         <Text style={styles.reserveButtonText}>Reserve Now</Text>
                     </TouchableOpacity>
+
+                    
                 </ScrollView>
             </View>
         </Modal>
