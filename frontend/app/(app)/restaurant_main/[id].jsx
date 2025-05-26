@@ -20,7 +20,7 @@ const RestaurantMain = () => {
   const [isBookingModalVisible, setBookingModalVisible] = useState(false);
   
   // Booking Options State
-  const [orderDateTime, setOrderDateTime] = useState('');
+  const [orderDateTime, setOrderDateTime] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedPeople, setSelectedPeople] = useState(null);
 
@@ -126,7 +126,7 @@ const RestaurantMain = () => {
       {isBookingModalVisible && (
         <BookingModal 
           restaurant={restaurant}
-          onClose={() => setBookingModalVisible(false)}
+          onCloseBookingModal={() => setBookingModalVisible(false)}
           orderDateTime={orderDateTime}
           setOrderDateTime={setOrderDateTime}
           selectedTime={selectedTime}

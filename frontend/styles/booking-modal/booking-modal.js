@@ -219,10 +219,26 @@ export const styles = StyleSheet.create({
         position: "relative",
     },
 
-    selectedText: {
+    shortSelectedText: {
+        width: wp("22%"),
+
         fontSize: hp("2%"),
         color: "black",
         fontWeight: "450",
+
+        // // debug
+        // borderWidth: 1,
+    },
+
+    longSelectedText: {
+        width: wp("70%"),
+
+        fontSize: hp("2%"),
+        color: "black",
+        fontWeight: "450",
+
+        // //debug
+        // borderWidth: 1,
     },
 
     dropdownIcon: {
