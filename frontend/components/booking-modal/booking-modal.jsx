@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { useState } from 'react';
 import { 
     View, Text, Modal, 
     TouchableOpacity, Pressable, 
     ScrollView, Image, 
-} from 'react-native'
+} from 'react-native';
 
 import { styles } from '../../styles/booking-modal/booking-modal';
 
@@ -12,29 +13,54 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import DatePicker from 'react-native-date-picker';
 
 
 
 export const BookingModal = ({
-    restaurant, onClose, orderDateTime, setOrderDateTime,
+    restaurant, onCloseBookingModal, orderDateTime, setOrderDateTime,
     selectedTime, setSelectedTime, selectedPeople, setSelectedPeople
 }) => {
 
     // console.log("restaurant", restaurant); // correct
+    const [isDatePickerVisibleBM, setDatePickerVisibilityBM] = useState(false);
+
+    const showDatePickerBM = () => setDatePickerVisibilityBM(true);
+    const hideDatePickerBM = () => setDatePickerVisibilityBM(false);
+
+    const [isTimePickerVisibleBM, setTimePickerVisibilityBM] = useState(false);
+    const showTimePickerBM = () => setTimePickerVisibilityBM(true);
+    const hideTimePickerBM = () => setTimePickerVisibilityBM(false);
+
+    // Helper for min/max time
+    const getPrepareRangeTime = (hour, minute) => {
+        //querry database
+        // Pass proper Date day valu
+        if (orderDateTime != null) {
+            const d = new Date(orderDateTime);
+            d.setHours(hour, minute, 0, 0);
+            return d;
+        } else {
+            const d = new Date();
+            d.setHours(hour, minute, 0, 0);
+            return d;
+        }
+    };
 
   return (
     <>
+        {/* Main View Booking Modal  */}
         <Modal
             transparent={true}
             visible={true}
             animationType="slide"
-            onRequestClose={onClose} // For Android back button
+            onRequestClose={onCloseBookingModal} // For Android back button
         >
             <View style={styles.container}>
                 {/* Header  */}
                 <View style={styles.headerContainer}>
                     {/* Back but  */}
-                    <TouchableOpacity style={styles.backBut} onPress={onClose}>
+                    <TouchableOpacity style={styles.backBut} onPress={onCloseBookingModal}>
                         <MaterialIcons name="arrow-back" size={24} color="black" />
                     </TouchableOpacity>
 
@@ -71,16 +97,22 @@ export const BookingModal = ({
                     <Text style={styles.labelText}>Time to Reserve</Text>
                     <View style={styles.selectionContainer}>
                         {/* Day Selector Box  */}
-                        <View style={styles.shortSelectorBox}>
+                        <TouchableOpacity 
+                            style={styles.shortSelectorBox}
+                            onPress={showDatePickerBM}
+                        >
                             <AntDesign name="calendar" size={24} color="black" />
                             <Text style={styles.selectedText}>{orderDateTime ? orderDateTime.toLocaleDateString() : ''}</Text>
-                        </View>
+                        </TouchableOpacity>
 
                         {/* Time Selector Box  */}
-                        <View style={styles.shortSelectorBox}>
+                        <TouchableOpacity 
+                            style={styles.shortSelectorBox}
+                            onPress={showTimePickerBM}
+                        >
                             <AntDesign name="clockcircleo" size={24} color="black" />
                             <Text style={styles.selectedText}>{selectedTime}</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
 
                     {/* People Selection  */}
@@ -161,6 +193,35 @@ export const BookingModal = ({
                 </ScrollView>
             </View>
         </Modal>
+
+        {/* Date Picker Component  */}
+        <DatePicker
+            modal
+            open={isDatePickerVisibleBM}
+            date={orderDateTime ? new Date(orderDateTime) : new Date()}
+            onConfirm={(date) => {
+                hideDatePickerBM();
+                setOrderDateTime(date);
+            }}
+            onCancel={hideDatePickerBM}
+            mode="date"
+        />
+
+        {/* Time Picker Component  */}
+        <DatePicker
+            modal
+            open={isTimePickerVisibleBM}
+            date={new Date()}
+            onConfirm={(date) => {
+                hideTimePickerBM();
+                setSelectedTime(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+            }}
+            onCancel={hideTimePickerBM}
+            mode="time"
+            minuteInterval={15}
+            minimumDate={getPrepareRangeTime(11, 15)}
+            maximumDate={getPrepareRangeTime(11, 45)}
+        />
     </>
   )
 }
