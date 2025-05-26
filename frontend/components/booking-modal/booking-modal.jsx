@@ -1,12 +1,13 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
     View, Text, Modal, 
     TouchableOpacity, Pressable, 
-    ScrollView, Image, 
+    ScrollView, Image, TextInput, 
 } from 'react-native';
 
 import { styles } from '../../styles/booking-modal/booking-modal';
+import { Color } from '../../styles/GlobalStyles';
 
 import { MaterialIcons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -23,14 +24,24 @@ export const BookingModal = ({
 }) => {
 
     // console.log("restaurant", restaurant); // correct
-    const [isDatePickerVisibleBM, setDatePickerVisibilityBM] = useState(false);
 
+    // Date and Time Picker States
+    const [isDatePickerVisibleBM, setDatePickerVisibilityBM] = useState(false);
     const showDatePickerBM = () => setDatePickerVisibilityBM(true);
     const hideDatePickerBM = () => setDatePickerVisibilityBM(false);
 
     const [isTimePickerVisibleBM, setTimePickerVisibilityBM] = useState(false);
     const showTimePickerBM = () => setTimePickerVisibilityBM(true);
     const hideTimePickerBM = () => setTimePickerVisibilityBM(false);
+
+    // Input values
+    const [noteInput, setNoteInput] = useState("");
+    const [note, setNote] = useState([]);
+    const [noteChildren, setNoteChildren] = useState(false);
+    const [noteBirthday, setNoteBirthday] = useState(false);
+    const [noteWindowView, setNoteWindowView] = useState(false);
+    const [quickNoteView, setQuickNoteView] = useState(true);
+    
 
     // Helper for min/max time
     const getPrepareRangeTime = (hour, minute) => {
@@ -44,6 +55,76 @@ export const BookingModal = ({
             const d = new Date();
             d.setHours(hour, minute, 0, 0);
             return d;
+        }
+    };
+
+    //Add note
+    //Toggle quick note
+    const handleToggleQuickNote = (quickNote) => {
+        switch (quickNote) {
+            case "Children":
+                setNoteChildren(!noteChildren);
+                if (!noteChildren) {
+                    handleAddQuickNote("Children");
+                } else if (note.length > 0) {
+                    setNote(note.filter(item => item !== "Children"));
+                }
+                break;
+            case "Happy Birthday":
+                setNoteBirthday(!noteBirthday);
+                if (!noteBirthday) {
+                    handleAddQuickNote("Happy Birthday");
+                } else if (note.length > 0) {
+                    setNote(note.filter(item => item !== "Happy Birthday"));
+                }
+                break;
+            case "Window View":
+                setNoteWindowView(!noteWindowView);
+                if (!noteWindowView) {
+                    handleAddQuickNote("Window View");
+                } else if (note.length > 0) {
+                    setNote(note.filter(item => item !== "Window View"));
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    //Auto Check and Open Quick Note View
+    useEffect(() => {
+        if (noteInput.length == 0 && quickNoteView == false) {
+            setQuickNoteView(true);
+            setNote([]);
+        }
+    }, [noteInput]);
+
+
+    // Function to add quick note
+    const handleAddQuickNote = (quickNote) => {
+        if (!note.includes(quickNote)) {
+            setNote([...note, quickNote]);
+        }
+    };
+
+    // Function to add typed note
+    const handleAddTypedNote = (text) => {
+        setQuickNoteView(false);
+        setNoteInput(text);
+        setNote(text);
+    }
+
+    //show Notes
+    const handleShowNotes = () => {
+        if (quickNoteView == true) {
+            if (note.length > 0) {
+                return note.join(", ");
+            } else {
+                return "";
+            }
+        }
+        else {
+            return noteInput;
         }
     };
 
@@ -102,7 +183,7 @@ export const BookingModal = ({
                             onPress={showDatePickerBM}
                         >
                             <AntDesign name="calendar" size={24} color="black" />
-                            <Text style={styles.selectedText}>{orderDateTime ? orderDateTime.toLocaleDateString() : ''}</Text>
+                            <Text style={styles.shortSelectedText}>{orderDateTime ? orderDateTime.toLocaleDateString() : ''}</Text>
                         </TouchableOpacity>
 
                         {/* Time Selector Box  */}
@@ -111,7 +192,7 @@ export const BookingModal = ({
                             onPress={showTimePickerBM}
                         >
                             <AntDesign name="clockcircleo" size={24} color="black" />
-                            <Text style={styles.selectedText}>{selectedTime}</Text>
+                            <Text style={styles.shortSelectedText}>{selectedTime}</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -120,7 +201,7 @@ export const BookingModal = ({
                     <View style={styles.selectionContainer}>
                         <View style={styles.longSelectorBox}>
                             <Octicons name="people" size={24} color="black" />
-                            <Text style={styles.selectedText}>
+                            <Text style={styles.longSelectedText}>
                                 {selectedPeople ? `${selectedPeople} People` : ""}
                             </Text>
                             <TouchableOpacity style={styles.dropdownIcon}>
@@ -134,7 +215,7 @@ export const BookingModal = ({
                     <View style={styles.selectionContainer}>
                         <View style={styles.longSelectorBox}>
                             <Octicons name="person" size={24} color="black" />
-                            <Text style={styles.selectedText}>User Name</Text>
+                            <Text style={styles.longSelectedText}>User Name</Text>
                         </View>
                     </View>
 
@@ -143,7 +224,7 @@ export const BookingModal = ({
                     <View style={styles.selectionContainer}>
                         <View style={styles.longSelectorBox}>
                             <Octicons name="device-mobile" size={24} color="black" />
-                            <Text style={styles.selectedText}>0123456789</Text>
+                            <Text style={styles.longSelectedText}>0123456789</Text>
                         </View>
                     </View>
 
@@ -152,7 +233,7 @@ export const BookingModal = ({
                     <View style={styles.selectionContainer}>
                         <View style={styles.longSelectorBox}>
                             <Octicons name="mail" size={24} color="black" />
-                            <Text style={styles.selectedText}>useremail@gmail.com</Text>
+                            <Text style={styles.longSelectedText}>useremail@gmail.com</Text>
                         </View>
                     </View>
                         
@@ -162,29 +243,58 @@ export const BookingModal = ({
                     <Text style={styles.labelText}>Note - Not Require</Text>
                     <View style={styles.selectionContainer}>
                         <View style={styles.longSelectorBox}>
-                            <Octicons name="note" size={24} color="black" />
-                            <Text style={styles.selectedText}></Text>
+                            <Octicons name="note" size={24} color="black" />                            
+                            <TextInput 
+                                style={styles.longSelectedText}
+                                value={handleShowNotes()}
+                                onChangeText={(text) => handleAddTypedNote(text)}
+                                onFocus={() => setQuickNoteView(false)}
+                            />
                         </View>
                     </View>
 
                     {/* Quick Note  */}
-                    <ScrollView 
-                        style={styles.quickSelectNoteView}
-                        contentContainerStyle={styles.quickSelectNoteContainer}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                    >
-                        <View style={styles.quickSelectCard}>
-                            <Text>Children</Text>
-                        </View>
-                        <View style={styles.quickSelectCard}>
-                            <Text>Happy Birthday</Text>
-                        </View>
-                        <View style={styles.quickSelectCard}>
-                            <Text>Window View</Text>
-                        </View>
+                    {quickNoteView && (
+                        <>                        
+                            <ScrollView 
+                                style={styles.quickSelectNoteView}
+                                contentContainerStyle={styles.quickSelectNoteContainer}
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                            >
+                                <TouchableOpacity 
+                                    style={[
+                                        styles.quickSelectCard, 
+                                        noteChildren && { backgroundColor: Color.primary } 
+                                    ]}
+                                    onPress={() => handleToggleQuickNote("Children")}
+                                >
+                                    <Text>Children</Text>
+                                </TouchableOpacity>
 
-                    </ScrollView>
+                                <TouchableOpacity 
+                                    style={[
+                                        styles.quickSelectCard,
+                                        noteBirthday && { backgroundColor: Color.primary }
+                                    ]}
+                                    onPress={() => handleToggleQuickNote("Happy Birthday")}
+                                >
+                                    <Text>Happy Birthday</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity 
+                                    style={[
+                                        styles.quickSelectCard,
+                                        noteWindowView && { backgroundColor: Color.primary }
+                                    ]}
+                                    onPress={() => handleToggleQuickNote("Window View")}
+                                >
+                                    <Text>Window View</Text>
+                                </TouchableOpacity>
+
+                            </ScrollView>
+                        </>
+                    )}
 
                     {/* Reserve Now Button  */}
                     <TouchableOpacity style={styles.reserveButton}>

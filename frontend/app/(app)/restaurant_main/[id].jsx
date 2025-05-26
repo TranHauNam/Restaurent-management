@@ -24,12 +24,6 @@ const RestaurantMain = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedPeople, setSelectedPeople] = useState(null);
 
-  //debug
-  useEffect(() => {
-    console.log("orderDateTime", orderDateTime);
-    console.log("selectedTime", selectedTime);
-  }, [orderDateTime, selectedTime]);
-
   useEffect(() => {
     setLoading(true);
     fetchRestaurantById(id).then((data) => {
