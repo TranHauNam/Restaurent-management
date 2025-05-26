@@ -17,7 +17,12 @@ const RestaurantMain = () => {
   const [restaurant, setRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDescriptionExpanded, setDescriptionExpanded] = useState(false); // State for description toggle
-  const [isBookingModalVisible, setBookingModalVisible] = useState(false); 
+  const [isBookingModalVisible, setBookingModalVisible] = useState(false);
+  
+  // Booking Options State
+  const [orderDateTime, setOrderDateTime] = useState('');
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedPeople, setSelectedPeople] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -49,7 +54,6 @@ const RestaurantMain = () => {
 
   return (
     <>
-    
       <ScrollView style={styles.container}>
         {/* Header */}
         <View style={styles.headerContainer}>
@@ -100,6 +104,12 @@ const RestaurantMain = () => {
         {/* Booking Options */}
         <BookingOptions 
           availableTimes={restaurant.availableTimes}
+          orderDateTime={orderDateTime}
+          setOrderDateTime={setOrderDateTime}
+          selectedTime={selectedTime}
+          setSelectedTime={setSelectedTime}
+          selectedPeople={selectedPeople}
+          setSelectedPeople={setSelectedPeople}
         />
         
 
@@ -117,6 +127,12 @@ const RestaurantMain = () => {
         <BookingModal 
           restaurant={restaurant}
           onClose={() => setBookingModalVisible(false)}
+          orderDateTime={orderDateTime}
+          setOrderDateTime={setOrderDateTime}
+          selectedTime={selectedTime}
+          setSelectedTime={setSelectedTime}
+          selectedPeople={selectedPeople}
+          setSelectedPeople={setSelectedPeople}
         />
       )}
     </>

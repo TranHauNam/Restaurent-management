@@ -9,11 +9,16 @@ import { styles } from '../../styles/booking-modal/booking-modal';
 
 import { MaterialIcons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import Octicons from '@expo/vector-icons/Octicons';
+import Entypo from '@expo/vector-icons/Entypo';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 
 
-
-export const BookingModal = ({restaurant, onClose}) => {
+export const BookingModal = ({
+    restaurant, onClose, orderDateTime, setOrderDateTime,
+    selectedTime, setSelectedTime, selectedPeople, setSelectedPeople
+}) => {
 
     // console.log("restaurant", restaurant); // correct
 
@@ -61,20 +66,56 @@ export const BookingModal = ({restaurant, onClose}) => {
                     <View style={styles.divider} />
 
                     {/* Booking Info  */}
+
+                    {/* Time Selection  */}
                     <Text style={styles.labelText}>Time to Reserve</Text>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                    <View style={styles.selectionContainer}>
                         {/* Day Selector Box  */}
-                        <View style={styles.selectorBox}>
+                        <View style={styles.shortSelectorBox}>
                             <AntDesign name="calendar" size={24} color="black" />
-                            <Text>Day</Text>
+                            <Text style={styles.selectedText}>{orderDateTime ? orderDateTime.toLocaleDateString() : ''}</Text>
                         </View>
 
                         {/* Time Selector Box  */}
-                        <View style={styles.selectorBox}>
+                        <View style={styles.shortSelectorBox}>
                             <AntDesign name="clockcircleo" size={24} color="black" />
-                            <Text>Day</Text>
+                            <Text style={styles.selectedText}>{selectedTime}</Text>
                         </View>
                     </View>
+
+                    {/* People Selection  */}
+                    <Text style={styles.labelText}>Number of People</Text>
+                    <View style={styles.selectionContainer}>
+                        <View style={styles.longSelectorBox}>
+                            <Octicons name="people" size={24} color="black" />
+                            <Text style={styles.selectedText}>
+                                {selectedPeople ? `${selectedPeople} People` : ""}
+                            </Text>
+                            <TouchableOpacity style={styles.dropdownIcon}>
+                                <Entypo name="chevron-thin-down" size={hp("2%")} color="black"  />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    {/* Name  */}
+                    <Text style={styles.labelText}>Your Name</Text>
+                    <View style={styles.selectionContainer}>
+                        <View style={styles.longSelectorBox}>
+                            <Octicons name="person" size={24} color="black" />
+                            <Text style={styles.selectedText}>User Name</Text>
+                        </View>
+                    </View>
+
+                    {/* Phone  */}
+
+                    {/* Email  */}
+
+                    {/* Note  */}
+                    {/* Type Note  */}
+                    {/* Quick Note  */}
+
+                    {/* Reserve Now Button  */}
+
                 </ScrollView>
             </View>
         </Modal>

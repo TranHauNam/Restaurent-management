@@ -159,7 +159,15 @@ export const styles = StyleSheet.create({
         fontSize: hp("2.12%"),
     },
 
-    selectorBox: {
+    selectionContainer: { 
+        marginBottom: hp("2%"),
+
+        flexDirection: "row", 
+        alignItems: "center", 
+        justifyContent: "space-between", 
+    },
+
+    shortSelectorBox: {
         width: wp("40%"),
         height: hp("6%"),
         
@@ -170,8 +178,45 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "center",
-        gap: wp("1%"),
+        gap: wp("2.8%"),
         paddingHorizontal: wp("6%"),
     },
+
+    longSelectorBox: {
+        width: wp("88%"),
+        height: hp("6%"),
+        
+        borderColor: "#ccc",
+        borderWidth: 1,
+        borderRadius: 8,
+
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        gap: wp("2.8%"),
+        paddingHorizontal: wp("4%"),
+        position: "relative",
+    },
+
+    selectedText: {
+        fontSize: hp("2%"),
+        color: "black",
+        fontWeight: "500",
+    },
+
+    dropdownIcon: {
+        position: "absolute",
+        right: wp("4%"),
+        top: hp("1.6%"),
+        width: wp("8%"),
+        height: hp("2.8%"),
+
+        justifyContent: "center",
+        alignItems: "center",
+
+        // //debug
+        // borderWidth: 1,
+    },
+
 });
 
