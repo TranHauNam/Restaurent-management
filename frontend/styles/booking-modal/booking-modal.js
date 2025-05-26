@@ -89,7 +89,7 @@ export const styles = StyleSheet.create({
 
     restaurantBox: {
         width: wp("88%"),
-        height: hp("18%"),
+        minHeight: hp("12%"),
         marginVertical: hp("1%"),
         
         backgroundColor: "#white",
@@ -108,6 +108,70 @@ export const styles = StyleSheet.create({
         height: hp("6.8%"),
 
         borderRadius: 999, // Circular image  
+    },
+
+    restaurantInfoTextContainer: {
+        position: "absolute",
+        left: wp("20%"),
+        top: hp("1.8%"),
+        width: wp("65%"),
+        minHeight: hp("8%"),
+
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+
+        // //debug
+        // borderWidth: 1,
+    },
+
+    restaurantName: {
+        fontWeight: "bold",
+        fontSize: hp("2%"),
+        color: "black",
+    },
+
+    restaurantAddress: {
+        fontSize: hp("1.8%"),
+        color: "#555",
+    },
+
+    restaurantPhone: {
+        fontSize: hp("1.8%"),
+        fontWeight: "bold",
+        color: "blue",
+    },
+
+    divider: {
+        width: wp("100%"),
+        marginVertical: hp("1%"),
+        marginHorizontal: -wp("6%"),
+        height: hp("1.4%"),
+
+        backgroundColor: "#eee",
+        
+    },
+
+    labelText: {
+        marginTop: hp("0.4%"),
+        marginBottom: hp("1%"),
+
+        fontWeight: "310",
+        fontSize: hp("2.12%"),
+    },
+
+    selectorBox: {
+        width: wp("40%"),
+        height: hp("6%"),
+        
+        borderColor: "#ccc",
+        borderWidth: 1,
+        borderRadius: 8,
+
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        gap: wp("1%"),
+        paddingHorizontal: wp("6%"),
     },
 });
 
