@@ -211,7 +211,7 @@ export const BookingModal = ({
         <DatePicker
             modal
             open={isTimePickerVisibleBM}
-            date={new Date()}
+            date={getPrepareRangeTime(11, 15)}
             onConfirm={(date) => {
                 hideTimePickerBM();
                 setSelectedTime(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
