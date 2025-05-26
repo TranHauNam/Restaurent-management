@@ -123,12 +123,13 @@ export const PeopleOrder = ({setShowPeoplePicker, showPeoplePicker, selectedPeop
   );
 }
 
-export const BookingOptions = ({availableTimes}) => {
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [orderDateTime, setOrderDateTime] = useState('');
+export const BookingOptions = ({
+  availableTimes, orderDateTime, setOrderDateTime,
+  selectedTime, setSelectedTime, selectedPeople, setSelectedPeople
+}) => {
+   
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [showTimeGrid, setShowTimeGrid] = useState(false);
-  const [selectedPeople, setSelectedPeople] = useState(null); 
   const [showPeoplePicker, setShowPeoplePicker] = useState(false);
 
   const showDatePicker = () => setDatePickerVisibility(true);
