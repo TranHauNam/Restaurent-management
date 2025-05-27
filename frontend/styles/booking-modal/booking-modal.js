@@ -171,23 +171,6 @@ export const styles = StyleSheet.create({
         // borderWidth: 1,
     },
 
-    quickSelectNoteView: {
-        marginBottom: hp("2%"),
-        marginTop: -hp("1.2%"),
-        maxWidth: wp("88%"),
-        minHeight: hp("8%"),
-        
-        // //debug
-        // borderWidth: 1,
-    },
-    
-    quickSelectNoteContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "flex-start",
-
-    },
-
     shortSelectorBox: {
         width: wp("40%"),
         height: hp("6%"),
@@ -253,18 +236,6 @@ export const styles = StyleSheet.create({
 
         // //debug
         // borderWidth: 1,
-    },
-
-    quickSelectCard: {
-        marginRight: wp("2%"),
-
-        borderWidth: 1.4,
-        borderColor: "#ddd",
-        borderRadius: 90,
-
-        paddingHorizontal: wp("3.2%"),
-        paddingVertical: hp("1.2%"),
-
     },
 
     reserveButton: {

@@ -9,6 +9,7 @@ import {
 import { styles } from '../../styles/booking-modal/booking-modal';
 import { Color } from '../../styles/GlobalStyles';
 import { NoteManager } from './note-bm';
+import { ShowPeopleSelection } from '../restaurant_main/people-selection';
 
 import { MaterialIcons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -36,16 +37,11 @@ export const BookingModal = ({
     const showTimePickerBM = () => setTimePickerVisibilityBM(true);
     const hideTimePickerBM = () => setTimePickerVisibilityBM(false);
 
-    // Input Sates
-    // Note States
-    const [noteInput, setNoteInput] = useState("");
-    const [note, setNote] = useState([]);
-    const [noteChildren, setNoteChildren] = useState(false);
-    const [noteBirthday, setNoteBirthday] = useState(false);
-    const [noteWindowView, setNoteWindowView] = useState(false);
-    const [quickNoteView, setQuickNoteView] = useState(true);
+    // People Selection States
+    const [isPpSelectVisibleBM, setPpSelecVisibleBM] = useState(false);
 
-    //Name, Phone, Email States
+    // Input Sates
+    const [note, setNote] = useState([]);
     const [name, setName] = useState("User Name");
     const [phone, setPhone] = useState("0123456789");
     const [email, setEmail] = useState("example@email.com");
@@ -67,78 +63,6 @@ export const BookingModal = ({
         }
     };
 
-    //Add note
-    //Toggle quick note
-    const handleToggleQuickNote = (quickNote) => {
-        switch (quickNote) {
-            case "Children":
-                setNoteChildren(!noteChildren);
-                if (!noteChildren) {
-                    handleAddQuickNote("Children");
-                } else if (note.length > 0) {
-                    setNote(note.filter(item => item !== "Children"));
-                }
-                break;
-            case "Happy Birthday":
-                setNoteBirthday(!noteBirthday);
-                if (!noteBirthday) {
-                    handleAddQuickNote("Happy Birthday");
-                } else if (note.length > 0) {
-                    setNote(note.filter(item => item !== "Happy Birthday"));
-                }
-                break;
-            case "Window View":
-                setNoteWindowView(!noteWindowView);
-                if (!noteWindowView) {
-                    handleAddQuickNote("Window View");
-                } else if (note.length > 0) {
-                    setNote(note.filter(item => item !== "Window View"));
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    //Auto Check and Open Quick Note View
-    useEffect(() => {
-        if (noteInput.length == 0 && quickNoteView == false) {
-            setQuickNoteView(true);
-            setNote([]);
-            setNoteChildren(false);
-            setNoteBirthday(false);
-            setNoteWindowView(false);
-        }
-    }, [noteInput]);
-
-
-    // Function to add quick note
-    const handleAddQuickNote = (quickNote) => {
-        if (!note.includes(quickNote)) {
-            setNote([...note, quickNote]);
-        }
-    };
-
-    // Function to add typed note
-    const handleAddTypedNote = (text) => {
-        setQuickNoteView(false);
-        setNoteInput(text);
-    }
-
-    //show Notes
-    const handleShowNotes = () => {
-        if (quickNoteView == true) {
-            if (note.length > 0) {
-                return note.join(", ");
-            } else {
-                return "";
-            }
-        }
-        else {            
-            note.push(noteInput);
-            return noteInput;
-        }
-    };
 
   return (
     <>
@@ -216,7 +140,10 @@ export const BookingModal = ({
                             <Text style={styles.longSelectedText}>
                                 {selectedPeople ? `${selectedPeople} People` : ""}
                             </Text>
-                            <TouchableOpacity style={styles.dropdownIcon}>
+                            <TouchableOpacity 
+                                style={styles.dropdownIcon}
+                                onPress={() => setPpSelecVisibleBM(!isPpSelectVisibleBM)} // Toggle people selection
+                            >
                                 <Entypo name="chevron-thin-down" size={hp("2%")} color="black"  />
                             </TouchableOpacity>
                         </View>
@@ -260,65 +187,11 @@ export const BookingModal = ({
                             />
                         </View>
                     </View>
-                        
 
-                    {/* Note  */}
-                    {/* Type Note  */}
-                    <Text style={styles.labelText}>Note - Not Require</Text>
-                    <View style={styles.selectionContainer}>
-                        <View style={styles.longSelectorBox}>
-                            <Octicons name="note" size={24} color="black" />                            
-                            <TextInput 
-                                style={styles.longSelectedText}
-                                value={handleShowNotes()}
-                                onChangeText={(text) => handleAddTypedNote(text)}
-                                onFocus={() => setQuickNoteView(false)}
-                            />
-                        </View>
-                    </View>
-
-                    {/* Quick Note  */}
-                    {quickNoteView && (
-                        <>                        
-                            <ScrollView 
-                                style={styles.quickSelectNoteView}
-                                contentContainerStyle={styles.quickSelectNoteContainer}
-                                horizontal={true}
-                                showsHorizontalScrollIndicator={false}
-                            >
-                                <TouchableOpacity 
-                                    style={[
-                                        styles.quickSelectCard, 
-                                        noteChildren && { backgroundColor: Color.primary } 
-                                    ]}
-                                    onPress={() => handleToggleQuickNote("Children")}
-                                >
-                                    <Text>Children</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity 
-                                    style={[
-                                        styles.quickSelectCard,
-                                        noteBirthday && { backgroundColor: Color.primary }
-                                    ]}
-                                    onPress={() => handleToggleQuickNote("Happy Birthday")}
-                                >
-                                    <Text>Happy Birthday</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity 
-                                    style={[
-                                        styles.quickSelectCard,
-                                        noteWindowView && { backgroundColor: Color.primary }
-                                    ]}
-                                    onPress={() => handleToggleQuickNote("Window View")}
-                                >
-                                    <Text>Window View</Text>
-                                </TouchableOpacity>
-
-                            </ScrollView>
-                        </>
-                    )}
+                    <NoteManager
+                        note={note}
+                        setNote={setNote}
+                    />
 
                     {/* Reserve Now Button  */}
                     <TouchableOpacity style={styles.reserveButton}>
@@ -358,6 +231,16 @@ export const BookingModal = ({
             minimumDate={getPrepareRangeTime(11, 15)}
             maximumDate={getPrepareRangeTime(11, 45)}
         />
+
+        {/* People Select Component  */}
+        { isPpSelectVisibleBM && (
+            <ShowPeopleSelection 
+                selectedPeople={selectedPeople}
+                setSelectedPeople={setSelectedPeople}
+                setShowPeoplePicker={setPpSelecVisibleBM}
+                showPeoplePicker={isPpSelectVisibleBM}
+            />
+        )}
     </>
   )
 }
