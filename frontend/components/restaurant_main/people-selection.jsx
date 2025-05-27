@@ -15,7 +15,7 @@ export const ShowPeopleSelection = ({selectedPeople, setSelectedPeople, setShowP
       <Modal 
         visible={showPeoplePicker} 
         transparent 
-        animationType="fade" 
+        animationType="slide" 
         onRequestClose={() => setShowPeoplePicker(false)}
       >
 
