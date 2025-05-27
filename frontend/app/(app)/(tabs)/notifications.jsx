@@ -29,6 +29,7 @@ import {
 } from "react-native";
 
 import { styles } from "@/styles/tabs/notifications";
+import { Typography } from "@/styles/Typography";
 
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -44,6 +45,7 @@ const Notifications = () => {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerText}>Notifications</Text>
+          
           {/* Icon Read All */}
           <TouchableOpacity style={styles.readAllIcon} onPress={() => {}} >
             <FontAwesome6 

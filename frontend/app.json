@@ -33,6 +33,17 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Roboto/normal/Roboto-Thin.ttf",
+            "./assets/fonts/Roboto/normal/Roboto-Light.ttf",
+            "./assets/fonts/Roboto/normal/Roboto-Regular.ttf",
+            "./assets/fonts/Roboto/normal/Roboto-Medium.ttf",
+          ]
+        }
       ]
     ],
     "experiments": {
