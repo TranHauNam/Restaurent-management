@@ -30,15 +30,15 @@ export const styles = StyleSheet.create({
     marginBottom: hp("2%"),
   },
   restaurantName: {
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_sm,
+    // fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
     color: Color.tertiary,
     marginBottom: hp("0.5%"),
   },
   status: {
-    fontSize: FontSize.size_xs,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_xs,
+    // fontFamily: FontFamily.segoeUI,
     marginBottom: hp("1%"),
   },
   reservedStatus: {
@@ -54,8 +54,8 @@ export const styles = StyleSheet.create({
     marginBottom: hp("0.5%"),
   },
   actionText: {
-    fontSize: FontSize.size_3xs,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_3xs,
+    // fontFamily: FontFamily.segoeUI,
     textDecorationLine: "underline",
   },
   cancelText: {
@@ -65,8 +65,8 @@ export const styles = StyleSheet.create({
     color: "#00a144",
   },
   timeAgo: {
-    fontSize: FontSize.size_3xs,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_3xs,
+    // fontFamily: FontFamily.segoeUI,
     color: Color.tertiary,
     textAlign: "right",
     marginBottom: hp("1%"),
@@ -76,8 +76,8 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   detailsText: {
-    fontSize: FontSize.size_xs,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_xs,
+    // fontFamily: FontFamily.segoeUI,
     color: Color.tertiary,
   },
 });

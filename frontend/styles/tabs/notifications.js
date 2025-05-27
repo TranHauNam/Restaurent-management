@@ -1,85 +1,104 @@
 import { StyleSheet } from "react-native";
-import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
+
+import { 
+  Color, FontFamily, FontSize, 
+  Border, marginLeftSAV, marginTopSAV, 
+  screenWidthSAV 
+} from "@/styles/GlobalStyles";
+
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+
 
 
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: marginTopSAV,
+    width: screenWidthSAV,
+    marginLeft: marginLeftSAV,
     backgroundColor: Color.white,
-    paddingHorizontal: wp("4%"),
-    paddingTop: hp("2%"),
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: hp("2%"),
-  },
-  backButton: {
-    marginRight: wp("2%"),
-  },
-  icon: {
-    width: wp("5%"),
-    height: hp("2.5%"),
-  },
-  headerTitle: {
-    fontSize: wp("5%"),
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
-    color: Color.secondary,
-  },
-  notificationItem: {
-    paddingVertical: hp("2%"),
-    borderBottomWidth: 1,
-    borderBottomColor: Color.sub,
+
+    flexDirection: "column",
+    justifyContent: "flex-start",
     position: "relative",
+
+    // //debug
+    // borderWidth: 1,
   },
-  restaurantName: {
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
-    color: Color.tertiary,
-    marginBottom: hp("0.5%"),
-  },
-  notificationMessage: {
-    fontSize: FontSize.size_xs,
-    fontFamily: FontFamily.segoeUI,
-    color: Color.tertiary,
-    marginBottom: hp("0.5%"),
-  },
-  timeAgo: {
-    fontSize: FontSize.size_3xs,
-    fontFamily: FontFamily.segoeUI,
-    color: Color.tertiary,
-    textAlign: "right",
-  },
-  notificationLine: {
-    height: 2,
-    backgroundColor: Color.primary,
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  footer: {
+  
+  header: {
+    height: hp("8%"),
+
     flexDirection: "row",
-    justifyContent: "space-around",
     alignItems: "center",
-    paddingVertical: hp("2%"),
-    borderTopWidth: 1,
-    borderTopColor: Color.sub,
+    justifyContent: "center",
+    position: "relative",
+
+    // // debug
+    // borderWidth: 1,
+
   },
-  footerItem: {
+
+  headerText: { 
+    fontSize: hp("2.6%"), 
+    fontWeight: 'bold', 
+  },
+
+  readAllIcon: {
+    position: "absolute",
+    right: wp("2%"),
+    top: hp("1.8%"),
+    width: wp("10%"),
+    height: hp("4.2%"),
+
     alignItems: "center",
+    justifyContent: "center",
+
+    // //debug
+    // borderWidth: 1,
   },
-  footerText: {
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.segoeUI,
-    color: Color.sub,
+
+  notiLayout: {
+
+
+    //debug
+    borderWidth: 1,
+  },
+
+  notiContainer: {
+    //debug
+    borderWidth: 1,
+    borderColor: "red",
+  },
+
+  notiItem: {
+    padding: wp("4%"),
+
+    backgroundColor: Color.white,
+    borderRadius: Border.br_3xs,
+
+    //debug
+    borderWidth: 1,
+  },
+
+  notiTitle: {
+    // fontSize: FontSize.size_base,
+    // fontFamily: FontFamily.interBold,
+    color: Color.black,
+  },
+
+  notiDescription: {
+    // fontSize: FontSize.size_sm,
+    // fontFamily: FontFamily.interRegular,
+    color: Color.gray_500,
     marginTop: hp("0.5%"),
   },
-  activeFooterText: {
-    color: Color.primary,
+
+  notiContent: {
+    // fontSize: FontSize.size_sm,
+    // fontFamily: FontFamily.interRegular,
+    color: Color.gray_500,
+    marginTop: hp("0.5%"),
   },
 });

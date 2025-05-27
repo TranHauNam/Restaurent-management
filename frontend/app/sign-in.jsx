@@ -175,9 +175,9 @@ const styles = StyleSheet.create({
     marginBottom: hp("3%"),
   },
   label: {
-    fontSize: FontSize.size_sm,
+    // fontSize: FontSize.size_sm,
     color: Color.secondary,
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
     marginBottom: hp("1%"),
   },
   inputField: {
@@ -189,8 +189,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   inputText: {
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_sm,
+    // fontFamily: FontFamily.segoeUI,
     color: Color.secondary,
   },
   otpContainer: {
@@ -216,8 +216,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: Color.white,
-    fontSize: FontSize.size_base,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_base,
+    // fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
   },
   footer: {
@@ -226,14 +226,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   footerText: {
-    fontSize: FontSize.size_sm,
+    // fontSize: FontSize.size_sm,
     color: Color.sub,
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
   },
   signUpText: {
-    fontSize: FontSize.size_sm,
+    // fontSize: FontSize.size_sm,
     color: Color.primary,
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
     textDecorationLine: "underline",
     marginLeft: wp("2%"),
   },
@@ -247,8 +247,8 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     color: Color.white,
-    fontSize: FontSize.size_base,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_base,
+    // fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
   },
 });

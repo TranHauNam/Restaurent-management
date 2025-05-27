@@ -33,21 +33,21 @@ export const styles = StyleSheet.create({
     marginBottom: hp("2%"),
   },
   profileName: {
-    fontSize: FontSize.size_base,
+    // fontSize: FontSize.size_base,
     fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
     color: Color.primary,
     marginBottom: hp("1%"),
   },
   editProfile: {
-    fontSize: FontSize.size_3xs,
+    // fontSize: FontSize.size_3xs,
     color: Color.primary,
     textDecorationLine: "underline",
     marginBottom: hp("2%"),
   },
   contactInfo: {
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_sm,
+    // fontFamily: FontFamily.segoeUI,
     color: Color.tertiary,
     marginBottom: hp("1%"),
   },
@@ -56,8 +56,8 @@ export const styles = StyleSheet.create({
     marginBottom: hp("6%"),
   },
   savingsTitle: {
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_sm,
+    // fontFamily: FontFamily.segoeUI,
     marginBottom: hp("1%"),
   },
   savingsLabel: {
@@ -67,8 +67,8 @@ export const styles = StyleSheet.create({
     color: Color.colorOrange,
   },
   savingsSubtitle: {
-    fontSize: FontSize.size_xs,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_xs,
+    // fontFamily: FontFamily.segoeUI,
     color: Color.tertiary,
     marginBottom: hp("2%"),
   },
@@ -79,8 +79,8 @@ export const styles = StyleSheet.create({
     borderRadius: wp("2%"),
   },
   savingsAmount: {
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.poppinsBold,
+    // fontSize: FontSize.size_sm,
+    // fontFamily: FontFamily.poppinsBold,
     color: Color.primary,
   },
   amount: {
@@ -97,8 +97,8 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
   },
   logoutText: {
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_sm,
+    // fontFamily: FontFamily.segoeUI,
     color: Color.white,
     textAlign: "center",
   },

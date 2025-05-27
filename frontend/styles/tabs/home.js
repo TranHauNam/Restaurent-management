@@ -19,14 +19,14 @@ export const styles = StyleSheet.create({
   },
   headerText: {
     color: Color.white,
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_sm,
+    // fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
     textAlign: "center",
   },
   welcomeText: {
     fontSize: wp("4.5%"),
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
     color: Color.secondary,
     marginBottom: hp("2%"),
@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: wp("4.5%"),
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
     color: Color.primary,
     marginBottom: hp("2%"),
@@ -78,7 +78,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,    
   },
   cardTitle: {
-    fontSize: FontSize.size_lg,
+    // fontSize: FontSize.size_lg,
     fontWeight: "700",
   },
   cardAddress: {          
@@ -91,8 +91,8 @@ export const styles = StyleSheet.create({
     gap: 2,
   },
   cardHours: {
-    fontSize: FontSize.size_xs,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_xs,
+    // fontFamily: FontFamily.segoeUI,
     color: Color.tertiary,
     marginBottom: hp("1%"),
   },
@@ -107,8 +107,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: wp("2%"),
   },
   timeSlotText: {
-    fontSize: FontSize.size_3xs,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_3xs,
+    // fontFamily: FontFamily.segoeUI,
     color: Color.white,
     textAlign: "center",
   },
@@ -129,7 +129,7 @@ export const styles = StyleSheet.create({
   },
 
   timeSlotText: {
-    fontSize: FontSize.size_sm,
+    // fontSize: FontSize.size_sm,
     fontWeight: "700",
     color: Color.white,
     textAlign: "center",

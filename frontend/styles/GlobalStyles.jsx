@@ -9,12 +9,17 @@ export const FontFamily = {
   };
   /* font sizes */
   export const FontSize = {
-    size_base: hp(1.97),
-    size_sm: hp(1.72),
-    size_xs: hp(1.47),
-    size_lg: hp(2.22),
-    size_3xs: hp(1.23),
-    size_5xs: hp(0.98),
+    size_3xl: hp("2.6%"),  
+    size_2xl: hp("2.22%"),  
+    size_xl: hp("1.97%"),   
+    size_l: hp("1.72%"),    
+    size_m: hp("1.47%"),    
+    size_base: hp("1.97%"), 
+    size_sm: hp("1.72%"),   
+    size_xs: hp("1.47%"),   
+    size_lg: hp("2.22%"),   
+    size_3xs: hp("1.23%"),  
+    size_5xs: hp("0.98%"),  
   };
   /* Colors */
   export const Color = {
@@ -45,3 +50,6 @@ export const FontFamily = {
 export const Gap = {
   gap_md: hp(1.23),
 };
+export const screenWidthSAV = wp("97.2%");
+export const marginTopSAV = hp("3.4%");
+export const marginLeftSAV = wp("1.8%");
