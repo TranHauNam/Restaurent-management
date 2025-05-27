@@ -136,9 +136,9 @@ const styles = StyleSheet.create({
     marginBottom: hp("3%"),
   },
   label: {
-    fontSize: FontSize.size_sm,
+    // fontSize: FontSize.size_sm,
     color: Color.secondary,
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
     marginBottom: hp("1%"),
   },
   input: {
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     borderColor: Color.sub,
     borderRadius: Border.br_9xs,
     paddingHorizontal: wp("4%"),
-    fontSize: FontSize.size_sm,
+    // fontSize: FontSize.size_sm,
     fontFamily: FontFamily.segoeUI,
     color: Color.secondary,
   },
@@ -155,9 +155,9 @@ const styles = StyleSheet.create({
     marginBottom: hp("4%"),
   },
   guidelineText: {
-    fontSize: FontSize.size_xs,
+    // fontSize: FontSize.size_xs,
     color: Color.sub,
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
     marginBottom: hp("1%"),
   },
   signUpButton: {
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
   signUpButtonText: {
     color: Color.white,
-    fontSize: FontSize.size_base,
+    // fontSize: FontSize.size_base,
     fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
   },
@@ -180,14 +180,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   footerText: {
-    fontSize: FontSize.size_sm,
+    // fontSize: FontSize.size_sm,
     color: Color.sub,
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
   },
   signInText: {
-    fontSize: FontSize.size_sm,
+    // fontSize: FontSize.size_sm,
     color: Color.primary,
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
     textDecorationLine: "underline",
     marginLeft: wp("2%"),
   },

@@ -201,9 +201,9 @@ const styles = StyleSheet.create({
     marginHorizontal: wp("1%"),
   },
   bookingOptionText: {
-    fontSize: FontSize.size_xs,
+    // fontSize: FontSize.size_xs,
     color: Color.tertiary,
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
   },
   
   
@@ -238,9 +238,9 @@ const styles = StyleSheet.create({
   },
 
   sectionTitle: {
-    fontSize: FontSize.size_sm,
+    // fontSize: FontSize.size_sm,
     color: Color.primary,
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
     marginBottom: hp("1%"),
   },
@@ -266,8 +266,8 @@ const styles = StyleSheet.create({
   },
 
   timeSlotText: {
-    fontSize: FontSize.size_xs,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_xs,
+    // fontFamily: FontFamily.segoeUI,
     color: Color.tertiary,
     textAlign: "center",
   },

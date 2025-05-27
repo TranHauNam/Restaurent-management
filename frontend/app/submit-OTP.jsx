@@ -48,7 +48,9 @@ const SubmitOTP = () => {
       </View>
 
       {/* style={styles.infoText} */}
-      <Text style={{ alignItems: "center", color: Color.sub, fontSize: FontSize.size_sm, marginVertical: hp("1%") }}>
+      <Text style={{ alignItems: "center", color: Color.sub, 
+        // fontSize: FontSize.size_sm, 
+        marginVertical: hp("1%") }}>
         You will get an OTP regarding registration on your provided medium.
       </Text>
 
@@ -66,9 +68,15 @@ const SubmitOTP = () => {
 
       {/* Resend OTP */}
       <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginVertical: hp("1%") }}>
-        <Text style={{color: Color.sub, fontSize: FontSize.size_sm, marginVertical: hp("1%"), textDecorationLine: "underline", marginHorizontal: wp("0.5%")}}>Resend OTP</Text>
-        <Text style={{color: Color.sub, fontSize: FontSize.size_sm, marginVertical: hp("1%"), marginHorizontal: wp("0.5%")}}>in</Text>
-        <Text style={{color: Color.sub, fontSize: FontSize.size_sm, marginVertical: hp("1%"), marginHorizontal: wp("0.5%")}}>5:00</Text>
+        <Text style={{color: Color.sub, 
+          // fontSize: FontSize.size_sm, 
+          marginVertical: hp("1%"), textDecorationLine: "underline", marginHorizontal: wp("0.5%")}}>Resend OTP</Text>
+        <Text style={{color: Color.sub, 
+          // fontSize: FontSize.size_sm, 
+          marginVertical: hp("1%"), marginHorizontal: wp("0.5%")}}>in</Text>
+        <Text style={{color: Color.sub, 
+          // fontSize: FontSize.size_sm, 
+          marginVertical: hp("1%"), marginHorizontal: wp("0.5%")}}>5:00</Text>
       </View>
       
       {/* Button */}
@@ -93,17 +101,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp("8%"),
   },
   infoText: {
-    fontSize: FontSize.size_xs,
+    // fontSize: FontSize.size_xs,
     color: Color.sub,
     textAlign: "left",
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
   },
   title: {
     marginTop: hp("5%"),
     fontSize: wp("4.8%"),
     color: "#f7fcfd",
     textAlign: "center",
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
   },
   signUpButton: {
     marginTop: hp("10%"),
@@ -115,7 +123,7 @@ const styles = StyleSheet.create({
   },
   signUpText: {
     color: Color.secondary,
-    fontSize: FontSize.size_base,
+    // fontSize: FontSize.size_base,
     fontWeight: "700",
     fontFamily: FontFamily.segoeUI,
   },

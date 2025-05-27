@@ -133,9 +133,9 @@ const styles = StyleSheet.create({
     marginBottom: hp("3%"),
   },
   label: {
-    fontSize: FontSize.size_sm,
+    // fontSize: FontSize.size_sm,
     color: Color.secondary,
-    fontFamily: FontFamily.segoeUI,
+    // fontFamily: FontFamily.segoeUI,
     marginBottom: hp("1%"),
   },
   inputField: {
@@ -147,8 +147,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   inputText: {
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_sm,
+    // fontFamily: FontFamily.segoeUI,
     color: Color.secondary,
   },
   signInButton: {
@@ -161,8 +161,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: Color.white,
-    fontSize: FontSize.size_base,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_base,
+    // fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
   },
   backButton: {
@@ -171,8 +171,8 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     color: Color.primary,
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.segoeUI,
+    // fontSize: FontSize.size_sm,
+    // fontFamily: FontFamily.segoeUI,
     textDecorationLine: "underline",
   },
 });
