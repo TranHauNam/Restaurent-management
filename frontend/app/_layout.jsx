@@ -7,11 +7,14 @@ import { useFonts } from 'expo-font';
 
 export default function Layout() {
   const [loaded, error] = useFonts({
-    'Roboto-Medium': require('../assets/fonts/Roboto/normal/Roboto-Medium.ttf'),
-    'Roboto-Regular': require('../assets/fonts/Roboto/normal/Roboto-Regular.ttf'),
-    'Roboto-Bold': require('../assets/fonts/Roboto/normal/Roboto-Bold.ttf'),
-    'Roboto-Light': require('../assets/fonts/Roboto/normal/Roboto-Light.ttf'),
     'Roboto-Black': require('../assets/fonts/Roboto/normal/Roboto-Black.ttf'),
+    'Roboto-ExtraBold': require('../assets/fonts/Roboto/normal/Roboto-ExtraBold.ttf'),
+    'Roboto-Bold': require('../assets/fonts/Roboto/normal/Roboto-Bold.ttf'),
+    'Roboto-SemiBold': require('../assets/fonts/Roboto/normal/Roboto-SemiBold.ttf'),
+    'Roboto-Regular': require('../assets/fonts/Roboto/normal/Roboto-Regular.ttf'),
+    'Roboto-Medium': require('../assets/fonts/Roboto/normal/Roboto-Medium.ttf'),
+    'Roboto-ExtraLight': require('../assets/fonts/Roboto/normal/Roboto-ExtraLight.ttf'),
+    'Roboto-Light': require('../assets/fonts/Roboto/normal/Roboto-Light.ttf'),
     'Roboto-Thin': require('../assets/fonts/Roboto/normal/Roboto-Thin.ttf'),
   });
 
