@@ -41,8 +41,7 @@ export const styles = StyleSheet.create({
   },
 
   headerText: { 
-    fontSize: hp("2.6%"), 
-    fontWeight: 'bold', 
+    color: Color.primary,
   },
 
   readAllIcon: {

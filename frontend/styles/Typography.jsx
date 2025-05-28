@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-// import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
+import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 

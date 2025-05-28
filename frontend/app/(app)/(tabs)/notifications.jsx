@@ -30,6 +30,7 @@ import {
 
 import { styles } from "@/styles/tabs/notifications";
 import { Typography } from "@/styles/Typography";
+import { FontSize } from "@/styles/GlobalStyles";
 
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -44,7 +45,7 @@ const Notifications = () => {
       <SafeAreaView style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerText}>Notifications</Text>
+          <Text style={[Typography.header5, styles.headerText]}>Notifications</Text>
           
           
           {/* Icon Read All */}
@@ -76,6 +77,16 @@ const Notifications = () => {
           <View>
             <Text style={Typography.button}>Button Text</Text>
           </View>
+          <Text style={{ fontSize: FontSize.size_2xs}}>Size 2xs</Text>
+          <Text style={{ fontSize: FontSize.size_xs}}>Size xs</Text>
+          <Text style={{ fontSize: FontSize.size_s}}>Size s</Text>
+          <Text style={{ fontSize: FontSize.size_m}}>Size m</Text>
+          <Text style={{ fontSize: FontSize.size_l}}>Size l</Text>
+          <Text style={{ fontSize: FontSize.size_xl}}>Size xl</Text>
+          <Text style={{ fontSize: FontSize.size_2xl}}>Size 2xl</Text>
+          <Text style={{ fontSize: FontSize.size_3xl}}>Size 3xl</Text>
+          <Text style={{ fontSize: FontSize.size_4xl}}>Size 4xl</Text>
+
           
 
 
