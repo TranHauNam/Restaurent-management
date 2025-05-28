@@ -1,10 +1,13 @@
-import { View, Text, StyleSheet, TextInput, Pressable, Alert } from "react-native";
 import React from "react";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { Color, FontFamily, Border, FontSize } from "@/styles/GlobalStyles";
-import { useRouter } from "expo-router";
 import { useRef } from "react";
+import { View, Text, StyleSheet, TextInput, Pressable, Alert } from "react-native";
+
+import { Typography } from "@/styles/Typography";
 import { useAuthContext } from "@/contexts/auth-context";
+import { Color, FontFamily, Border, FontSize } from "@/styles/GlobalStyles";
+
+import { useRouter } from "expo-router";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 
 export default function SignUpEmail() {
@@ -35,20 +38,20 @@ export default function SignUpEmail() {
     <View style={styles.container}>
       {/* Logo need to fix => Change to TableBooky */}
       <Pressable style={styles.logoContainer} onPress={() => {}}>
-        <Text style={styles.logoText}>
+        <Text style={[Typography.header1, styles.logoText]}>
           <Text style={styles.logoTable}>Table</Text>
           <Text style={styles.logoBooky}>Booky</Text>
         </Text>
       </Pressable>
 
       {/* Title */}
-      <Text style={styles.title}>Let’s get you started</Text>
+      <Text style={[Typography.header4, styles.title]}>Let’s get you started</Text>
 
       {/* Input Fields */}
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Full name</Text>
+        <Text style={[Typography.label, styles.label]}>Full name</Text>
         <TextInput 
-          style={styles.input} 
+          style={[Typography.paragraph ,styles.input]} 
           placeholder="Your usename" 
           placeholderTextColor={Color.sub}
           onChangeText={(text) => { fullNameRef.current = text; }}
@@ -56,9 +59,9 @@ export default function SignUpEmail() {
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Email address</Text>
+        <Text style={[Typography.label, styles.label]}>Email address</Text>
         <TextInput 
-          style={styles.input} 
+          style={[Typography.paragraph ,styles.input]} 
           placeholder="Enter your email" 
           placeholderTextColor={Color.sub} 
           onChangeText={(text) => { emailRef.current = text; }}
@@ -85,7 +88,7 @@ export default function SignUpEmail() {
       <Pressable style={styles.signUpButton} onPress={() => {
         handleSignUp();
       }}>
-        <Text style={styles.signUpButtonText}>Sign Up</Text>
+        <Text style={[Typography.largeButton, styles.signUpButtonText]}>Sign Up</Text>
       </Pressable>
 
       {/* Already a User */}
@@ -113,22 +116,17 @@ const styles = StyleSheet.create({
     marginBottom: hp("4%"),
   },
   logoText: {
-    fontSize: wp("6%"),
+    fontSize: FontSize.size_3xl,
     color: Color.primary,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
   },
   logoTable: {
-    fontWeight: "400",
+    color: Color.secondary,
   },
   logoBooky: {
-    fontWeight: "700",
+    color: Color.primary,
   },
   title: {
-    fontSize: wp("5%"),
-    color: Color.secondary,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
+    fontSize: FontSize.size_l,
     textAlign: "center",
     marginBottom: hp("4%"),
   },
@@ -136,20 +134,18 @@ const styles = StyleSheet.create({
     marginBottom: hp("3%"),
   },
   label: {
-    // fontSize: FontSize.size_sm,
     color: Color.secondary,
-    // fontFamily: FontFamily.segoeUI,
     marginBottom: hp("1%"),
   },
   input: {
     height: hp("5%"),
+
     borderWidth: 1,
     borderColor: Color.sub,
     borderRadius: Border.br_9xs,
-    paddingHorizontal: wp("4%"),
-    // fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.segoeUI,
+
     color: Color.secondary,
+    paddingHorizontal: wp("4%"),
   },
   passwordGuidelines: {
     marginBottom: hp("4%"),
@@ -161,18 +157,18 @@ const styles = StyleSheet.create({
     marginBottom: hp("1%"),
   },
   signUpButton: {
+    height: "auto",
+    marginBottom: hp("4%"),
+
     backgroundColor: Color.primary,
     borderRadius: Border.br_9xs,
+    
     alignItems: "center",
     justifyContent: "center",
-    height: hp("5%"),
-    marginBottom: hp("4%"),
   },
+
   signUpButtonText: {
     color: Color.white,
-    // fontSize: FontSize.size_base,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
   },
   footer: {
     flexDirection: "row",

@@ -1,11 +1,17 @@
 import React from "react";
-import { StyleSheet, View, Text, Pressable, TextInput, Alert } from "react-native";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { Color, FontFamily, Border, FontSize } from "@/styles/GlobalStyles";
-import { OtpInput } from "react-native-otp-entry";
 import { useState, useRef } from "react";
-import { useRouter } from "expo-router";
+import { 
+  StyleSheet, View, Text, Pressable, 
+  TextInput, Alert, StatusBar, 
+} from "react-native";
+
+import { Typography } from "@/styles/Typography";
 import { useAuthContext } from "@/contexts/auth-context";
+import { Color, FontFamily, Border, FontSize } from "@/styles/GlobalStyles";
+
+import { useRouter } from "expo-router";
+import { OtpInput } from "react-native-otp-entry";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 const SubmitOTP = () => {
   const router = useRouter();
@@ -37,20 +43,21 @@ const SubmitOTP = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor={Color.white} />
       {/* Logo */}
-      <View style={{ alignItems: "center", justifyContent: "center", marginVertical: hp("3%"), flexDirection: "row" }}> 
-        <Text style={{color: Color.primary, fontSize: hp("4%"), fontWeight: "300"}}>Dine-in</Text>
-        <Text style={{color: Color.primary, fontSize:hp("4%"), fontWeight:"bold"  }}>Floria</Text>
+      <View style={{ alignItems: "center", justifyContent: "center", marginTop: hp("6%"), flexDirection: "row" }}> 
+        <Text style={[Typography.header1, { fontSize: FontSize.size_3xl } ]}>
+          <Text style={{ color: Color.secondary}}>Table</Text>
+          <Text style={{ color: Color.primary }}>Booky</Text>
+        </Text>
       </View>
 
       <View style={{ alignItems: "center", color: Color.secondary, marginVertical: hp("3.5%") }}>
-        <Text style={{color: Color.secondary, fontSize: hp("3%"), fontWeight: "300"}}>Check for OTP</Text>
+        <Text style={[Typography.label, { fontSize: FontSize.size_l }]}>Check for OTP</Text>
       </View>
 
       {/* style={styles.infoText} */}
-      <Text style={{ alignItems: "center", color: Color.sub, 
-        // fontSize: FontSize.size_sm, 
-        marginVertical: hp("1%") }}>
+      <Text style={[Typography.paragraph,{ alignItems: "center", color: Color.sub, marginVertical: hp("1%"), fontSize: FontSize.size_sm }]}>
         You will get an OTP regarding registration on your provided medium.
       </Text>
 
@@ -68,20 +75,14 @@ const SubmitOTP = () => {
 
       {/* Resend OTP */}
       <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginVertical: hp("1%") }}>
-        <Text style={{color: Color.sub, 
-          // fontSize: FontSize.size_sm, 
-          marginVertical: hp("1%"), textDecorationLine: "underline", marginHorizontal: wp("0.5%")}}>Resend OTP</Text>
-        <Text style={{color: Color.sub, 
-          // fontSize: FontSize.size_sm, 
-          marginVertical: hp("1%"), marginHorizontal: wp("0.5%")}}>in</Text>
-        <Text style={{color: Color.sub, 
-          // fontSize: FontSize.size_sm, 
-          marginVertical: hp("1%"), marginHorizontal: wp("0.5%")}}>5:00</Text>
+        <Text style={[styles.lableOTPText, Typography.paragraph, { textDecorationLine: "underline",  }]}>Resend OTP</Text>
+        <Text style={[styles.lableOTPText, Typography.paragraph]}>in</Text>
+        <Text style={[styles.lableOTPText, Typography.paragraph]}>5:00</Text>
       </View>
       
       {/* Button */}
       <Pressable style={styles.signUpButton} onPress={handleSignUp}>
-        <Text style={styles.signUpText}>Sign Up</Text>
+        <Text style={[Typography.largeButton, styles.signUpText]}>Sign Up</Text>
       </Pressable>
       <View style={styles.signInContainer}>
         <Text style={styles.alreadyUserText}>Already a user?</Text>
@@ -114,18 +115,15 @@ const styles = StyleSheet.create({
     // fontFamily: FontFamily.segoeUI,
   },
   signUpButton: {
-    marginTop: hp("10%"),
+    marginTop: hp("2%"),
     backgroundColor: Color.primary,
     borderRadius: Border.br_9xs,
     alignItems: "center",
     justifyContent: "center",
-    height: hp("5%"),
+    height: "auto",
   },
   signUpText: {
-    color: Color.secondary,
-    // fontSize: FontSize.size_base,
-    fontWeight: "700",
-    fontFamily: FontFamily.segoeUI,
+    color: Color.white,
   },
   signInContainer: {
     flexDirection: "row",
@@ -147,6 +145,14 @@ const styles = StyleSheet.create({
   otpContainer: {
     marginVertical: hp("3%"),
     marginHorizontal: wp("2%"),
+  },
+
+  lableOTPText: {
+    marginVertical: hp("1%"), 
+    marginHorizontal: wp("0.5%"),
+
+    color: Color.sub, 
+    fontSize: FontSize.size_s,
   },
 });
 
