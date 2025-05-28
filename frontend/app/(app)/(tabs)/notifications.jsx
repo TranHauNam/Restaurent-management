@@ -45,6 +45,7 @@ const Notifications = () => {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerText}>Notifications</Text>
+          <Text style={Typography.header1}>Hey test custom font</Text>
           
           {/* Icon Read All */}
           <TouchableOpacity style={styles.readAllIcon} onPress={() => {}} >
