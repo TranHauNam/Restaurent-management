@@ -2,10 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const Typography = StyleSheet.create({
   header1: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#222',
-    // fontFamily: 'Roboto-Medium',
+    fontFamily: 'Roboto-Light',
   },
   header2: {
     fontSize: 24,
