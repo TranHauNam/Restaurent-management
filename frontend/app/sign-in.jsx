@@ -1,14 +1,14 @@
-// turn those file to tab 4 space
-
 import React from "react";
-import { StyleSheet, View, Text, Pressable, TextInput, Alert } from "react-native";
-import { Padding, Color, Border, FontSize, FontFamily } from "@/styles/GlobalStyles";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { useRef } from "react";
+import { StyleSheet, View, Text, Pressable, TextInput, Alert } from "react-native";
+
+import { Typography } from "@/styles/Typography";
+import { useAuthContext } from "@/contexts/auth-context";
+import { Padding, Color, Border, FontSize, FontFamily } from "@/styles/GlobalStyles";
+
 import { useRouter } from "expo-router";
 import { OtpInput } from "react-native-otp-entry";
-import { useAuthContext } from "@/contexts/auth-context";
-import { set } from "date-fns";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 
 const SignIn = () => {
@@ -18,6 +18,7 @@ const SignIn = () => {
   const { login, verifyOTP, setLoading, setAuthenticated } = useAuthContext();
 
   const handleSignIn = async () => {
+    //--------------------Temporary Comment DO NOT DELETE--------------------
     // if (!emailRef.current) {
     //   Alert.alert("Please enter Email");
     //   console.log("Please enter Email");
@@ -67,24 +68,24 @@ const SignIn = () => {
     <View style={styles.container}>
       {/* Logo */}
       <Pressable style={styles.logoContainer} onPress={() => {}}>
-        <Text style={styles.logoText}>
+        <Text style={[Typography.header1 ,styles.logoText]}>
           <Text style={styles.logoTable}>Table</Text>
           <Text style={styles.logoBooky}>Booky</Text>
         </Text>
       </Pressable>
 
       {/* Welcome Text */}
-      <Text style={styles.welcomeText}>
+      <Text style={[Typography.header4, styles.welcomeText]}>
         <Text style={styles.welcomeBack}>Welcome Back, </Text>
         <Text style={styles.signInText}>Sign In</Text>
       </Text>
 
       {/* Input Fields */}
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Email or Phone Number</Text>
+        <Text style={[Typography.label, styles.label]}>Email or Phone Number</Text>
         <View style={styles.inputField}>
           <TextInput 
-            style={styles.inputText} 
+            style={[Typography.paragraph ,styles.inputText]} 
             placeholder="Enter" 
             placeholderTextColor={Color.sub} 
             onChangeText={(text) => { emailRef.current = text}}
@@ -93,7 +94,7 @@ const SignIn = () => {
       </View>
 
       {/* OTP Section */}
-      <Text style={styles.label}>Enter OTP Received</Text>
+      <Text style={[Typography.label, styles.label]}>Enter OTP Received</Text>
       <View style={styles.otpContainer}>
         <OtpInput 
           numberOfDigits={6}
@@ -106,11 +107,11 @@ const SignIn = () => {
       </View>
 
       {/* Buttons */}
-      <Pressable style={styles.signInButton} onPress={() => {handleSignIn()}}>
-        <Text style={styles.buttonText}>Sign In</Text>
+      <Pressable style={[styles.button, { backgroundColor: Color.primary}]} onPress={() => {handleSignIn()}}>
+        <Text style={[Typography.largeButton, styles.buttonText]}>Sign In</Text>
       </Pressable>
-      <Pressable style={styles.sendOtpButton} onPress={() => {handleSendOTP()}}>
-        <Text style={styles.buttonText}>Send OTP</Text>
+      <Pressable style={[styles.button, { backgroundColor: Color.secondary }]} onPress={() => {handleSendOTP()}}>
+        <Text style={[Typography.largeButton, styles.buttonText]}>Send OTP</Text>
       </Pressable>
 
       {/* Footer */}
@@ -125,10 +126,10 @@ const SignIn = () => {
 
       {/* Back to Client Login */}
       <Pressable 
-        style={styles.backButton} 
+        style={[styles.button, { backgroundColor: Color.primary, marginTop: hp("2%") }]} 
         onPress={() => router.push("/admin/sign-in")}
       >
-        <Text style={styles.backButtonText}>Đăng nhập Admin</Text>
+        <Text style={[Typography.largeButton, styles.backButtonText]}>Sign In as Admin</Text>
       </Pressable>
     </View>
   );
@@ -146,24 +147,21 @@ const styles = StyleSheet.create({
     marginBottom: hp("4%"),
   },
   logoText: {
-    fontSize: wp("6%"),
     color: Color.primary,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
+    fontSize: FontSize.size_3xl,
   },
   logoTable: {
-    fontWeight: "400",
+    color: Color.secondary,
   },
   logoBooky: {
-    fontWeight: "700",
+    color: Color.primary,
   },
   welcomeText: {
-    fontSize: wp("5%"),
-    color: Color.secondary,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
-    textAlign: "center",
     marginBottom: hp("4%"),
+    
+    color: Color.secondary,
+    fontSize: FontSize.size_l,
+    textAlign: "center",
   },
   welcomeBack: {
     color: Color.sub,
@@ -175,9 +173,7 @@ const styles = StyleSheet.create({
     marginBottom: hp("3%"),
   },
   label: {
-    // fontSize: FontSize.size_sm,
     color: Color.secondary,
-    // fontFamily: FontFamily.segoeUI,
     marginBottom: hp("1%"),
   },
   inputField: {
@@ -189,8 +185,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   inputText: {
-    // fontSize: FontSize.size_sm,
-    // fontFamily: FontFamily.segoeUI,
     color: Color.secondary,
   },
   otpContainer: {
@@ -198,27 +192,16 @@ const styles = StyleSheet.create({
     marginBottom: hp("4%"),
   },
 
-  signInButton: {
-    backgroundColor: Color.primary,
-    borderRadius: Border.br_9xs,
-    alignItems: "center",
-    justifyContent: "center",
-    height: hp("5%"),
-    marginBottom: hp("2%"),
-  },
-  sendOtpButton: {
-    backgroundColor: Color.secondary,
-    borderRadius: Border.br_9xs,
-    alignItems: "center",
-    justifyContent: "center",
-    height: hp("5%"),
+  button: {
     marginBottom: hp("4%"),
+    height: "auto",
+
+    borderRadius: Border.br_9xs,
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
     color: Color.white,
-    // fontSize: FontSize.size_base,
-    // fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
   },
   footer: {
     flexDirection: "row",
@@ -247,9 +230,6 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     color: Color.white,
-    // fontSize: FontSize.size_base,
-    // fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
   },
 });
 

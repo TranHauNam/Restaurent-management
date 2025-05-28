@@ -1,7 +1,7 @@
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-/* fonts */
-export const FontFamily = {
+  /* fonts */
+  export const FontFamily = {
     segoeUI: "Segoe UI",
     poppinsBold: "Poppins-Bold",
     poppinsSemiBold: "Poppins-SemiBold",
@@ -9,17 +9,17 @@ export const FontFamily = {
   };
   /* font sizes */
   export const FontSize = {
-    size_3xl: hp("2.6%"),  
-    size_2xl: hp("2.22%"),  
-    size_xl: hp("1.97%"),   
-    size_l: hp("1.72%"),    
-    size_m: hp("1.47%"),    
-    size_base: hp("1.97%"), 
-    size_sm: hp("1.72%"),   
-    size_xs: hp("1.47%"),   
-    size_lg: hp("2.22%"),   
-    size_3xs: hp("1.23%"),  
-    size_5xs: hp("0.98%"),  
+    size_4xl: hp("6%"),
+    size_3xl: hp("4.8%"),  
+    size_2xl: hp("4%"),  
+    size_xl: hp("3.4%"),    
+    size_l: hp("2.8%"),   
+    size_m: hp("2.2%"), 
+    size_s: hp("2%"),   
+    size_xs: hp("1.8%"),   
+    size_2xs: hp("1.6%"),   
+    size_3xs: hp("1.4%"),
+    size_4xs: hp("1.2%"),
   };
   /* Colors */
   export const Color = {

@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { Color } from "@/styles/GlobalStyles";
+import { Color, FontSize } from "@/styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     top: -hp("0%"),
   },
   tabLabel: {
-    fontSize: hp("1.23%"),
+    fontSize: FontSize.size_2xs,
     fontFamily: "Segoe UI",
     marginTop: hp("0.5%"),
   },

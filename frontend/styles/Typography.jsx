@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-// import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
+import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
@@ -56,13 +56,25 @@ export const Typography = StyleSheet.create({
     color: '#333',
   },
  
-  button: {
+  largeButton: {
     marginVertical: hp('1.6%'),
     marginHorizontal: wp('4%'),
     fontFamily: 'Roboto-Black',
     fontSize: hp('2.4%'),
     lineHeight: hp('2.8%'),
     letterSpacing: wp('0.32%'),
+
+    // //debug
+    // borderWidth: 1,
+  },
+
+  smallButton: {
+    marginVertical: hp('0.8%'),
+    marginHorizontal: wp('2%'),
+    fontFamily: 'Roboto-Bold',
+    fontSize: hp('2.4%'),
+    lineHeight: hp('2.8%'),
+    letterSpacing: wp('0.12%'),
 
     // //debug
     // borderWidth: 1,
