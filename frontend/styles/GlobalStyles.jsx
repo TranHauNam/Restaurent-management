@@ -16,8 +16,10 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
     size_l: hp("2.8%"),   
     size_m: hp("2.2%"), 
     size_s: hp("2%"),   
-    size_xs: hp("1.6%"),   
-    size_2xs: hp("1.2%"),   
+    size_xs: hp("1.8%"),   
+    size_2xs: hp("1.6%"),   
+    size_3xs: hp("1.4%"),
+    size_4xs: hp("1.2%"),
   };
   /* Colors */
   export const Color = {

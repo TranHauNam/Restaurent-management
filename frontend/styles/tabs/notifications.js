@@ -75,29 +75,24 @@ export const styles = StyleSheet.create({
     padding: wp("4%"),
 
     backgroundColor: Color.white,
-    borderRadius: Border.br_3xs,
 
     //debug
     borderWidth: 1,
   },
 
   notiTitle: {
-    // fontSize: FontSize.size_base,
-    // fontFamily: FontFamily.interBold,
-    color: Color.black,
+
   },
 
   notiDescription: {
-    // fontSize: FontSize.size_sm,
-    // fontFamily: FontFamily.interRegular,
-    color: Color.gray_500,
-    marginTop: hp("0.5%"),
+
   },
 
   notiContent: {
-    // fontSize: FontSize.size_sm,
-    // fontFamily: FontFamily.interRegular,
-    color: Color.gray_500,
-    marginTop: hp("0.5%"),
+
+  },
+
+  notiTime: {
+
   },
 });

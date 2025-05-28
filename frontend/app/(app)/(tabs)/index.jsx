@@ -1,12 +1,14 @@
 import React from "react";
-import {  View, Text, Pressable, Image, FlatList, } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { router } from "expo-router";
 import { useState, useEffect } from "react";
+import {  View, Text, Pressable, Image, FlatList, } from "react-native";
+
 import { fetchRestaurants } from "@/services/api";
-import Entypo from '@expo/vector-icons/Entypo';
-import { StatusBar } from "expo-status-bar";
 import { styles } from "@/styles/tabs/home";
+
+import { router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import Entypo from '@expo/vector-icons/Entypo';
+import { Typography } from "@/styles/Typography";
 
 const Divider = ({ color = "#ccc", thickness = 1, marginVertical = 10 }) => (
   <View
@@ -36,7 +38,7 @@ const HomeView = () => {
   // }, [restaurantData]);
   const renderTimeSlot = ({ item }) => (
     <View style={styles.timeSlotContainer}>
-      <Text style={styles.timeSlotText}>{item}</Text>
+      <Text style={[Typography.smallButton, styles.timeSlotText]}>{item}</Text>
     </View>
   );
   
@@ -53,7 +55,7 @@ const HomeView = () => {
         />
 
         <View style={styles.cardAddress}>
-          <Text style={styles.cardTitle}>{item.name}</Text>
+          <Text style={[Typography.header5 ,styles.cardTitle]}>{item.name}</Text>
           <View style={{
             display: "flex",
             flexDirection: "row",
@@ -61,7 +63,7 @@ const HomeView = () => {
           }}>
 
             <Entypo name="location-pin" size={22} color="black" />  
-            <Text>{item.address}</Text>
+            <Text style={[Typography.paragraph]}>{item.address}</Text>
           </View>
         </View>
       </Pressable>
@@ -88,10 +90,11 @@ const HomeView = () => {
     <View style={styles.container}>
       <StatusBar style="dark" backgroundColor="white" />
 
-      <Text style={styles.welcomeText}>
-        Welcome to <Text style={styles.highlightText}>Dine-in Florida</Text>
+      <Text style={[Typography.header3, styles.welcomeText]}>
+        Welcome to
       </Text>
-      <Text style={styles.sectionTitle}>Our Restaurants</Text>
+       <Text style={[Typography.header2, styles.highlightText]}>Dine-in Florida</Text>
+      <Text style={[Typography.header5, styles.sectionTitle]}>Our Restaurants</Text>
 
        {/* Restaurant List */}
       <View style={styles.restaurantListContainer}> 
