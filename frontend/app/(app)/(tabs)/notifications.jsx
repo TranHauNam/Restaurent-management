@@ -45,7 +45,7 @@ const Notifications = () => {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerText}>Notifications</Text>
-          <Text style={Typography.header1}>Hey test custom font</Text>
+          
           
           {/* Icon Read All */}
           <TouchableOpacity style={styles.readAllIcon} onPress={() => {}} >
@@ -65,6 +65,18 @@ const Notifications = () => {
               <Text style={styles.notiTime}>{item.time}</Text>
             </View>
           ))}
+          <Text style={Typography.header1}>Header 1</Text>
+          <Text style={Typography.header2}>Header 2</Text>
+          <Text style={Typography.header3}>Header 3</Text>
+          <Text style={Typography.header4}>Header 4</Text>
+          <Text style={Typography.header5}>Header 5</Text>
+          <Text style={Typography.header6}>Header 6</Text>
+          <Text style={Typography.paragraph}>This is a paragraph text that uses the Roboto Regular font.</Text>
+          <Text style={Typography.label}>This is a label text that uses the Roboto Light font.</Text>
+          <View>
+            <Text style={Typography.button}>Button Text</Text>
+          </View>
+          
 
 
         </ScrollView>
