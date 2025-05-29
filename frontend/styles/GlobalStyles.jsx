@@ -23,11 +23,11 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
   };
   /* Colors */
   export const Color = {
-    white: "#fff",
-    sub: "#cecece",
-    secondary: "#2b2b2b",
     primary: "#F49B33",
-    colorGray_100: "rgba(255, 255, 255, 0.13)",
+    secondary: "#2b2b2b",
+    lightsub: "#f2f2f2",
+    sub: "#cecece",
+    white: "#fff",
     tertiary: "#5e5e5e",
     black: "#000",
   };

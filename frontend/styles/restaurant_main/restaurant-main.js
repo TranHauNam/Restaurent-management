@@ -22,16 +22,19 @@ export const styles = StyleSheet.create({
     gap: wp("2%"),
   },
   restaurantTitle: {
-    fontSize: wp("5%"),
+    marginTop: -hp("0.8%"),
+    
     color: Color.secondary,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
-    // marginBottom: hp("2%"),
+    fontSize: FontSize.size_l,
+
+    // //debug
+    // borderWidth: 1,
   },
   headerLine: {
+    marginBottom: hp("2%"),
+    marginTop: -hp("0.8%"),
     height: 1,
     backgroundColor: Color.primary,
-    marginBottom: hp("2%"),
   },
   restaurantImage: {
     width: "100%",
@@ -40,25 +43,18 @@ export const styles = StyleSheet.create({
     marginBottom: hp("2%"),
   },
   address: {
-    // fontSize: FontSize.size_sm,
-    color: Color.tertiary,
-    // fontFamily: FontFamily.segoeUI,
-    // marginBottom: hp("1%"),
     marginLeft: wp("2%"),
+    color: Color.secondary,
   },
   operatingHours: {
-    // fontSize: FontSize.size_sm,
-    color: Color.tertiary,
-    // fontFamily: FontFamily.segoeUI,
-    // marginBottom: hp("2%"),
     marginLeft: wp("2%"),
+    color: Color.secondary,
   },
   menuLink: {
-    // fontSize: FontSize.size_sm,
+    marginLeft: wp("2%"),
+
     color: Color.primary,
     textDecorationLine: "underline",
-    // marginBottom: hp("4%"),
-    marginLeft: wp("2%"),
   },
   sectionTitle: {
     // fontSize: FontSize.size_sm,
@@ -68,10 +64,7 @@ export const styles = StyleSheet.create({
     marginBottom: hp("1%"),
   },
   description: {
-    // fontSize: FontSize.size_xs,
-    color: Color.tertiary,
-    // fontFamily: FontFamily.segoeUI,
-    
+    color: Color.secondary,  
   },
   readMore: {
     // fontSize: FontSize.size_sm,
