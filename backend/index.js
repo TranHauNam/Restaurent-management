@@ -31,6 +31,6 @@ app.use(express.json());
 clientRoutes(app);
 adminRoutes(app);
 
-// Chạy server tại cổng PORT (mặc định là 5000 nếu không có trong .env)
-const PORT = process.env.PORT || 5000;
+// Chạy server tại cổng PORT (mặc định là 5001 nếu không có trong .env)
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
