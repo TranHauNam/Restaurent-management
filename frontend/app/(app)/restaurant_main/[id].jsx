@@ -3,6 +3,7 @@ import { View, Text, Image, ActivityIndicator, Pressable, TouchableOpacity, Scro
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 import { fetchRestaurantById } from "@/services/api";
+import { Typography } from "@/styles/Typography";
 import { styles } from "@/styles/restaurant_main/restaurant-main";
 import { Color } from "@/styles/GlobalStyles";
 import { BookingOptions } from "../../../components/restaurant_main/find-slot-option";
@@ -60,7 +61,7 @@ const RestaurantMain = () => {
           <TouchableOpacity  onPress={handleBackPress}>
             <MaterialIcons name="arrow-back" size={hp("3.5%")} color={Color.black} />
           </TouchableOpacity>
-          <Text style={styles.restaurantTitle}>{restaurant.name}</Text>
+          <Text style={[Typography.header3, styles.restaurantTitle]}>{restaurant.name}</Text>
         </View>
         <View style={styles.headerLine} />
 
@@ -70,26 +71,26 @@ const RestaurantMain = () => {
         {/* Address and Time */}
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
           <MaterialIcons name="location-on" size={hp("3%")} color={Color.primary} />  
-          <Text style={styles.address}>{restaurant.address}</Text>
+          <Text style={[Typography.paragraph, styles.address]}>{restaurant.address}</Text>
         </View>
         
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
           <MaterialIcons name="access-time-filled" size={hp("3%")} color={Color.primary} />
-          <Text style={styles.operatingHours}>{restaurant.openTime}</Text>
-          <Text style={[styles.operatingHours]}>-</Text>
-          <Text style={styles.operatingHours}>{restaurant.closeTime}</Text>
+          <Text style={[Typography.paragraph, styles.operatingHours]}>
+            {restaurant.openTime} -- {restaurant.closeTime}
+          </Text>
         </View>
         
 
         {/* Menu and Description */}
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
           <MaterialIcons name="menu-book" size={hp("3%")} color={Color.primary} />
-          <Text style={styles.menuLink}>Menu</Text>
+          <Text style={[Typography.paragraph, styles.menuLink]}>Menu</Text>
         </View>
 
-        <Text style={styles.sectionTitle}>Description</Text>
+        <Text style={[Typography.header5, styles.sectionTitle]}>Description</Text>
         <Text 
-          style={styles.description}
+          style={[Typography.paragraph, styles.description]}
           numberOfLines={isDescriptionExpanded ? undefined : 1} 
         >
           {restaurant.description}

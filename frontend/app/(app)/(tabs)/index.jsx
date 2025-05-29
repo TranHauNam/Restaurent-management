@@ -90,10 +90,8 @@ const HomeView = () => {
     <View style={styles.container}>
       <StatusBar style="dark" backgroundColor="white" />
 
-      <Text style={[Typography.header3, styles.welcomeText]}>
-        Welcome to
-      </Text>
-       <Text style={[Typography.header2, styles.highlightText]}>Dine-in Florida</Text>
+      <Text style={[Typography.header3, styles.welcomeText]}>Welcome to</Text>
+      <Text style={[Typography.header2, styles.highlightText]}>Dine-in Florida</Text>
       <Text style={[Typography.header5, styles.sectionTitle]}>Our Restaurants</Text>
 
        {/* Restaurant List */}

@@ -28,8 +28,8 @@ export const styles = StyleSheet.create({
     color: Color.primary,
   },
   sectionTitle: {
+    marginVertical: hp("2%"),
     color: Color.primary,
-    marginBottom: hp("2%"),
   },
   listContainer: {
     paddingBottom: hp("4%"),
