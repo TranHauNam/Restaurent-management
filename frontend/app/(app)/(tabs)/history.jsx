@@ -1,53 +1,138 @@
-import * as React from "react";
-import { Text, View, Pressable, } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+const paymentData = [
+  {
+    id: 1,
+    restaurantName: "Sea Grill of Merrick Park",
+    amount: 120.0,
+    date: "2022-12-17",
+    time: "12:15 PM",
+    status: "Paid",
+    method: "Credit Card",
+    orders: [
+      { name: "Grilled Salmon", price: 40.0 },
+      { name: "Caesar Salad", price: 15.0 },
+      { name: "Lemonade", price: 5.0 },
+    ],
+    vat: 10.0,
+  },
+  {
+    id: 2,
+    restaurantName: "Ocean Breeze Diner",
+    amount: 85.0,
+    date: "2022-12-15",
+    time: "7:30 PM",
+    status: "Refunded",
+    method: "Paypal",
+    orders: [
+      { name: "Seafood Pasta", price: 35.0 },
+      { name: "Garlic Bread", price: 8.0 },
+      { name: "Iced Tea", price: 4.0 },
+    ],
+    vat: 7.0,
+  },
+];
+
+const bookedData = [
+  {
+    id: 1,
+    restaurantName: "Sea Grill of Merrick Park",
+    date: "2022-12-17",
+    time: "12:15 PM",
+    guests: 2,
+    status: "Reserved",
+  },
+  {
+    id: 2,
+    restaurantName: "Ocean Breeze Diner",
+    date: "2022-12-15",
+    time: "7:30 PM",
+    guests: 4,
+    status: "Cancelled",
+  },
+];
+
+
+import React from "react";
+import { useState } from "react";
+import { 
+  Text, View, Pressable, SafeAreaView,
+  TouchableOpacity, ScrollView, StatusBar, 
+} from "react-native";
+
+import { Typography } from "@/styles/Typography";
 import { styles } from "@/styles/tabs/history";
+import { Color, FontSize } from "@/styles/GlobalStyles";
+import { PaymentHistoryItem } from "@/components/history-view/history-item-payment";
 
 
 const History = () => {
+  const [paymentView, setPaymentView] = useState(true);
+
+  const handlePaymentView = () => {
+    setPaymentView(true);
+    // Logic to fetch and display payment history
+    // console.log("Payment view selected");
+  }
+  const handleBookingView = () => {
+    setPaymentView(false);
+    // Logic to fetch and display booking history
+    // console.log("Booking view selected");
+  }
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <Text style={styles.headerTitle}>History</Text>
-      <View style={styles.headerLine} />
-
-      {/* Booking Items */}
-      <View style={styles.bookingItem}>
-        <Text style={styles.restaurantName}>Sea Grill of Merrick Park</Text>
-        <Text style={[styles.status, styles.reservedStatus]}>Reserved</Text>
-        <Pressable style={styles.actionButton} onPress={() => {}}>
-          <Text style={[styles.actionText, styles.cancelText]}>Cancel Booking</Text>
-        </Pressable>
-        <Pressable style={styles.actionButton} onPress={() => {}}>
-          <Text style={[styles.actionText, styles.editText]}>Edit Booking</Text>
-        </Pressable>
-        <Text style={styles.timeAgo}>2 hrs ago</Text>
-        <View style={styles.detailsContainer}>
-          <Text style={styles.detailsText}>17 December 2022 | 12:15 PM</Text>
-          <Text style={styles.detailsText}>2 Guests</Text>
+    <>
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <SafeAreaView style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={[Typography.header5, styles.headerText]}>History</Text>
         </View>
-      </View>
 
-      <View style={styles.bookingItem}>
-        <Text style={styles.restaurantName}>Sea Grill of Merrick Park</Text>
-        <Text style={[styles.status, styles.cancelledStatus]}>Cancelled</Text>
-        <Text style={styles.timeAgo}>2 Days ago</Text>
-        <View style={styles.detailsContainer}>
-          <Text style={styles.detailsText}>17 December 2022 | 12:15 PM</Text>
-          <Text style={styles.detailsText}>2 Guests</Text>
+        <View style={styles.hisViewOption}>
+          <TouchableOpacity style={[styles.optionBox, 
+          {
+            borderBottomWidth: paymentView ? 2 : 0,
+            borderBottomColor: paymentView ? "orange" : "transparent",
+          }]}
+          onPress={() => {handlePaymentView()}}>
+            <Text 
+            style={[Typography.header5, 
+            { 
+              color: paymentView ? "#000" : "#888",
+              fontSize: paymentView ? FontSize.size_m : FontSize.size_s,
+            }
+            ]}>Payments</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.optionBox,
+            {
+              borderBottomWidth: !paymentView ? 2 : 0,
+              borderBottomColor: !paymentView ? "orange" : "transparent",
+            }]}
+          onPress={() => {handleBookingView()}}>
+            <Text 
+            style={[Typography.header5, 
+            { 
+              color: !paymentView ? "#000" : "#888",
+              fontSize: !paymentView ? FontSize.size_m : FontSize.size_s,
+            }
+            ]}>Bookings</Text>
+          </TouchableOpacity>
         </View>
-      </View>
 
-      <View style={styles.bookingItem}>
-        <Text style={styles.restaurantName}>Sea Grill of Merrick Park</Text>
-        <Text style={[styles.status, styles.completedStatus]}>Completed</Text>
-        <Text style={styles.timeAgo}>10 Days ago</Text>
-        <View style={styles.detailsContainer}>
-          <Text style={styles.detailsText}>17 December 2022 | 12:15 PM</Text>
-          <Text style={styles.detailsText}>2 Guests</Text>
-        </View>
-      </View>
-    </View>
+        <ScrollView style={styles.hisLayout}
+        contentContainerStyle={styles.hisContainer}>
+          
+          {paymentView ? paymentData.map((item, index) => (
+            <View key={index} style={styles.hisItem}>
+              <PaymentHistoryItem item={item} onPress={() => {}} payment={paymentView} /> 
+            </View>
+          )) : bookedData.map((item, index) => (
+            <View key={index} style={styles.hisItem}>
+              
+            </View>
+          ))}
+
+        </ScrollView>
+      </SafeAreaView>    
+    </>
   );
 };
 
