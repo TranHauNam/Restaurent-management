@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
   },
 
   headerText: { 
-    color: Color.primary,
+    color: Color.secondary,
   },
 
   readAllIcon: {
@@ -59,16 +59,14 @@ export const styles = StyleSheet.create({
   },
 
   notiLayout: {
-
-
-    //debug
-    borderWidth: 1,
+    // //debug
+    // borderWidth: 1,
   },
 
   notiContainer: {
     //debug
-    borderWidth: 1,
-    borderColor: "red",
+    // borderWidth: 1,
+    // borderColor: "red",
   },
 
   notiItem: {
@@ -76,8 +74,11 @@ export const styles = StyleSheet.create({
 
     backgroundColor: Color.white,
 
-    //debug
-    borderWidth: 1,
+    borderBottomColor: Color.sub,
+    borderBottomWidth: 1,
+
+    // //debug
+    // borderWidth: 1,
   },
 
   notiTitle: {
