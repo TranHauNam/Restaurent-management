@@ -2,12 +2,13 @@ import React from 'react'
 import { useState } from 'react'
 import { StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native'
 
+import { Typography } from '@/styles/Typography';
 import { ShowPeopleSelection } from './people-selection';
 import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
 
+import DatePicker from 'react-native-date-picker';
 import { MaterialIcons } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import DatePicker from 'react-native-date-picker';
 
 export const TimeOrder = ({selectedTime, setShowTimeGrid, showTimeGrid}) => {
   return (
@@ -17,7 +18,7 @@ export const TimeOrder = ({selectedTime, setShowTimeGrid, showTimeGrid}) => {
           onPress={() => setShowTimeGrid(!showTimeGrid)} // Toggle time grid visibility
       >
           <MaterialIcons name="access-time" size={hp("2.2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
-          <Text style={[styles.bookingOptionText, { marginHorizontal: wp("1%") }]}>
+          <Text style={[Typography.paragraph ,styles.bookingOptionText]}>
             {selectedTime ? selectedTime : "Time"} 
           </Text>          
       </TouchableOpacity>
@@ -73,7 +74,7 @@ export const DateOrder = ({orderDateTime, isDatePickerVisible, hideDatePicker, s
         
         <MaterialIcons name="calendar-today" size={hp("2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
         <Text 
-          style={[styles.bookingOptionText, {marginHorizontal: wp('1%')}]}>
+          style={[Typography.paragraph ,styles.bookingOptionText]}>
           {orderDateTime ? 
           `${orderDateTime.getDate().toString().padStart(2, '0')}/${(orderDateTime.getMonth() + 1)
               .toString().padStart(2, '0')}/${orderDateTime.getFullYear()}`
@@ -115,7 +116,7 @@ export const PeopleOrder = ({setShowPeoplePicker, showPeoplePicker, selectedPeop
       >
 
         <MaterialIcons name="people-alt" size={hp("2.2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
-        <Text style={[styles.bookingOptionText, { marginHorizontal: wp("1%") }]}>
+        <Text style={[Typography.paragraph ,styles.bookingOptionText]}>
             {selectedPeople ? `${selectedPeople} People` : "People"} {/* Show selected number or default text */}
         </Text>        
       </TouchableOpacity>
@@ -201,9 +202,10 @@ const styles = StyleSheet.create({
     marginHorizontal: wp("1%"),
   },
   bookingOptionText: {
-    // fontSize: FontSize.size_xs,
-    color: Color.tertiary,
-    // fontFamily: FontFamily.segoeUI,
+    marginHorizontal: wp("1%"),
+
+    color: Color.secondary,
+    fontSize: FontSize.size_xs,
   },
   
   
