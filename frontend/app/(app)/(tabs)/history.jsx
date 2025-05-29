@@ -2,11 +2,17 @@ const paymentData = [
   {
     id: 1,
     restaurantName: "Sea Grill of Merrick Park",
-    amount: 120.5,
+    amount: 120.0,
     date: "2022-12-17",
     time: "12:15 PM",
     status: "Paid",
     method: "Credit Card",
+    orders: [
+      { name: "Grilled Salmon", price: 40.0 },
+      { name: "Caesar Salad", price: 15.0 },
+      { name: "Lemonade", price: 5.0 },
+    ],
+    vat: 10.0,
   },
   {
     id: 2,
@@ -16,6 +22,12 @@ const paymentData = [
     time: "7:30 PM",
     status: "Refunded",
     method: "Paypal",
+    orders: [
+      { name: "Seafood Pasta", price: 35.0 },
+      { name: "Garlic Bread", price: 8.0 },
+      { name: "Iced Tea", price: 4.0 },
+    ],
+    vat: 7.0,
   },
 ];
 
@@ -49,6 +61,7 @@ import {
 import { Typography } from "@/styles/Typography";
 import { styles } from "@/styles/tabs/history";
 import { Color, FontSize } from "@/styles/GlobalStyles";
+import { PaymentHistoryItem } from "@/components/history-view/history-item-payment";
 
 
 const History = () => {
@@ -69,41 +82,55 @@ const History = () => {
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
       <SafeAreaView style={styles.container}>
         {/* Header */}
-        <View>
-          <View style={styles.header}>
-            <Text style={[Typography.header5, styles.headerText]}>History</Text>
-          </View>
-          <View style={styles.hisViewOption}>
-            <TouchableOpacity style={[styles.optionBox, 
-            {
-              // borderBottomWidth: paymentView ? 2 : 0,
-              // borderBottomColor: paymentView ? "orange" : "transparent",
-            }]}
-            onPress={() => {handlePaymentView()}}>
-              <Text 
-              style={[Typography.header5, 
-              { 
-                color: paymentView ? "#000" : "#888",
-                fontSize: paymentView ? FontSize.size_m : FontSize.size_s,
-              }
-              ]}>Payments</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.optionBox,
-              {
-                // borderBottomWidth: !paymentView ? 2 : 0,
-                // borderBottomColor: !paymentView ? "orange" : "transparent",
-              }]}
-            onPress={() => {handleBookingView()}}>
-              <Text 
-              style={[Typography.header5, 
-              { 
-                color: !paymentView ? "#000" : "#888",
-                fontSize: !paymentView ? FontSize.size_m : FontSize.size_s,
-              }
-              ]}>Bookings</Text>
-            </TouchableOpacity>
-          </View>
+        <View style={styles.header}>
+          <Text style={[Typography.header5, styles.headerText]}>History</Text>
         </View>
+
+        <View style={styles.hisViewOption}>
+          <TouchableOpacity style={[styles.optionBox, 
+          {
+            borderBottomWidth: paymentView ? 2 : 0,
+            borderBottomColor: paymentView ? "orange" : "transparent",
+          }]}
+          onPress={() => {handlePaymentView()}}>
+            <Text 
+            style={[Typography.header5, 
+            { 
+              color: paymentView ? "#000" : "#888",
+              fontSize: paymentView ? FontSize.size_m : FontSize.size_s,
+            }
+            ]}>Payments</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.optionBox,
+            {
+              borderBottomWidth: !paymentView ? 2 : 0,
+              borderBottomColor: !paymentView ? "orange" : "transparent",
+            }]}
+          onPress={() => {handleBookingView()}}>
+            <Text 
+            style={[Typography.header5, 
+            { 
+              color: !paymentView ? "#000" : "#888",
+              fontSize: !paymentView ? FontSize.size_m : FontSize.size_s,
+            }
+            ]}>Bookings</Text>
+          </TouchableOpacity>
+        </View>
+
+        <ScrollView style={styles.hisLayout}
+        contentContainerStyle={styles.hisContainer}>
+          
+          {paymentView ? paymentData.map((item, index) => (
+            <View key={index} style={styles.hisItem}>
+              <PaymentHistoryItem item={item} onPress={() => {}} payment={paymentView} /> 
+            </View>
+          )) : bookedData.map((item, index) => (
+            <View key={index} style={styles.hisItem}>
+              
+            </View>
+          ))}
+
+        </ScrollView>
       </SafeAreaView>    
     </>
   );

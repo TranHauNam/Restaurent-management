@@ -42,9 +42,12 @@ export const styles = StyleSheet.create({
   hisViewOption: {
     height: hp("6%"),
 
+    borderBottomColor: Color.lightsub,
+    borderBottomWidth: 2,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+
 
     // //debug
     // borderWidth: 1,
@@ -52,12 +55,26 @@ export const styles = StyleSheet.create({
 
   optionBox: { 
     flex: 1,
-    height: hp("6%"), 
+    height: hp("5.8%"), 
     alignItems: "center",
     justifyContent: "center",
     
     // //debug
     // borderWidth: 1,
-  }
+  },
+
+  hisLayout: {
+    backgroundColor: Color.white,
+
+
+    // //debug
+    // borderWidth: 1,
+  },
+
+  hisContainer: {
+    //debug
+    // borderWidth: 1,
+    // borderColor: "red",
+  },
 
 });
