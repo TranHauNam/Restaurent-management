@@ -83,23 +83,28 @@ module.exports.verifyOTP = async (req, res) => {
         await user.save();
       } else {
         user = existingUser;
-        tokenUser = user.tokenUser;
+        tokenUser = jwt.sign(
+          { id: user._id }, 
+          process.env.JWT_SECRET, 
+          { expiresIn: '7d' }
+        );
+
+        user.tokenUser = tokenUser;
       }
   
       
       await otpReceived.deleteOne();
   
       // Tạo token đăng nhập
-      const token = jwt.sign(
-        { id: user._id }, 
-        process.env.JWT_SECRET, 
-        { expiresIn: '7d' }
-      );
+      // const token = jwt.sign(
+      //   { id: user._id }, 
+      //   process.env.JWT_SECRET, 
+      //   { expiresIn: '7d' }
+      // );
   
       return res.status(200).json({
         message: existingUser ? 'Đăng nhập thành công' : 'Đăng ký thành công',
-        user,
-        token
+        user
       });
     } catch (error) {
       return res.status(500).json({ 
