@@ -26,16 +26,15 @@ export const Header = ({ title, onBackPress, hasReturn }) => {
 
 const styles = StyleSheet.create({
     header: {
-        height: hp("6%"),
-        width: wp("100%"),
-        position: "absolute",
-
+        height: hp("6%"),        
+        
         flexDirection: "row",
         justifyContent: "center",
         alignContent: "center",
-
-        //debug
-        borderWidth: 1,
+        position: "relative",
+        zIndex: 999,
+        // //debug
+        // borderWidth: 1,
     },
     backBut: {
         position: "absolute",
@@ -50,8 +49,7 @@ const styles = StyleSheet.create({
         // //debug
         // borderWidth: 1, 
     },
-    headerText: {
-        
+    headerText: {        
         textAlign: "center",
         color: Color.secondary,
         lineHeight: hp("6%"),
