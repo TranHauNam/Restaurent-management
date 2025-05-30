@@ -14,6 +14,17 @@ export const styles = StyleSheet.create({
         // //debug
         // borderWidth: 1,
     },
+
+    divider: {
+        height: hp("0.1%"),
+        width: screenWidthSAV - marginLeftSAV * 2,
+        marginBottom: hp("0.4%"),
+
+        backgroundColor: Color.divider,
+
+        // //debug
+        // borderWidth: 1,
+    },
     
     headerContainer: {
         height: hp("4%"),

@@ -12,6 +12,7 @@ import { BookingModal } from "../../../components/booking-modal/booking-modal";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { MaterialIcons } from '@expo/vector-icons';
 
+
 const RestaurantMain = () => {
   const route = useRouter();
   const id = useLocalSearchParams().id; // Get restaurant ID from route params
