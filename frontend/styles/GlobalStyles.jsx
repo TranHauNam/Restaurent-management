@@ -30,6 +30,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
     white: "#fff",
     tertiary: "#5e5e5e",
     black: "#000",
+    divider: "#e0e0e0",
   };
   /* border radiuses */
   export const Border = {

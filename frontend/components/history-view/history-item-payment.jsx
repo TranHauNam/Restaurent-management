@@ -10,21 +10,23 @@ import { Color } from "@/styles/GlobalStyles";
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 
+// import { HistoryPayment } from '../../app/(app)/history-view/payment-detail/payment-detail'
+
 export const PaymentHistoryItem = ({ item, onPress, payment }) => {
     const router = useRouter();
 
-
     const handleDetailPress = (item) => {
         // Navigate to payment detail page
-        router.push({
-            pathname: '/payment-detail',
-            params: { paymentId: item.id }
-        });
-        // console.log("Payment ID:", item.id);
+        router.push(`/history-view/payment-detail/${item.id}`);
     }
+    
     return (
         <>
-            <TouchableOpacity style={styles.container} onPress={() => onPress(item)}>
+            <TouchableOpacity style={styles.container} onPress={() => {handleDetailPress(item)}}>
+                    {/* divider  */}
+                    <View style={styles.divider} />
+
+                    {/* Header  */}
                     <View style={styles.headerContainer}>
                         {/* Time  */}
                         <Text style={[Typography.label, styles.timeText]}>{item.time}, {item.date}</Text>
@@ -46,7 +48,7 @@ export const PaymentHistoryItem = ({ item, onPress, payment }) => {
 
                     </View>                    
                     
-                    <Text style={[Typography.header6, styles.resNameText]}>{item.restaurantName}</Text>
+                    <Text style={[Typography.header5, styles.resNameText]}>{item.restaurantName}</Text>
                     
                     <Text style={[Typography.header4, styles.amountText, {
                         color: item.status == "Paid" ? "green" :
