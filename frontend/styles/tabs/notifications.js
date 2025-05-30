@@ -14,9 +14,10 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: marginTopSAV,
     width: screenWidthSAV,
+    marginTop: marginTopSAV,
     marginLeft: marginLeftSAV,
+    
     backgroundColor: Color.white,
 
     flexDirection: "column",

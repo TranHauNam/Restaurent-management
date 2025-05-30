@@ -19,11 +19,61 @@ export const styles = StyleSheet.create({
 
         flexDirection: "column",
         justifyContent: "flex-start",
-        alignItems: "center",
         position: "relative",
         
         // //debug
         // borderWidth: 1,
     },
+
+    mainLayout: {
+        //debug
+        borderWidth: 1,
+    },
+
+    mainContainer: {
+        //debug
+        borderWidth: 1,
+        borderColor: "red",
+    },
+
+    paymentContainer: {
+
+        flexDirection: "column",
+        justifyContent: "flex-start",
+
+        paddingHorizontal: wp("4%"),
+        paddingVertical: hp("2%"),
+    },
     
+    payBoxHeader: {
+
+    },
+
+    insideBox: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingLeft: wp("6%"),
+        paddingRight: wp("4%"),
+        paddingVertical: hp("0.4%"),
+    },
+
+    payLaberText: {
+
+    },
+
+    payValueText: {
+        fontSize: FontSize.size_m,
+
+    },
+
+    calculateDivideLine: {
+        width: wp("80%"),
+        height: 2,
+
+        alignSelf: "center",
+        backgroundColor: Color.sub,
+        marginVertical: hp("1.4%"),
+        
+    },
 });
