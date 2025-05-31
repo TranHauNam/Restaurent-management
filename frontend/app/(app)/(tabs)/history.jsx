@@ -1,21 +1,4 @@
-const bookedData = [
-  {
-    id: 1,
-    restaurantName: "Sea Grill of Merrick Park",
-    date: "2022-12-17",
-    time: "12:15 PM",
-    guests: 2,
-    status: "Reserved",
-  },
-  {
-    id: 2,
-    restaurantName: "Ocean Breeze Diner",
-    date: "2022-12-15",
-    time: "7:30 PM",
-    guests: 4,
-    status: "Cancelled",
-  },
-];
+
 
 
 import React from "react";
@@ -29,7 +12,9 @@ import { Typography } from "@/styles/Typography";
 import { styles } from "@/styles/tabs/history";
 import { Color, FontSize } from "@/styles/GlobalStyles";
 import { PaymentHistoryItem } from "@/components/history-view/payment-history/history-item-payment";
+import { BookedItem } from "@/components/history-view/booking-history/booked-item";
 import { paymentData } from "@/data/mocking/payment";
+import { tableBookedData } from "@/data/mocking/table-booked";
 
 
 const History = () => {
@@ -92,9 +77,9 @@ const History = () => {
             <View key={index} style={styles.hisItem}>
               <PaymentHistoryItem item={item} onPress={() => {}} payment={paymentView} /> 
             </View>
-          )) : bookedData.map((item, index) => (
+          )) : tableBookedData.map((item, index) => (
             <View key={index} style={styles.hisItem}>
-              
+              <BookedItem item={item}/>
             </View>
           ))}
 

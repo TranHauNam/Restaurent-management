@@ -26,19 +26,20 @@ export const styles = StyleSheet.create({
     },
 
     mainLayout: {
-        //debug
-        borderWidth: 1,
+        // //debug
+        // borderWidth: 1,
     },
 
     mainContainer: {
         //debug
-        borderWidth: 1,
-        borderColor: "red",
+        // borderWidth: 1,
+        // borderColor: "red",
     },
 
     smallBoxContainer: {
         marginHorizontal: wp("4%"), 
         marginTop: hp("1.6%"),
+        backgroundColor: Color.white,
     },
 
     paymentContainer: {
@@ -106,6 +107,11 @@ export const styles = StyleSheet.create({
 
     },
 
+    timeLabelText: {
+        fontSize: FontSize.size_s,
+        color: Color.tertiary,
+    },
+
     calculateDivideLine: {
         width: wp("90%"),
         height: 2,
@@ -114,5 +120,24 @@ export const styles = StyleSheet.create({
         backgroundColor: Color.sub,
         marginVertical: hp("1.4%"),
         
+    },
+
+    boxDivider: {
+        width: wp("100%"),
+        marginVertical: hp("1%"),
+        alignSelf: "center",
+        height: hp("1.4%"),
+
+        backgroundColor: "#eee",
+        
+    },
+
+    itemDivider: {
+        marginBottom: hp("0.4%"),
+        width: wp("90%"), 
+
+        height: 1, 
+        backgroundColor: "#ccc", 
+        alignSelf: "center", 
     },
 });
