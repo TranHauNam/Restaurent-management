@@ -1,5 +1,6 @@
 export const paymentData = [
   {
+    code: "001",
     id: "pay1",
     restaurantName: "Sea Grill of Merrick Park",
     restaurantID: "rest1",
@@ -32,6 +33,7 @@ export const paymentData = [
     vat: 10.0,
   },
   {
+    code: "002",
     id: "pay2",
     restaurantName: "Ocean Breeze Diner",
     restaurantID: "rest2",

@@ -72,31 +72,31 @@ const renderMenuListItem = (menu) => {
       </View>
 
       {/* Item Divider  */}
-      <View style={{ width: wp("90%"), height: 1, backgroundColor: "#ccc", alignSelf: "center", marginBottom: hp("0.4%"), }} />
+      <View style={styles.itemDivider} />
     </>
   );
 }
 
 
 export default function HistoryPaymentDetail() {
-  const router = useRouter();
-  const { id } = useLocalSearchParams();
-  const item = paymentData.find(payment => payment.id == id);
-  const restaurant = getRestaurant(item.restaurantID);
+    const router = useRouter();
+    const { id } = useLocalSearchParams();
+    const item = paymentData.find(payment => payment.id == id);
+    const restaurant = getRestaurant(item.restaurantID);
   
 
 
-  const handleBackPress = () => {
-    // Navigate back to the previous screen
-    router.back();
-  }
+    const handleBackPress = () => {
+        // Navigate back to the previous screen
+        router.back();
+    }
 
   
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
       <SafeAreaView style={styles.container}>
-        {/* Header  */}
+        {/* Header */}
         <Header 
           title="Payment Detail"
           onBackPress={() => {handleBackPress()}}
@@ -159,7 +159,27 @@ export default function HistoryPaymentDetail() {
                 </Text>
             </View>
           </View>
+          
+          <View style={styles.boxDivider} />
 
+          {/* RelatedInforBox  */}
+          <View style={styles.smallBoxContainer}>
+            {/* Payment Code  */}
+            <View style={[styles.insideBox, { marginTop: -hp("1.2%"), marginBottom: hp("4%")}]}>
+                <Text style={[Typography.header6, styles.payLaberText]}>
+                    Payment Code: {item.code}
+                </Text>
+
+                <Text style={[Typography.label, styles.timeLabelText,]}>
+                    {item.date}, {item.time}
+                </Text>
+                {/* <View style={{ backgroundColor: "white", marginBottom: hp("4%")}}></View> */}
+
+            </View>
+          </View>
+          
+          {/* Footer  */}
+          
         </ScrollView>
         {/* Payment  */}
         
