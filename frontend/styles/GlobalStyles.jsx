@@ -24,6 +24,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
   /* Colors */
   export const Color = {
     primary: "#F49B33",
+    lightPrimary: "#F9E8D1",
     secondary: "#2b2b2b",
     lightsub: "#f2f2f2",
     sub: "#cecece",
