@@ -119,7 +119,7 @@ export const styles = StyleSheet.create({
 
   restaurantListContainer: {
     width: "100%",
-    height: "100%", 
+    // height: "100%", 
     flexDirection: "column",
 
     display: "flex",
@@ -127,4 +127,19 @@ export const styles = StyleSheet.create({
     alignItems: "baseline",
   },
 
+  mapContainer: {
+    height: hp("40%"),
+    width: wp("80%"),
+
+    //debug
+    borderWidth: 1,
+  },
+  map: {
+    flex: 1,
+    minHeight: hp("40%"),
+
+    //debug
+    borderWidth: 1,
+    borderColor: "red",
+  }
 });

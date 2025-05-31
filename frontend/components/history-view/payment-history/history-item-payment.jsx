@@ -38,8 +38,8 @@ export const PaymentHistoryItem = ({ item, onPress, payment }) => {
             </View>
 
             {/* Dòng thứ 2: Thời gian */}
-            <Text style={[Typography.label, styles.timeText, { marginBottom: 4 }]}>
-                {item.time}, {item.date}
+            <Text style={[Typography.paragraph, styles.timeText, { marginBottom: 4 }]}>
+                {item.date} - {item.time}
             </Text>
 
             {/* Dòng thứ 3: Giá và trạng thái */}

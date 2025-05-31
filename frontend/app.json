@@ -44,6 +44,12 @@
             "./assets/fonts/Roboto/normal/Roboto-Medium.ttf",
           ]
         }
+      ],
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsDownloadToken": "sk.eyJ1IjoiMjIwMjExNTAiLCJhIjoiY21iYzk1b2l1MTFzcjJpcXUwYWd3NnNvaSJ9.5JUvfWgdUUkNIkVVcPhUhw"
+        }
       ]
     ],
     "experiments": {

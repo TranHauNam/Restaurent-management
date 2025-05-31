@@ -17,7 +17,7 @@ import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import DatePicker from 'react-native-date-picker';
-import { set } from 'date-fns';
+
 
 
 
@@ -62,6 +62,10 @@ export const BookingModal = ({
             return d;
         }
     };
+
+    const handleReservePress = () => {
+        
+    }
 
 
   return (
@@ -194,7 +198,7 @@ export const BookingModal = ({
                     />
 
                     {/* Reserve Now Button  */}
-                    <TouchableOpacity style={styles.reserveButton}>
+                    <TouchableOpacity style={styles.reserveButton} onPress={() => {}}>
                         <Text style={styles.reserveButtonText}>Reserve Now</Text>
                     </TouchableOpacity>
 

@@ -19,8 +19,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 
 
 // Component render menu item
-const renderMenuItem = (icon, label) => (
-  <TouchableOpacity style={styles.menuItem}>
+const renderMenuItem = (icon, label, onPress) => (
+  <TouchableOpacity style={styles.menuItem} onPress={onPress}>
     <View style={styles.menuLeft}>
       <View style={styles.menuIconBox}>
         <Icon name={icon} size={20} color="#000" />
@@ -35,7 +35,8 @@ const Profile = () => {
   const { logout } = useAuthContext(); // Destructure logout function from AuthContext
   const handleLogout = async () => {
     await logout();
-    router.replace("/");
+    router.replace("/sign-in");
+    // console.log("Logout function called");
   };
 
   return (
@@ -78,9 +79,13 @@ const Profile = () => {
         {renderMenuItem('account-outline', 'Thông tin cá nhân')}
         {/* {renderMenuItem('history', 'Lịch sử hoạt động')} */}
         {renderMenuItem('map-marker-outline', 'Quản lý địa chỉ')}
+        {renderMenuItem('logout', 'Đăng xuất', handleLogout)}
         {/* {renderMenuItem('file-document-outline', 'Quản lý thông tin xuất hoá đơn')} */}
         {renderMenuItem('file-document', 'Điều khoản sử dụng')}
         {/* {renderMenuItem('account-group-outline', 'Giới thiệu bạn bè')} */}
+        {renderMenuItem('information-outline', 'Về TableBooking')}
+
+
       </View>
 
       <View style={styles.versionSection}>

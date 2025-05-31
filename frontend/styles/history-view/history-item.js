@@ -50,7 +50,8 @@ export const styles = StyleSheet.create({
     },
 
     timeText: {
-        fontSize: FontSize.size_xs,
+        fontSize: FontSize.size_s,
+        color: Color.tertiary,
     },
 
     statusBox: {
@@ -67,7 +68,7 @@ export const styles = StyleSheet.create({
     },
 
     resNameText: {
-
+        fontSize: FontSize.size_m,
     },
 
     amountText: {
