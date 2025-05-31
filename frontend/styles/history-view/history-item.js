@@ -16,14 +16,24 @@ export const styles = StyleSheet.create({
     },
 
     divider: {
-        height: hp("0.1%"),
-        width: screenWidthSAV - marginLeftSAV * 2,
-        marginBottom: hp("0.4%"),
+        marginBottom: hp("1%"),
+        marginTop: hp("1%"),
+        width: wp("80%"),
+        height: 1,
+        alignSelf: "center",
 
         backgroundColor: Color.divider,
 
         // //debug
         // borderWidth: 1,
+    },
+
+    image: {
+        width: wp("12%"),
+        height: wp("12%"),
+        borderRadius: 999,
+        marginRight: wp("2.8%"),
+        backgroundColor: "#eee",
     },
     
     headerContainer: {

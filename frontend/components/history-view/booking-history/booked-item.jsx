@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'expo-router';
 import {
     View, Text, Image,
     TouchableOpacity,
@@ -11,12 +12,18 @@ import { styles } from "@/styles/history-view/booked-history/booked-item";
 
 
 export const BookedItem = ({item }) => {
+    const router = useRouter();
+
+    const handleDetailPress = (item) => {
+        // Navigate to payment detail page
+        router.push(`/history-view/booking-detail/${item.id}`);
+    }
 
     return (
         <>
             <TouchableOpacity 
             style={styles.container}
-            onPress={() => {}}>
+            onPress={() => {handleDetailPress(item)}}>
                 <View style={styles.titleBox}>
                     <Image 
                         source={{ uri: "https://picsum.photos/200" }}
