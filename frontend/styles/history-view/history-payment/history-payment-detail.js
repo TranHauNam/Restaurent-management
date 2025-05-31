@@ -36,6 +36,11 @@ export const styles = StyleSheet.create({
         borderColor: "red",
     },
 
+    smallBoxContainer: {
+        marginHorizontal: wp("4%"), 
+        marginTop: hp("1.6%"),
+    },
+
     paymentContainer: {
 
         flexDirection: "column",
@@ -50,16 +55,50 @@ export const styles = StyleSheet.create({
     },
 
     insideBox: {
+        marginTop: hp("1.2%"),
+
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingLeft: wp("6%"),
-        paddingRight: wp("4%"),
+        // paddingLeft: wp("6%"),
+        // paddingRight: wp("4%"),
         paddingVertical: hp("0.4%"),
     },
 
-    payLaberText: {
+    menuItemContainer: {
+        width: screenWidthSAV - wp("8%"),
+        height: hp("8%"),
 
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        // paddingHorizontal: wp("4%"),
+        paddingVertical: hp("1.2%"),
+
+        // //debug
+        // borderWidth: 1,
+
+    },
+
+    menuInforContainer: {
+
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        gap: wp("1.6%"),
+    },
+
+    menuItemImage: {
+        width: wp("12.8%"),
+        height: hp("6.4%"),
+
+        borderRadius: 8,
+
+        //debug
+        borderWidth: 1,
+    },
+
+    payLaberText: {
+        fontSize: FontSize.size_m,
     },
 
     payValueText: {
@@ -68,7 +107,7 @@ export const styles = StyleSheet.create({
     },
 
     calculateDivideLine: {
-        width: wp("80%"),
+        width: wp("90%"),
         height: 2,
 
         alignSelf: "center",

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { 
-  View, Text,
+  View, Text, Image,
   StatusBar,
   SafeAreaView,
   ScrollView,
@@ -13,6 +13,10 @@ import { Header } from '@/components/Header';
 import { Typography } from '@/styles/Typography';
 import { styles } from '@/styles/history-view/history-payment/history-payment-detail';
 import { paymentData } from '@/data/mocking/payment';
+import { restaurantData } from '@/data/mocking/restaurant';
+import { foodData } from '@/data/mocking/food';
+import { RestaurantSmallWindow } from '@/components/restaurant-small-window';
+import { PaymentStatusBox } from '@/components/history-view/payment-history/payment-status-smallwin';
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { FontSize } from '@/styles/GlobalStyles';
@@ -38,16 +42,56 @@ const PaymentMethodMessage = ({ method }) => {
   );
 };
 
+const getRestaurant = (restaurantId) => {
+  //fetch restaurant as ID
+
+  return restaurantData.find(restaurant => restaurant.id == restaurantId);
+}
+
+const getFood = (foodID) => {
+  //fetch food as ID
+  return foodData.find(food => food.id == foodID);
+}
+
+const renderMenuListItem = (menu) => {
+  return (
+    <>
+      <View style={styles.menuItemContainer}>
+        <View style={styles.menuInforContainer}>
+          <Image
+            style={styles.menuItemImage}
+            source={{ uri: menu.imageURL }}
+          />
+          <Text style={[Typography.header6]}>{menu.name}</Text>
+          <Text style={[Typography.paragraph, { marginTop: -hp("0.2%")}]}>x {menu.quantity}</Text>
+        </View>
+        <Text style={[Typography.header6, styles.payValueText, 
+          {alignSelf: "flex-start", marginTop: -hp("0.4%"), }]}>
+          {(menu.price * menu.quantity).toLocaleString("vn-VN")} VND
+        </Text>
+      </View>
+
+      {/* Item Divider  */}
+      <View style={{ width: wp("90%"), height: 1, backgroundColor: "#ccc", alignSelf: "center", marginBottom: hp("0.4%"), }} />
+    </>
+  );
+}
+
+
 export default function HistoryPaymentDetail() {
   const router = useRouter();
   const { id } = useLocalSearchParams();
   const item = paymentData.find(payment => payment.id == id);
+  const restaurant = getRestaurant(item.restaurantID);
+  
 
 
   const handleBackPress = () => {
     // Navigate back to the previous screen
     router.back();
   }
+
+  
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
@@ -63,6 +107,19 @@ export default function HistoryPaymentDetail() {
         <ScrollView 
         style={styles.mainLayout}
         contentContainerStyle={styles.mainContainer}>
+          {/* Payment State  */}
+          <View style={styles.smallBoxContainer}>
+            <PaymentStatusBox status={item.status} />
+          </View>
+
+
+          {/* Restaurant Info  */}
+          <View style={styles.smallBoxContainer}>
+            <RestaurantSmallWindow
+              restaurant={restaurant}
+            />
+          </View>
+
           {/* Payment  */}
           <View style={styles.paymentContainer}>
             <Text style={[Typography.header5, styles.payBoxHeader]}>Payment</Text>
@@ -75,17 +132,18 @@ export default function HistoryPaymentDetail() {
 
             {/* List Menu Price  */}
             {item.orders.map((menu, index) => (
-              <View key={index} style={[styles.insideBox, {  marginLeft: wp("4%") }]}>
-                <Text style={[Typography.paragraph, styles.payLaberText]}>{menu.name}</Text>
-                <Text style={[Typography.header6, styles.payValueText]}>
-                  {menu.price.toLocaleString("vi-VN")} VND
-                </Text>
-              </View>
+              <React.Fragment key={index}>
+                {renderMenuListItem(menu)}
+              </React.Fragment>
             ))}
+
+            
+
+            {/* Subtotal Price  */}
 
             {/* VAT  */}
             <View style={styles.insideBox}>
-              <Text style={[Typography.paragraph, styles.payLaberText]}>VAT</Text>
+              <Text style={[Typography.paragraph, styles.payLaberText]}>Value of Tax</Text>
               <Text style={[Typography.header6, styles.payValueText]}>
                 {item.vat.toLocaleString("vi-VN")} VND
               </Text>

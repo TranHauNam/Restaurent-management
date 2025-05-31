@@ -28,7 +28,7 @@ import {
 import { Typography } from "@/styles/Typography";
 import { styles } from "@/styles/tabs/history";
 import { Color, FontSize } from "@/styles/GlobalStyles";
-import { PaymentHistoryItem } from "@/components/history-view/history-item-payment";
+import { PaymentHistoryItem } from "@/components/history-view/payment-history/history-item-payment";
 import { paymentData } from "@/data/mocking/payment";
 
 
