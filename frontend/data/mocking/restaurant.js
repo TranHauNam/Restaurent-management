@@ -1,4 +1,4 @@
-export const restaurants = [
+export const restaurantData = [
     {
         id: "rest1",
         name: "Sunset Grill",
