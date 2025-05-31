@@ -1,8 +1,35 @@
 import * as React from "react";
-import { Text, View, Pressable, Image, Alert } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+
 import { useAuthContext } from "@/contexts/auth-context"; // Import AuthContext
-import { router, useRouter } from "expo-router"; // Import useRouter for navigation
 import { styles } from "@/styles/tabs/profile"; // Import styles for the component
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Color } from "@/styles/GlobalStyles"; // Import global styles
+import { Typography } from "@/styles/Typography"; // Import typography styles
+
+import { router, useRouter } from "expo-router"; // Import useRouter for navigation
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+
+
+// Component render menu item
+const renderMenuItem = (icon, label) => (
+  <TouchableOpacity style={styles.menuItem}>
+    <View style={styles.menuLeft}>
+      <View style={styles.menuIconBox}>
+        <Icon name={icon} size={20} color="#000" />
+      </View>
+      <Text style={[Typography.paragraph, styles.menuLabel]}>{label}</Text>
+    </View>
+    <Icon name="chevron-right" size={24} color="#aaa" />
+  </TouchableOpacity>
+);
 
 const Profile = () => {
   const { logout } = useAuthContext(); // Destructure logout function from AuthContext
@@ -12,43 +39,56 @@ const Profile = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {/* Header */}
-      <Text style={styles.headerTitle}>Your Profile</Text>
-      <View style={styles.headerLine} />
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.support}>
+          <Icon name="phone-outline" size={20} color="#000" />
+          <Text style={[Typography.header6, styles.supportText]}>Hỗ trợ</Text>
+        </TouchableOpacity>
+      </View>
 
-      {/* Profile Section */}
-      <View style={styles.profileSection}>
+      {/* Avatar & Tên */}
+      <View style={styles.avatarSection}>
         <Image
-          style={styles.profileImage}
-          source={require("@/assets/images/image.png")}
+          source={{ uri: "https://via.placeholder.com/40"}} // thay ảnh avatar phù hợp
+          style={styles.avatar}
         />
-        <Text style={styles.profileName}>Thanh Nguyen</Text>
-        <Text style={styles.editProfile}>Edit Profile</Text>
-        <Text style={styles.contactInfo}>+84 68688888</Text>
-        <Text style={styles.contactInfo}>it.nguyenducthanh@gmail.com</Text>
+        <Text style={styles.name}>NGUYEN THANH</Text>
+        <Text style={styles.customerCode}>Mã KH: 06155044</Text>
       </View>
 
-      {/* Savings Section */}
-      <View style={styles.savingsSection}>
-        <Text style={styles.savingsTitle}>
-          <Text style={styles.savingsLabel}>Your </Text>
-          <Text style={styles.savingsHighlight}>Savings</Text>
-        </Text>
-        <Text style={styles.savingsSubtitle}>on your recent Bookings</Text>
-        <View style={styles.savingsAmountContainer}>
-          <Text style={styles.savingsAmount}>
-            <Text style={styles.amount}>20</Text>
-            <Text style={styles.currency}> Dollars</Text>
-          </Text>
+      {/* Level + Ví ưu đãi */}
+      {/* <View style={styles.levelSection}>
+        <View style={styles.levelItem}>
+          <Icon name="crown-outline" size={20} color="#000" />
+          <Text style={styles.levelText}>Silver</Text>
         </View>
+        <View style={styles.levelItem}>
+          <Icon name="wallet-giftcard" size={20} color="#000" />
+          <Text style={styles.levelText}>Ví ưu đãi</Text>
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>0</Text>
+          </View>
+        </View>
+      </View> */}
+
+      {/* Menu */}
+      <View style={styles.menuSection}>
+        {renderMenuItem('account-outline', 'Thông tin cá nhân')}
+        {/* {renderMenuItem('history', 'Lịch sử hoạt động')} */}
+        {renderMenuItem('map-marker-outline', 'Quản lý địa chỉ')}
+        {/* {renderMenuItem('file-document-outline', 'Quản lý thông tin xuất hoá đơn')} */}
+        {renderMenuItem('file-document', 'Điều khoản sử dụng')}
+        {/* {renderMenuItem('account-group-outline', 'Giới thiệu bạn bè')} */}
       </View>
 
-      {/* Logout Button */}
-      <Pressable style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.logoutText}>LogOut</Text>
-      </Pressable>
-    </View>
+      <View style={styles.versionSection}>
+        <Text style={[Typography.label, styles.versionText]}>
+          Phiên bản ứng dụng: 1.0.0
+        </Text>
+      </View>
+    </ScrollView>
   );
 };
 

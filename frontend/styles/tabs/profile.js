@@ -6,100 +6,123 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
+
     backgroundColor: Color.white,
-    paddingHorizontal: wp("8%"),
-    paddingTop: hp("6%"),
   },
-  headerTitle: {
-    fontSize: wp("5%"),
-    color: Color.secondary,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
-    marginBottom: hp("2%"),
+  header: {
+    paddingTop: 40,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  headerLine: {
-    height: 1,
+  support: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  supportText: {
+    marginLeft: wp("2%"),
+    fontSize: FontSize.size_m,
+  },
+  points: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F9F5E9',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  pointText: {
+    fontWeight: 'bold',
+    marginRight: 4,
+  },
+  pointValue: {
+    fontWeight: 'bold',
+  },
+  avatarSection: {
+    alignItems: 'center',
+    marginTop: hp("4%"),
+  },
+  avatar: {
+    width: wp("18%"),
+    height: hp("9%"),
+
+    borderRadius: 999,
     backgroundColor: Color.primary,
-    marginBottom: hp("4%"),
   },
-  profileSection: {
-    alignItems: "center",
-    marginBottom: hp("6%"),
+  name: {
+    marginTop: 10,
+    fontSize: 18,
+    fontWeight: '700',
   },
-  profileImage: {
-    width: wp("20%"),
-    height: wp("20%"),
-    borderRadius: wp("10%"),
-    marginBottom: hp("2%"),
+  customerCode: {
+    fontSize: 14,
+    color: '#888',
+    marginTop: 4,
   },
-  profileName: {
-    // fontSize: FontSize.size_base,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
-    color: Color.primary,
-    marginBottom: hp("1%"),
+  levelSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 20,
+    paddingHorizontal: 20,
   },
-  editProfile: {
-    // fontSize: FontSize.size_3xs,
-    color: Color.primary,
-    textDecorationLine: "underline",
-    marginBottom: hp("2%"),
+  levelItem: {
+    backgroundColor: '#FFF8E1',
+    padding: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 6,
+    position: 'relative',
   },
-  contactInfo: {
-    // fontSize: FontSize.size_sm,
-    // fontFamily: FontFamily.segoeUI,
+  levelText: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  badge: {
+    position: 'absolute',
+    top: -5,
+    right: -5,
+    backgroundColor: '#000',
+    borderRadius: 10,
+    paddingHorizontal: 4,
+  },
+  badgeText: {
+    color: '#fff',
+    fontSize: 10,
+  },
+  menuSection: {
+    paddingHorizontal: 16,
+  },
+  menuItem: {
+    borderBottomWidth: 1,
+    borderColor: Color.lightsub,
+
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: hp("2%"),
+  },
+  menuLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  menuIconBox: {
+    marginRight: wp("2.4%"),
+    backgroundColor: Color.lightPrimary,
+    padding: 10,
+    borderRadius: 12,
+  },
+  menuLabel: {
+    fontSize: FontSize.size_m,
+  },
+
+  versionSection: {
+    marginTop: hp("2%"),
+  },
+
+  versionText: {
+    alignSelf: 'center',
+    fontSize: FontSize.size_s,
     color: Color.tertiary,
-    marginBottom: hp("1%"),
-  },
-  savingsSection: {
-    alignItems: "center",
-    marginBottom: hp("6%"),
-  },
-  savingsTitle: {
-    // fontSize: FontSize.size_sm,
-    // fontFamily: FontFamily.segoeUI,
-    marginBottom: hp("1%"),
-  },
-  savingsLabel: {
-    color: Color.tertiary,
-  },
-  savingsHighlight: {
-    color: Color.colorOrange,
-  },
-  savingsSubtitle: {
-    // fontSize: FontSize.size_xs,
-    // fontFamily: FontFamily.segoeUI,
-    color: Color.tertiary,
-    marginBottom: hp("2%"),
-  },
-  savingsAmountContainer: {
-    backgroundColor: "rgba(255, 255, 255, 0.11)",
-    paddingVertical: hp("1%"),
-    paddingHorizontal: wp("4%"),
-    borderRadius: wp("2%"),
-  },
-  savingsAmount: {
-    // fontSize: FontSize.size_sm,
-    // fontFamily: FontFamily.poppinsBold,
-    color: Color.primary,
-  },
-  amount: {
-    fontSize: wp("5%"),
-  },
-  currency: {
-    fontSize: wp("4%"),
-  },
-  logoutButton: {
-    backgroundColor: Color.primary,
-    paddingVertical: hp("1.5%"),
-    paddingHorizontal: wp("8%"),
-    borderRadius: wp("2%"),
-    alignSelf: "center",
-  },
-  logoutText: {
-    // fontSize: FontSize.size_sm,
-    // fontFamily: FontFamily.segoeUI,
-    color: Color.white,
-    textAlign: "center",
   },
 });
