@@ -54,6 +54,10 @@ const RestaurantMain = () => {
     setBookingModalVisible(true);
   }
 
+  const handleMapPress = () => {
+    route.push('/map-view/show-map');
+  }
+
   return (
     <>
       <ScrollView style={styles.container}>
@@ -72,7 +76,10 @@ const RestaurantMain = () => {
         {/* Address and Time */}
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
           <MaterialIcons name="location-on" size={hp("3%")} color={Color.primary} />  
-          <Text style={[Typography.paragraph, styles.address]}>{restaurant.address}</Text>
+          <Text style={[Typography.paragraph, styles.address]}>{restaurant.address}   | </Text>
+          <TouchableOpacity onPress={() => {handleMapPress()}}>
+            <Text style={[Typography.paragraph, styles.mapLink]}>View on Map</Text>
+          </TouchableOpacity>
         </View>
         
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>

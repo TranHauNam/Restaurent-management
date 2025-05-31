@@ -9,9 +9,6 @@ import { Typography } from "@/styles/Typography";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import Entypo from '@expo/vector-icons/Entypo';
-import Mapbox from '@rnmapbox/maps';
-
-Mapbox.setAccessToken('pk.eyJ1IjoiMjIwMjExNTAiLCJhIjoiY21iYzh2bGk2MTBjZzJrcG1zaHBtbDVidiJ9.yYhcT2T-libRVc1vH-oUqw');
 
 
 
@@ -109,12 +106,6 @@ const HomeView = () => {
           contentContainerStyle={styles.listContainer}   
         />
       </View>
-
-      {/* Map test */}
-      <ScrollView style={styles.mapContainer}>
-        <Text>Hey</Text>
-        <Mapbox.MapView style={styles.map} />
-      </ScrollView>
     </View>
   );
 };
