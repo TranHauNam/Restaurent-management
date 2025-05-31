@@ -46,6 +46,13 @@ export const styles = StyleSheet.create({
     marginLeft: wp("2%"),
     color: Color.secondary,
   },
+
+  mapLink: {
+    fontSize: FontSize.size_s,
+    color: Color.primary,
+    textDecorationLine: "underline",
+    marginLeft: wp("2%"),
+  },
   operatingHours: {
     marginLeft: wp("2%"),
     color: Color.secondary,
