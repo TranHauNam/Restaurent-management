@@ -4,6 +4,7 @@ export const restaurantPositions = {
     {
         type: 'Feature',
         properties: {
+        id: "67fdcee953a92ee3d4342629",
         title: 'Phú Mỹ, Mỹ Đình 2, Hà Nội',
         },
         geometry: {
@@ -14,6 +15,7 @@ export const restaurantPositions = {
     {
         type: 'Feature',
         properties: {
+        id: "67fdd6d053a92ee3d4342631",
         title: '133 Cầu Giấy, Hà Nội',
         },
         geometry: {
