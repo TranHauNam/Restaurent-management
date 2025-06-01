@@ -51,6 +51,15 @@ const ShowMap = () => {
   const handlebackPress = () => {
     router.back(); // Navigate back to the previous screen
   }
+  const handerMarkerPress = (e) => {
+    const feature = e.features && e.features[0];
+    if (feature && feature.properties && feature.properties.id) {
+      const restaurantId = feature.properties.id;
+      console.log("Clicked restaurant id:", restaurantId);
+      // Bạn có thể thực hiện điều hướng hoặc thao tác khác ở đây
+      router.push(`/restaurant_main/${restaurantId}`); // Navigate to restaurant details
+    }
+  }
 
 
   return (
@@ -74,6 +83,7 @@ const ShowMap = () => {
                   <Mapbox.ShapeSource
                     id="restaurant-source"
                     shape={restaurantPositions}
+                    onPress={handerMarkerPress}
                   >
                     <Mapbox.SymbolLayer
                       id="restaurant-symbol"
