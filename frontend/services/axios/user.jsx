@@ -2,6 +2,9 @@ import axios from "axios";
 import { API_URL } from "../config"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// import { useAuthContext } from "@/contexts/auth-context"; //error when have this
+// const { userToken } = useAuthContext(); //error when have this
+
 
 export const api = axios.create({ baseURL: API_URL });
 

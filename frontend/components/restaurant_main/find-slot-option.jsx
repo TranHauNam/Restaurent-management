@@ -9,60 +9,79 @@ import { Color, FontFamily, FontSize, Border } from "@/styles/GlobalStyles";
 import DatePicker from 'react-native-date-picker';
 import { MaterialIcons } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { set } from 'date-fns';
 
-export const TimeOrder = ({selectedTime, setShowTimeGrid, showTimeGrid}) => {
+
+export const TimeOrder = ({selectedTime, showTimePicker, isTimePickerVisible, hideTimePicker,setSelectedTime, getPrepareRangeTime }) => {
   return (
     <>
       <TouchableOpacity 
           style={[styles.bookingOption, { flexDirection: "row", justifyContent: "center" }]}
-          onPress={() => setShowTimeGrid(!showTimeGrid)} // Toggle time grid visibility
+          onPress={showTimePicker}
       >
           <MaterialIcons name="access-time" size={hp("2.2%")} color={Color.primary} style={{marginHorizontal: wp('1%'),}} />
           <Text style={[Typography.paragraph ,styles.bookingOptionText]}>
             {selectedTime ? selectedTime : "Time"} 
-          </Text>          
+          </Text>
+
+          <DatePicker
+              modal
+              open={isTimePickerVisible}
+              date={getPrepareRangeTime(11, 15)}
+              onConfirm={(date) => {
+                  hideTimePicker();
+                  setSelectedTime(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+              }}
+              onCancel={hideTimePicker}
+              mode="time"
+              minuteInterval={15}
+              minimumDate={getPrepareRangeTime(11, 15)}
+              maximumDate={getPrepareRangeTime(11, 45)}
+          />
       </TouchableOpacity>
+
     </>
   );
 }
 
-export const ShowTimeSelection = ({availableTimes, setSelectedTime, selectedTime, orderDateTime, setOrderDateTime}) => {
-  return (
-    <>
-      <Text style={styles.sectionTitle}>Select a time you like</Text>
-      <View style={styles.timeGrid}>
-        {availableTimes.map((time, index) => (
-          <Pressable
-            key={index}
-            style={[
-              styles.timeSlot,
-              selectedTime === time && styles.selectedTimeSlot, 
-            ]}
-            onPress={() => {
-              setSelectedTime(selectedTime === time ? null : time)
-              if (selectedTime !== time) {
-                // Update orderDateTime with the selected time
-                const [hours, minutes] = time.split(":");
-                const updatedDateTime = new Date(orderDateTime || new Date());
-                updatedDateTime.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
-                setOrderDateTime(updatedDateTime);
-              }
-            }} 
-          >
-            <Text
-              style={[
-                styles.timeSlotText,
-                selectedTime === time ? styles.selectedTimeSlotText : styles.unselectedTimeSlotText, 
-              ]}
-            >
-              {time}
-            </Text>
-          </Pressable>
-        ))}
-      </View>
-    </>
-  )
-}
+//---------------------- NOT DELETE ------------------------
+// export const ShowTimeSelection = ({availableTimes, setSelectedTime, selectedTime, orderDateTime, setOrderDateTime}) => {
+//   return (
+//     <>
+//       <Text style={styles.sectionTitle}>Select a time you like</Text>
+//       <View style={styles.timeGrid}>
+//         {availableTimes.map((time, index) => (
+//           <Pressable
+//             key={index}
+//             style={[
+//               styles.timeSlot,
+//               selectedTime === time && styles.selectedTimeSlot, 
+//             ]}
+//             onPress={() => {
+//               setSelectedTime(selectedTime === time ? null : time)
+//               if (selectedTime !== time) {
+//                 // Update orderDateTime with the selected time
+//                 const [hours, minutes] = time.split(":");
+//                 const updatedDateTime = new Date(orderDateTime || new Date());
+//                 updatedDateTime.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
+//                 setOrderDateTime(updatedDateTime);
+//               }
+//             }} 
+//           >
+//             <Text
+//               style={[
+//                 styles.timeSlotText,
+//                 selectedTime === time ? styles.selectedTimeSlotText : styles.unselectedTimeSlotText, 
+//               ]}
+//             >
+//               {time}
+//             </Text>
+//           </Pressable>
+//         ))}
+//       </View>
+//     </>
+//   )
+// }
 
 export const DateOrder = ({orderDateTime, isDatePickerVisible, hideDatePicker, setOrderDateTime, showDatePicker}) => {
   return (
@@ -80,30 +99,19 @@ export const DateOrder = ({orderDateTime, isDatePickerVisible, hideDatePicker, s
               .toString().padStart(2, '0')}/${orderDateTime.getFullYear()}`
             : 'Date'}
         </Text>
-        <ShowDateSelection
-          isDatePickerVisible={isDatePickerVisible}
-          orderDateTime={orderDateTime}
-          hideDatePicker={hideDatePicker}
-          setOrderDateTime={setOrderDateTime}
+        <DatePicker
+          modal
+          open={isDatePickerVisible}
+          date={orderDateTime ? new Date(orderDateTime) : new Date()}
+          onConfirm={(date) => {
+              hideDatePicker();
+              setOrderDateTime(date);
+          }}
+          onCancel={hideDatePicker}
+          mode="date"
         />
       </TouchableOpacity>
     </>
-  );
-}
-
-export const ShowDateSelection = ({isDatePickerVisible, orderDateTime, hideDatePicker, setOrderDateTime}) => {
-  return (
-    <DatePicker
-      modal
-      open={isDatePickerVisible}
-      date={orderDateTime ? new Date(orderDateTime) : new Date()}
-      onConfirm={(date) => {
-          hideDatePicker();
-          setOrderDateTime(date);
-      }}
-      onCancel={hideDatePicker}
-      mode="date"
-    />
   );
 }
 
@@ -130,11 +138,32 @@ export const BookingOptions = ({
 }) => {
    
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [showTimeGrid, setShowTimeGrid] = useState(false);
-  const [showPeoplePicker, setShowPeoplePicker] = useState(false);
-
   const showDatePicker = () => setDatePickerVisibility(true);
   const hideDatePicker = () => setDatePickerVisibility(false);
+
+
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+  const showTimePicker = () => setTimePickerVisibility(true);
+  const hideTimePicker = () => setTimePickerVisibility(false);
+
+  const [showTimeGrid, setShowTimeGrid] = useState(false);
+
+  const [showPeoplePicker, setShowPeoplePicker] = useState(false);
+
+  // Helper for min/max time
+  const getPrepareRangeTime = (hour, minute) => {
+      //querry database
+      // Pass proper Date day valu
+      if (orderDateTime != null) {
+          const d = new Date(orderDateTime);
+          d.setHours(hour, minute, 0, 0);
+          return d;
+      } else {
+          const d = new Date();
+          d.setHours(hour, minute, 0, 0);
+          return d;
+      }
+  };
 
   return (
     <>
@@ -151,8 +180,11 @@ export const BookingOptions = ({
         {/* Time Picker */}
         <TimeOrder 
           selectedTime={selectedTime} 
-          setShowTimeGrid={setShowTimeGrid}
-          showTimeGrid={showTimeGrid} 
+          showTimePicker={showTimePicker}
+          isTimePickerVisible={isTimePickerVisible}
+          hideTimePicker={hideTimePicker}
+          setSelectedTime={setSelectedTime}
+          getPrepareRangeTime={getPrepareRangeTime} 
         />
 
         {/* People Picker */}
@@ -163,15 +195,6 @@ export const BookingOptions = ({
         />
       </View>
 
-      {showTimeGrid && (
-        <ShowTimeSelection 
-          availableTimes={availableTimes} 
-          setSelectedTime={setSelectedTime}
-          selectedTime={selectedTime}
-          orderDateTime={orderDateTime}
-          setOrderDateTime={setOrderDateTime}
-        /> 
-      )}
 
       {showPeoplePicker && (
         <ShowPeopleSelection

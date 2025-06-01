@@ -6,6 +6,9 @@ import {
     ScrollView, Image, TextInput, 
 } from 'react-native';
 
+import { 
+    
+} from "@/services/restaurant-api";
 import { styles } from '../../styles/booking-modal/booking-modal';
 import { Color } from '../../styles/GlobalStyles';
 import { NoteManager } from './note-bm';
@@ -198,7 +201,7 @@ export const BookingModal = ({
                     />
 
                     {/* Reserve Now Button  */}
-                    <TouchableOpacity style={styles.reserveButton} onPress={() => {}}>
+                    <TouchableOpacity style={styles.reserveButton} onPress={() => {handleReservePress}}>
                         <Text style={styles.reserveButtonText}>Reserve Now</Text>
                     </TouchableOpacity>
 
