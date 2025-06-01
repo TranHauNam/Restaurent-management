@@ -2,6 +2,7 @@ const Restaurent = require('../../models/restaurant.model');
 const Schedule = require('../../models/schedule.model');
 const Reservation = require('../../models/reservation.model');
 const parseToMinutes = require('../../utils/parseToMinutes');
+const mongoose = require('mongoose');
 
 module.exports.getAllRestaurents = async (req, res) => {
     try {
@@ -47,9 +48,10 @@ module.exports.getAvailableTimes = async (req, res) => {
     }
 
     try {
+              
         const schedule = await Schedule.findOne({
             restaurantId: restaurantId,
-            date: date
+            date: date,
         });
 
         if (!schedule) {

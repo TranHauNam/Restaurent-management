@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import {  View, Text, Pressable, Image, FlatList, ScrollView, } from "react-native";
 
-import { fetchRestaurants } from "@/services/api";
+import { fetchRestaurants } from "@/services/restaurant-api";
 import { styles } from "@/styles/tabs/home";
 import { Typography } from "@/styles/Typography";
 

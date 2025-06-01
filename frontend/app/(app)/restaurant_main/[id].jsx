@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Image, ActivityIndicator, Pressable, TouchableOpacity, ScrollView } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
-import { fetchRestaurantById } from "@/services/api";
+import { 
+  fetchRestaurantById,
+  postAvailableTime,
+} from "@/services/restaurant-api";
 import { Typography } from "@/styles/Typography";
 import { styles } from "@/styles/restaurant_main/restaurant-main";
 import { Color } from "@/styles/GlobalStyles";
