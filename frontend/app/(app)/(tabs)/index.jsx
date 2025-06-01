@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import {  View, Text, Pressable, Image, FlatList, ScrollView, } from "react-native";
+import {  View, Text, Pressable, Image, FlatList, ScrollView, TouchableOpacity, } from "react-native";
 
 import { fetchRestaurants } from "@/services/restaurant-api";
 import { styles } from "@/styles/tabs/home";
@@ -38,10 +38,18 @@ const HomeView = () => {
   // useEffect(() => {
   //   console.log("Restaurant data time available updated:", restaurantData.availableTimes);
   // }, [restaurantData]);
-  const renderTimeSlot = ({ item }) => (
-    <View style={styles.timeSlotContainer}>
+  const renderTimeSlot = (restaurantId) => ({ item }) => (
+    <TouchableOpacity 
+    style={styles.timeSlotContainer}
+    onPress={() => {
+      router.push({
+        pathname: `/restaurant_main/${restaurantId}`,
+        params: { time: item }
+      })
+    }}
+    >
       <Text style={[Typography.smallButton, styles.timeSlotText]}>{item}</Text>
-    </View>
+    </TouchableOpacity>
   );
   
   const renderRestaurantCard = ({ item }) => (
@@ -71,7 +79,7 @@ const HomeView = () => {
       </Pressable>
       <FlatList
         data={item.availableTimes}
-        renderItem={renderTimeSlot}
+        renderItem={renderTimeSlot(item._id)}
         keyExtractor={(slot, index) => `${slot}-${index}`}
         horizontal={true}      
         contentContainerStyle={{

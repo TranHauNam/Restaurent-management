@@ -18,7 +18,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 const RestaurantMain = () => {
   const route = useRouter();
-  const id = useLocalSearchParams().id; // Get restaurant ID from route params
+  const id = useLocalSearchParams().id; 
+  const time = useLocalSearchParams().time; 
+  
   const [restaurant, setRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDescriptionExpanded, setDescriptionExpanded] = useState(false); // State for description toggle
@@ -26,7 +28,7 @@ const RestaurantMain = () => {
   
   // Booking Options State
   const [orderDateTime, setOrderDateTime] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(time || null);
   const [selectedPeople, setSelectedPeople] = useState(null);
 
   useEffect(() => {
