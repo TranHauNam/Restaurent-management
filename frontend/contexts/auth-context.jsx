@@ -1,7 +1,14 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { 
+    createContext, 
+    useContext, 
+    useEffect, 
+    useState 
+} from "react";
+
 import { API_URL } from '../services/config';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { set } from "date-fns";
 
 const APILINK = API_URL;
 export const AuthContext = createContext(undefined);
@@ -18,6 +25,7 @@ export function AuthContextProvider({children}) {
     const [isLoading, setLoading] = useState(false);
     const [isAuthenticated, setAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
+    const [userToken, setUserToken] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
     const [adminToken, setAdminToken] = useState(null);
 
@@ -39,12 +47,14 @@ export function AuthContextProvider({children}) {
         loadToken();
     }, []);
 
+
     const login = async (email) => {
         try {
             const response = await fetch(`${APILINK}/api/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Accept": "application/json"
                 },
                 body: JSON.stringify({ 
                     email: email
@@ -121,6 +131,7 @@ export function AuthContextProvider({children}) {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Accept": "application/json"
                 },
                 body: JSON.stringify({ 
                     fullName: fullName,
@@ -143,29 +154,45 @@ export function AuthContextProvider({children}) {
 
     const verifyOTP = async (otp) => {
         try {
-            const response = await fetch(`${APILINK}/api/auth/verify-otp`, {    
+            console.log("Verifying OTP with", { otp});
+            console.log("API URL:", `${APILINK}/api/auth/verify-otp`);
+            
+            const response = await fetch(`${APILINK}/api/auth/verify-otp`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Accept": "application/json"
                 },
                 body: JSON.stringify({ 
                     otp: otp
                 }),
             }); 
-    
+            
             const data = await response.json();
+
+            //debug
+            console.log("Verify OTP response:", data);
+            console.log("response.ok:", response.ok, "data.tokenUser:", data.user.tokenUser);
+            //end debug
     
-            if (response.ok && data.user && data.token) {
+            if (response.ok && data.user.tokenUser) {
+                await AsyncStorage.setItem('userToken', data.user.tokenUser);
+                // setAdminToken(data.tokenUser);
+                setUserToken(data.user.tokenUser);
                 setUser(data.user);
                 setAuthenticated(true);
                 console.log("Verify successful:", data.user);
+                setIsAdmin(false);
                 return { success: true, message: "Login successful" };
             } else {
                 return { success: false, message: data.message || "OTP Check failed" };
             }
         } catch (e) {
-            console.error("Error checking OTP: ", e);
-            return { success: false, message: "System Error, Please try again later" };
+            console.error("Error logging in verifying OTP:", e);
+            return { 
+                success: false, 
+                message: "Không thể kết nối đến server. Vui lòng kiểm tra:\n1. Server backend đã được khởi động\n2. IP address chính xác\n3. Port 5001 đã được mở" 
+            };
         }
     }
 
@@ -182,7 +209,8 @@ export function AuthContextProvider({children}) {
             loginAdmin,
             user,
             isAdmin,
-            adminToken
+            adminToken,
+            userToken,
         }}>
             {children}
         </AuthContext.Provider>

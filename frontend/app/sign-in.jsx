@@ -9,6 +9,7 @@ import { Padding, Color, Border, FontSize, FontFamily } from "@/styles/GlobalSty
 import { useRouter } from "expo-router";
 import { OtpInput } from "react-native-otp-entry";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { set } from "date-fns";
 
 
 const SignIn = () => {
@@ -32,11 +33,13 @@ const SignIn = () => {
     // }
 
     // let otpResponse = await verifyOTP(otpRef.current);
+    
     // if (!otpResponse.success) {
     //   Alert.alert(otpResponse.message);
     //   console.log(otpResponse.message);
     // } else if (otpResponse.success) {
     //   // router.push("/(app)/(tabs)/");
+    //   setLoading(false);
     //   setAuthenticated(true);
     //   router.replace("/");
     // }
