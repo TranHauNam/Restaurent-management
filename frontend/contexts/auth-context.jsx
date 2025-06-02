@@ -176,6 +176,9 @@ export function AuthContextProvider({children}) {
             //end debug
     
             if (response.ok && data.user.tokenUser) {
+                //debug
+                console.log("attempting to set userToken in AsyncStorage with:", data.user.tokenUser);
+                //end debug
                 await AsyncStorage.setItem('userToken', data.user.tokenUser);
                 // setAdminToken(data.tokenUser);
                 setUserToken(data.user.tokenUser);

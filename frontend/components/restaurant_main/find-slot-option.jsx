@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-native'
 
@@ -11,6 +11,14 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { set } from 'date-fns';
 
+// Thêm hàm formatDate
+const formatDate = (date) => {
+  if (!date) return '';
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 export const TimeOrder = ({selectedTime, showTimePicker, isTimePickerVisible, hideTimePicker,setSelectedTime, getPrepareRangeTime }) => {
   return (
@@ -95,8 +103,7 @@ export const DateOrder = ({orderDateTime, isDatePickerVisible, hideDatePicker, s
         <Text 
           style={[Typography.paragraph ,styles.bookingOptionText]}>
           {orderDateTime ? 
-          `${orderDateTime.getDate().toString().padStart(2, '0')}/${(orderDateTime.getMonth() + 1)
-              .toString().padStart(2, '0')}/${orderDateTime.getFullYear()}`
+          formatDate(orderDateTime)
             : 'Date'}
         </Text>
         <DatePicker
@@ -145,10 +152,11 @@ export const BookingOptions = ({
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const showTimePicker = () => setTimePickerVisibility(true);
   const hideTimePicker = () => setTimePickerVisibility(false);
+  const [showPeoplePicker, setShowPeoplePicker] = useState(false);
 
   const [showTimeGrid, setShowTimeGrid] = useState(false);
+  
 
-  const [showPeoplePicker, setShowPeoplePicker] = useState(false);
 
   // Helper for min/max time
   const getPrepareRangeTime = (hour, minute) => {
@@ -166,6 +174,14 @@ export const BookingOptions = ({
   };
 
   return (
+
+
+    //debug
+    // useEffect(() => {
+    //   console.log("Date Order Time:", orderDateTime);
+    // }, [orderDateTime]),
+    //end debug
+
     <>
       <View style={styles.bookingOptionList}>
         {/* Date Picker */}

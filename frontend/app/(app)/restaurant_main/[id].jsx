@@ -15,10 +15,35 @@ import { BookingModal } from "../../../components/booking-modal/booking-modal";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { MaterialIcons } from '@expo/vector-icons';
 
+// Hàm format date về yyyy-mm-dd
+const getFormattedDate = (date) => {
+  if (!date) return '';
+  if (typeof date === 'string') return date; // Nếu đã là string
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+// Hàm format time về hh:mm
+const getFormattedTime = (time) => {
+  if (!time) return '';
+  if (typeof time === 'string') {
+    // Nếu đã là hh:mm thì trả về luôn
+    if (/^\d{2}:\d{2}$/.test(time)) return time;
+    // Nếu là chuỗi giờ phút giây thì cắt ra
+    const [h, m] = time.split(':');
+    return `${h.padStart(2, '0')}:${m.padStart(2, '0')}`;
+  }
+  // Nếu là Date object
+  return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+};
 
 const RestaurantMain = () => {
   const route = useRouter();
-  const id = useLocalSearchParams().id; // Get restaurant ID from route params
+  const id = useLocalSearchParams().id; 
+  const time = useLocalSearchParams().time; 
+  
   const [restaurant, setRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDescriptionExpanded, setDescriptionExpanded] = useState(false); // State for description toggle
@@ -26,7 +51,7 @@ const RestaurantMain = () => {
   
   // Booking Options State
   const [orderDateTime, setOrderDateTime] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(time || null);
   const [selectedPeople, setSelectedPeople] = useState(null);
 
   useEffect(() => {
@@ -53,8 +78,28 @@ const RestaurantMain = () => {
     route.back();
   };
 
-  const handleFindSlots = () => {
-    setBookingModalVisible(true);
+  const handleFindSlots = async () => {
+    // setBookingModalVisible(true); //for futther user information
+    if (!orderDateTime || !selectedTime || !selectedPeople) {
+      console.log("Please select date, time, and people before finding slots.");
+      return;
+    }
+    // Format lại trước khi gọi API
+    const formattedDate = getFormattedDate(orderDateTime);
+    const formattedTime = getFormattedTime(selectedTime);
+
+    try {
+      const result = await postAvailableTime({
+        restaurantId: id,
+        date: formattedDate,
+      time: formattedTime,
+        people: selectedPeople,
+      });
+      // setAvailableSlots(result.availableTimes || []);
+      console.log("Available slots:", result.availableTimes);
+    } catch (error) {
+      console.error("Error fetching available slots:", error);
+    }
   }
 
   const handleMapPress = () => {
