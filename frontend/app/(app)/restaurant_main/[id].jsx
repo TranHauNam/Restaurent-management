@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { 
+  useEffect, 
+  useState ,
+  useRef,
+} from "react";
 import { View, Text, Image, ActivityIndicator, Pressable, TouchableOpacity, ScrollView } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
@@ -14,6 +18,7 @@ import { BookingModal } from "../../../components/booking-modal/booking-modal";
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { MaterialIcons } from '@expo/vector-icons';
+import { set } from "date-fns";
 
 // Hàm format date về yyyy-mm-dd
 const getFormattedDate = (date) => {
@@ -53,11 +58,13 @@ const RestaurantMain = () => {
   const [orderDateTime, setOrderDateTime] = useState(null);
   const [selectedTime, setSelectedTime] = useState(time || null);
   const [selectedPeople, setSelectedPeople] = useState(null);
+  const [availableTimes, setAvailableTimes] = useState([]);
 
   useEffect(() => {
     setLoading(true);
     fetchRestaurantById(id).then((data) => {
       setRestaurant(data.restaurent);
+      setAvailableTimes(data.restaurent.availableTimes || []);
       setLoading(false);
       console.log("id", id);
     }).catch((error) => {
@@ -65,6 +72,36 @@ const RestaurantMain = () => {
       setLoading(false);
     });
   }, [id]);
+
+  useEffect(() => {
+    const handleAvailableTime = async () => {
+      // setBookingModalVisible(true); //for futther user information
+      if (!orderDateTime || !selectedTime || !selectedPeople) {
+        console.log("Please select date, time, and people before finding slots.");
+        return;
+      }
+
+      // Format lại trước khi gọi API
+      const formattedDate = getFormattedDate(orderDateTime);
+      const formattedTime = getFormattedTime(selectedTime);
+
+      try {
+        const result = await postAvailableTime({
+          restaurantId: id,
+          date: formattedDate,
+          time: formattedTime,
+          people: selectedPeople,
+        });
+        setAvailableTimes(result.availableTimes || []);
+        console.log("Available slots:", result.availableTimes);
+      } catch (error) {
+        console.error("Error fetching available slots:", error);
+      }
+    }
+    
+    handleAvailableTime();
+  }, [orderDateTime, selectedTime, selectedPeople]);
+
 
   if (loading) {
     return (
@@ -78,28 +115,28 @@ const RestaurantMain = () => {
     route.back();
   };
 
-  const handleFindSlots = async () => {
-    // setBookingModalVisible(true); //for futther user information
-    if (!orderDateTime || !selectedTime || !selectedPeople) {
-      console.log("Please select date, time, and people before finding slots.");
-      return;
-    }
-    // Format lại trước khi gọi API
-    const formattedDate = getFormattedDate(orderDateTime);
-    const formattedTime = getFormattedTime(selectedTime);
+  const handleFindSlots = () => {
+    // // setBookingModalVisible(true); //for futther user information
+    // if (!orderDateTime || !selectedTime || !selectedPeople) {
+    //   console.log("Please select date, time, and people before finding slots.");
+    //   return;
+    // }
+    // // Format lại trước khi gọi API
+    // const formattedDate = getFormattedDate(orderDateTime);
+    // const formattedTime = getFormattedTime(selectedTime);
 
-    try {
-      const result = await postAvailableTime({
-        restaurantId: id,
-        date: formattedDate,
-      time: formattedTime,
-        people: selectedPeople,
-      });
-      // setAvailableSlots(result.availableTimes || []);
-      console.log("Available slots:", result.availableTimes);
-    } catch (error) {
-      console.error("Error fetching available slots:", error);
-    }
+    // try {
+    //   const result = await postAvailableTime({
+    //     restaurantId: id,
+    //     date: formattedDate,
+    //     time: formattedTime,
+    //     people: selectedPeople,
+    //   });
+    //   availableTimesRef.current = result.availableTimes || [];
+    //   console.log("Available slots:", result.availableTimes);
+    // } catch (error) {
+    //   console.error("Error fetching available slots:", error);
+    // }
   }
 
   const handleMapPress = () => {
@@ -160,7 +197,7 @@ const RestaurantMain = () => {
 
         {/* Booking Options */}
         <BookingOptions 
-          availableTimes={restaurant.availableTimes}
+          availableTimes={availableTimes}
           orderDateTime={orderDateTime}
           setOrderDateTime={setOrderDateTime}
           selectedTime={selectedTime}
