@@ -53,43 +53,46 @@ export const TimeOrder = ({selectedTime, showTimePicker, isTimePickerVisible, hi
 }
 
 //---------------------- NOT DELETE ------------------------
-// export const ShowTimeSelection = ({availableTimes, setSelectedTime, selectedTime, orderDateTime, setOrderDateTime}) => {
-//   return (
-//     <>
-//       <Text style={styles.sectionTitle}>Select a time you like</Text>
-//       <View style={styles.timeGrid}>
-//         {availableTimes.map((time, index) => (
-//           <Pressable
-//             key={index}
-//             style={[
-//               styles.timeSlot,
-//               selectedTime === time && styles.selectedTimeSlot, 
-//             ]}
-//             onPress={() => {
-//               setSelectedTime(selectedTime === time ? null : time)
-//               if (selectedTime !== time) {
-//                 // Update orderDateTime with the selected time
-//                 const [hours, minutes] = time.split(":");
-//                 const updatedDateTime = new Date(orderDateTime || new Date());
-//                 updatedDateTime.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
-//                 setOrderDateTime(updatedDateTime);
-//               }
-//             }} 
-//           >
-//             <Text
-//               style={[
-//                 styles.timeSlotText,
-//                 selectedTime === time ? styles.selectedTimeSlotText : styles.unselectedTimeSlotText, 
-//               ]}
-//             >
-//               {time}
-//             </Text>
-//           </Pressable>
-//         ))}
-//       </View>
-//     </>
-//   )
-// }
+export const ShowTimeSelection = ({
+  availableTimes, setSelectedTime, selectedTime, 
+  orderDateTime, setOrderDateTime, timeSlotsRef
+}) => {
+  return (
+    <View>
+      <Text style={styles.sectionTitle}>Select a time you like</Text>
+      <View style={styles.timeGrid}>
+        {timeSlotsRef.current.map((time, index) => (
+          <Pressable
+            key={index}
+            style={[
+              styles.timeSlot,
+              selectedTime === time && styles.selectedTimeSlot, 
+            ]}
+            onPress={() => {
+              setSelectedTime(selectedTime === time ? null : time)
+              if (selectedTime !== time) {
+                // Update orderDateTime with the selected time
+                const [hours, minutes] = time.split(":");
+                const updatedDateTime = new Date(orderDateTime || new Date());
+                updatedDateTime.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
+                setOrderDateTime(updatedDateTime);
+              }
+            }} 
+          >
+            <Text
+              style={[
+                styles.timeSlotText,
+                selectedTime === time ? styles.selectedTimeSlotText : styles.unselectedTimeSlotText, 
+              ]}
+            >
+              {time}
+            </Text>
+          </Pressable>
+        ))}
+      </View>
+    </View>
+  )
+}
 
 export const DateOrder = ({orderDateTime, isDatePickerVisible, hideDatePicker, setOrderDateTime, showDatePicker}) => {
   return (
@@ -141,7 +144,8 @@ export const PeopleOrder = ({setShowPeoplePicker, showPeoplePicker, selectedPeop
 
 export const BookingOptions = ({
   availableTimes, orderDateTime, setOrderDateTime,
-  selectedTime, setSelectedTime, selectedPeople, setSelectedPeople
+  selectedTime, setSelectedTime, selectedPeople, setSelectedPeople,
+  timeSlotsRef,
 }) => {
    
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -153,14 +157,14 @@ export const BookingOptions = ({
   const showTimePicker = () => setTimePickerVisibility(true);
   const hideTimePicker = () => setTimePickerVisibility(false);
   const [showPeoplePicker, setShowPeoplePicker] = useState(false);
-
-  const [showTimeGrid, setShowTimeGrid] = useState(false);
   
 
 
   // Helper for min/max time
   const getPrepareRangeTime = (hour, minute) => {
       //querry database
+
+
       // Pass proper Date day valu
       if (orderDateTime != null) {
           const d = new Date(orderDateTime);
@@ -172,6 +176,7 @@ export const BookingOptions = ({
           return d;
       }
   };
+
 
   return (
 
@@ -221,6 +226,16 @@ export const BookingOptions = ({
         />
       )}
 
+      <ShowTimeSelection
+        timeSlotsRef={timeSlotsRef}
+        availableTimes={availableTimes}
+        setSelectedTime={setSelectedTime}
+        selectedTime={selectedTime}
+        orderDateTime={orderDateTime}
+        setOrderDateTime={setOrderDateTime}
+      />
+      
+
     </>
   );
 }
@@ -229,7 +244,7 @@ const styles = StyleSheet.create({
   bookingOptionList: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: hp("4%"),
+    marginBottom: hp("2.4%"),
   },
   bookingOption: {
     flex: 1,
@@ -287,10 +302,13 @@ const styles = StyleSheet.create({
   },
 
   timeGrid: {
+    marginBottom: hp("4%"),
+    
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    marginBottom: hp("4%"),
+
+    paddingHorizontal: wp("2%"),
   },
 
   timeSlot: {
