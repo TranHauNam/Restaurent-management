@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import { 
     View, Text, Modal, 
     TouchableOpacity, Pressable, 
-    ScrollView, Image, TextInput, 
+    ScrollView, Image, TextInput,
+    Alert,
 } from 'react-native';
 
 import { 
@@ -62,20 +63,21 @@ export const BookingModal = ({
 
     // Helper for min/max time
     const getPrepareRangeTime = (hour, minute) => {
-        //querry database
-        // Pass proper Date day valu
-        if (orderDateTime != null) {
-            const d = new Date(orderDateTime);
-            d.setHours(hour, minute, 0, 0);
-            return d;
-        } else {
-            const d = new Date();
-            d.setHours(hour, minute, 0, 0);
-            return d;
-        }
+        let baseDate = orderDateTime ? new Date(orderDateTime) : new Date();
+        if (isNaN(baseDate.getTime())) baseDate = new Date();
+        baseDate.setHours(hour, minute, 0, 0);
+        return baseDate;
     };
 
     const handleReservePress = async () => {
+        // Validate required fields
+        if (!orderDateTime || !selectedPeople || 
+            !name.trim() || !phone.trim() || !email.trim()) {
+            Alert.alert("Thiếu thông tin",
+            "Vui lòng nhập đầy đủ ngày, số người, tên, số điện thoại và email!");
+            return;
+        }
+
         const residRS = restaurant._id;
         const nameRS = name;
         const phoneRS = phone;
@@ -94,8 +96,10 @@ export const BookingModal = ({
                 tableReservationTime: timeRS,
             })
             console.log("Booking result:", result.message);
+            Alert.alert("Đặt bàn thành công", result.message);
         } catch (error) {
-            console.error("Error booking table:", error);
+            console.log("ERROR booking table:", error);
+            Alert.alert("Lỗi khi đặt bàn", `${error.message}`);
         }
     }
 
@@ -256,16 +260,16 @@ export const BookingModal = ({
         <DatePicker
             modal
             open={isTimePickerVisibleBM}
-            date={getPrepareRangeTime(11, 15)}
+            date={getPrepareRangeTime(10, 30)}
             onConfirm={(date) => {
                 hideTimePickerBM();
                 setSelectedTime(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
             }}
             onCancel={hideTimePickerBM}
             mode="time"
-            minuteInterval={15}
-            minimumDate={getPrepareRangeTime(11, 15)}
-            maximumDate={getPrepareRangeTime(11, 45)}
+            minuteInterval={30}
+            minimumDate={getPrepareRangeTime(10, 30)}
+            maximumDate={getPrepareRangeTime(18, 30)}
         />
 
         {/* People Select Component  */}
