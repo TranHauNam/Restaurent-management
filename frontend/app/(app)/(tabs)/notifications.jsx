@@ -27,12 +27,16 @@ let sampleData = [
 ];
 
 import React from "react";
-import { useEffect, useState } from "react";
+import { 
+  useEffect, 
+  useState 
+} from "react";
 import { 
   Text, View, SafeAreaView, StatusBar,
   TouchableOpacity, ScrollView,
 } from "react-native";
 
+import { getNotifications } from "@/services/api/notification-api";
 import { Typography } from "@/styles/Typography";
 import { styles } from "@/styles/tabs/notifications";
 import { Color, FontSize } from "@/styles/GlobalStyles";
@@ -44,7 +48,7 @@ import { set } from "date-fns";
 
 
 const Notifications = () => {
-  
+  const [notifications, setNotifications] = useState([]);
   const [notiUpdate, setNotiUpdate] = useState(false);
 
   const handleReadAll = () => {
@@ -61,6 +65,17 @@ const Notifications = () => {
     console.log("Notification pressed:", item);
   }
 
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await getNotifications();
+        setNotifications(response.notifications);
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    }
+    fetchNotifications();
+  }, []);
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
@@ -80,7 +95,7 @@ const Notifications = () => {
         {/* Notifications List */}
         <ScrollView style={styles.notiLayout}
         contentContainerStyle={styles.notiContainer}>
-          {sampleData.map((item, index) => (
+          {notifications.map((item, index) => (
             <TouchableOpacity 
             key={index} 
             style={[
@@ -91,10 +106,16 @@ const Notifications = () => {
             ]}
             onPress={() => handleNotificationPress(item)}
             >
-              <Text style={[Typography.header5]}>{item.title}</Text>
-              <Text style={[Typography.paragraph, styles.notiDescription]}>{item.description}</Text>
+              <Text style={[Typography.header5]}>
+                {item.reservationId.restaurantId.name}
+              </Text>
+              <Text style={[Typography.paragraph, styles.notiDescription]}>
+                {item.message}
+              </Text>
               {/* <Text style={[Typography.paragraph, styles.notiContent]}>{item.content}</Text> */}
-              <Text style={[Typography.label, styles.notiTime]}>{item.time}</Text>
+              <Text style={[Typography.label, styles.notiTime]}>
+                {item.reservationId.date} - {item.reservationId.time}
+              </Text>
             </TouchableOpacity>
           ))}
 

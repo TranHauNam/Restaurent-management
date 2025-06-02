@@ -35,16 +35,16 @@ export const TimeOrder = ({selectedTime, showTimePicker, isTimePickerVisible, hi
           <DatePicker
               modal
               open={isTimePickerVisible}
-              date={getPrepareRangeTime(11, 15)}
+              date={getPrepareRangeTime(10, 30)}
               onConfirm={(date) => {
                   hideTimePicker();
                   setSelectedTime(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
               }}
               onCancel={hideTimePicker}
               mode="time"
-              minuteInterval={15}
-              minimumDate={getPrepareRangeTime(11, 15)}
-              maximumDate={getPrepareRangeTime(11, 45)}
+              minuteInterval={30}
+              minimumDate={getPrepareRangeTime(10, 30)}
+              maximumDate={getPrepareRangeTime(18, 30)}
           />
       </TouchableOpacity>
 
@@ -166,15 +166,10 @@ export const BookingOptions = ({
 
 
       // Pass proper Date day valu
-      if (orderDateTime != null) {
-          const d = new Date(orderDateTime);
-          d.setHours(hour, minute, 0, 0);
-          return d;
-      } else {
-          const d = new Date();
-          d.setHours(hour, minute, 0, 0);
-          return d;
-      }
+      let baseDate = orderDateTime ? new Date(orderDateTime) : new Date();
+      if (isNaN(baseDate.getTime())) baseDate = new Date();
+      baseDate.setHours(hour, minute, 0, 0);
+      return baseDate;
   };
 
 

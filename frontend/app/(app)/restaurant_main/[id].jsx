@@ -169,7 +169,7 @@ const RestaurantMain = () => {
         {/* Address and Time */}
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
           <MaterialIcons name="location-on" size={hp("3%")} color={Color.primary} />  
-          <Text style={[Typography.paragraph, styles.address]}>{restaurant.address}   | </Text>
+          <Text style={[Typography.paragraph, styles.address]}>{restaurant.address}</Text>
         </View>
         
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>

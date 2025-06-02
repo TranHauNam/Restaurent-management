@@ -3,12 +3,13 @@ import { useState, useEffect } from 'react';
 import { 
     View, Text, Modal, 
     TouchableOpacity, Pressable, 
-    ScrollView, Image, TextInput, 
+    ScrollView, Image, TextInput,
+    Alert,
 } from 'react-native';
 
 import { 
-    
-} from "@/services/restaurant-api";
+    postTableBooking,
+} from "@/services/api/table-api";
 import { styles } from '../../styles/booking-modal/booking-modal';
 import { Color } from '../../styles/GlobalStyles';
 import { NoteManager } from './note-bm';
@@ -20,8 +21,17 @@ import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import DatePicker from 'react-native-date-picker';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
-
+// Hàm format date về yyyy-mm-dd
+const getFormattedDate = (date) => {
+  if (!date) return '';
+  if (typeof date === 'string') return date; // Nếu đã là string
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 
 export const BookingModal = ({
@@ -53,21 +63,44 @@ export const BookingModal = ({
 
     // Helper for min/max time
     const getPrepareRangeTime = (hour, minute) => {
-        //querry database
-        // Pass proper Date day valu
-        if (orderDateTime != null) {
-            const d = new Date(orderDateTime);
-            d.setHours(hour, minute, 0, 0);
-            return d;
-        } else {
-            const d = new Date();
-            d.setHours(hour, minute, 0, 0);
-            return d;
-        }
+        let baseDate = orderDateTime ? new Date(orderDateTime) : new Date();
+        if (isNaN(baseDate.getTime())) baseDate = new Date();
+        baseDate.setHours(hour, minute, 0, 0);
+        return baseDate;
     };
 
-    const handleReservePress = () => {
+    const handleReservePress = async () => {
+        // Validate required fields
+        if (!orderDateTime || !selectedPeople || 
+            !name.trim() || !phone.trim() || !email.trim()) {
+            Alert.alert("Thiếu thông tin",
+            "Vui lòng nhập đầy đủ ngày, số người, tên, số điện thoại và email!");
+            return;
+        }
+
+        const residRS = restaurant._id;
+        const nameRS = name;
+        const phoneRS = phone;
+        const peopleRS = selectedPeople;
+        const dateRS = getFormattedDate(orderDateTime);
+        const timeRS = selectedTime;
         
+        try {
+            const result = await postTableBooking({
+                restaurantId: residRS,
+                name: nameRS,
+                phone: phoneRS,
+                email: email,
+                date: dateRS,
+                people: peopleRS,
+                tableReservationTime: timeRS,
+            })
+            console.log("Booking result:", result.message);
+            Alert.alert("Đặt bàn thành công", result.message);
+        } catch (error) {
+            console.log("ERROR booking table:", error);
+            Alert.alert("Lỗi khi đặt bàn", `${error.message}`);
+        }
     }
 
 
@@ -201,7 +234,7 @@ export const BookingModal = ({
                     />
 
                     {/* Reserve Now Button  */}
-                    <TouchableOpacity style={styles.reserveButton} onPress={() => {handleReservePress}}>
+                    <TouchableOpacity style={styles.reserveButton} onPress={handleReservePress}>
                         <Text style={styles.reserveButtonText}>Reserve Now</Text>
                     </TouchableOpacity>
 
@@ -227,16 +260,16 @@ export const BookingModal = ({
         <DatePicker
             modal
             open={isTimePickerVisibleBM}
-            date={getPrepareRangeTime(11, 15)}
+            date={getPrepareRangeTime(10, 30)}
             onConfirm={(date) => {
                 hideTimePickerBM();
                 setSelectedTime(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
             }}
             onCancel={hideTimePickerBM}
             mode="time"
-            minuteInterval={15}
-            minimumDate={getPrepareRangeTime(11, 15)}
-            maximumDate={getPrepareRangeTime(11, 45)}
+            minuteInterval={30}
+            minimumDate={getPrepareRangeTime(10, 30)}
+            maximumDate={getPrepareRangeTime(18, 30)}
         />
 
         {/* People Select Component  */}

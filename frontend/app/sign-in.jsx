@@ -1,6 +1,6 @@
 import React from "react";
 import { useRef } from "react";
-import { StyleSheet, View, Text, Pressable, TextInput, Alert } from "react-native";
+import { StyleSheet, View, Text, Pressable, TextInput, Alert, StatusBar } from "react-native";
 
 import { Typography } from "@/styles/Typography";
 import { useAuthContext } from "@/contexts/auth-context";
@@ -10,6 +10,7 @@ import { useRouter } from "expo-router";
 import { OtpInput } from "react-native-otp-entry";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { set } from "date-fns";
+
 
 
 const SignIn = () => {
@@ -69,6 +70,8 @@ const SignIn = () => {
   }
 
   return (
+    <>
+    <StatusBar barStyle="dark-content" backgroundColor="#fff" />
     <View style={styles.container}>
       {/* Logo */}
       <Pressable style={styles.logoContainer} onPress={() => {}}>
@@ -136,6 +139,8 @@ const SignIn = () => {
         <Text style={[Typography.largeButton, styles.backButtonText]}>Sign In as Admin</Text>
       </Pressable>
     </View>
+        
+    </>
   );
 };
 
