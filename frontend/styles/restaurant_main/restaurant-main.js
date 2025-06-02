@@ -145,9 +145,11 @@ export const styles = StyleSheet.create({
   },
 
   findSlotsButton: {
+    marginHorizontal: wp("4%"),
+
     paddingVertical: hp("1.5%"),
 
-    borderRadius: Border.br_8xs,
+    borderRadius: 14,
     backgroundColor: Color.primary,
     alignItems: "center",
   },

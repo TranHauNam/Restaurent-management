@@ -82,7 +82,7 @@ const RestaurantMain = () => {
 
   useEffect(() => {
     const handleAvailableTime = async () => {
-      // setBookingModalVisible(true); //for futther user information
+      
       if (!orderDateTime || !selectedTime || !selectedPeople) {
         console.log("Please select date, time, and people before finding slots.");
         setFindSlotMessage("Vui lòng nhập đủ thông tin");
@@ -101,11 +101,11 @@ const RestaurantMain = () => {
           people: selectedPeople,
         });
         // setAvailableTimes(result.availableTimes || []);
-        console.log("Result:", result);
-        if (result.availableTimes) {
-          availableTimes.current = { message: "success", data: result.availableTimes };
+        availableTimes.current = result.availableTimes;
+        if (availableTimes.current.length === 0) {
+          setFindSlotMessage("Hiện đang hết bàn");
         } else {
-          availableTimes.current = { message: "error", data: result.message };
+          setFindSlotMessage("Đặt bàn ngay");
         }
         console.log(" restaurant_main/[id] HandleAvialbleTime: Available slots:", result.availableTimes);
       } catch (error) {
@@ -136,7 +136,7 @@ const RestaurantMain = () => {
   };
 
   const handleFindSlots = () => {
-
+    setBookingModalVisible(true); //for futther user information
   }
 
   const handleMapPress = () => {
@@ -170,9 +170,6 @@ const RestaurantMain = () => {
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
           <MaterialIcons name="location-on" size={hp("3%")} color={Color.primary} />  
           <Text style={[Typography.paragraph, styles.address]}>{restaurant.address}   | </Text>
-          <TouchableOpacity onPress={() => {handleMapPress()}}>
-            <Text style={[Typography.paragraph, styles.mapLink]}>View on Map</Text>
-          </TouchableOpacity>
         </View>
         
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
@@ -188,6 +185,14 @@ const RestaurantMain = () => {
           <MaterialIcons name="menu-book" size={hp("3%")} color={Color.primary} />
           <Text style={[Typography.paragraph, styles.menuLink]}>Menu</Text>
         </View>
+
+        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
+          <MaterialIcons name="access-time-filled" size={hp("3%")} color={Color.primary} />
+          <TouchableOpacity onPress={() => {handleMapPress()}}>
+            <Text style={[Typography.paragraph, styles.mapLink]}>View on Map</Text>
+          </TouchableOpacity>
+        </View>
+
 
         <Text style={[Typography.header5, styles.sectionTitle]}>Description</Text>
         <Text 
@@ -216,12 +221,26 @@ const RestaurantMain = () => {
         />
 
         {/* Find Slots Button */}
-        <TouchableOpacity 
-          style={styles.findSlotsButton}
-          onPress={() => handleFindSlots()}
-        >
-          <Text style={[Typography.smallButton, styles.findSlotsText]}>{findSlotMessage}</Text>
-        </TouchableOpacity>
+        {findSlotMessage != "Đặt bàn ngay" && (
+          <>
+            <View 
+              style={[styles.findSlotsButton, { backgroundColor: Color.sub }]}
+            >
+              <Text style={[Typography.smallButton, styles.findSlotsText, { color: Color.lightsub}]}>{findSlotMessage}</Text>
+            </View>
+          </>
+        )}
+
+        {findSlotMessage === "Đặt bàn ngay" && (
+          <>
+            <TouchableOpacity 
+              style={styles.findSlotsButton}
+              onPress={() => handleFindSlots()}
+            >
+              <Text style={[Typography.smallButton, styles.findSlotsText]}>{findSlotMessage}</Text>
+            </TouchableOpacity>
+          </>
+        )}
         
       </ScrollView>
       </SafeAreaView>

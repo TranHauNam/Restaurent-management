@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   bookingOptionList: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: hp("4%"),
+    marginBottom: hp("2.4%"),
   },
   bookingOption: {
     flex: 1,
@@ -302,10 +302,13 @@ const styles = StyleSheet.create({
   },
 
   timeGrid: {
+    marginBottom: hp("4%"),
+    
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    marginBottom: hp("4%"),
+
+    paddingHorizontal: wp("2%"),
   },
 
   timeSlot: {
