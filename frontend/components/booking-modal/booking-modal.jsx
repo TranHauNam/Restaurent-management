@@ -7,8 +7,8 @@ import {
 } from 'react-native';
 
 import { 
-    
-} from "@/services/restaurant-api";
+    postTableBooking,
+} from "@/services/api/table-api";
 import { styles } from '../../styles/booking-modal/booking-modal';
 import { Color } from '../../styles/GlobalStyles';
 import { NoteManager } from './note-bm';
@@ -20,8 +20,17 @@ import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import DatePicker from 'react-native-date-picker';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
-
+// Hàm format date về yyyy-mm-dd
+const getFormattedDate = (date) => {
+  if (!date) return '';
+  if (typeof date === 'string') return date; // Nếu đã là string
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 
 export const BookingModal = ({
@@ -66,8 +75,28 @@ export const BookingModal = ({
         }
     };
 
-    const handleReservePress = () => {
+    const handleReservePress = async () => {
+        const residRS = restaurant._id;
+        const nameRS = name;
+        const phoneRS = phone;
+        const peopleRS = selectedPeople;
+        const dateRS = getFormattedDate(orderDateTime);
+        const timeRS = selectedTime;
         
+        try {
+            const result = await postTableBooking({
+                restaurantId: residRS,
+                name: nameRS,
+                phone: phoneRS,
+                email: email,
+                date: dateRS,
+                people: peopleRS,
+                tableReservationTime: timeRS,
+            })
+            console.log("Booking result:", result.message);
+        } catch (error) {
+            console.error("Error booking table:", error);
+        }
     }
 
 
@@ -201,7 +230,7 @@ export const BookingModal = ({
                     />
 
                     {/* Reserve Now Button  */}
-                    <TouchableOpacity style={styles.reserveButton} onPress={() => {handleReservePress}}>
+                    <TouchableOpacity style={styles.reserveButton} onPress={handleReservePress}>
                         <Text style={styles.reserveButtonText}>Reserve Now</Text>
                     </TouchableOpacity>
 
