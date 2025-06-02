@@ -53,12 +53,15 @@ export const TimeOrder = ({selectedTime, showTimePicker, isTimePickerVisible, hi
 }
 
 //---------------------- NOT DELETE ------------------------
-export const ShowTimeSelection = ({availableTimes, setSelectedTime, selectedTime, orderDateTime, setOrderDateTime}) => {
+export const ShowTimeSelection = ({
+  availableTimes, setSelectedTime, selectedTime, 
+  orderDateTime, setOrderDateTime, timeSlotsRef
+}) => {
   return (
-    <>
+    <View>
       <Text style={styles.sectionTitle}>Select a time you like</Text>
       <View style={styles.timeGrid}>
-        {availableTimes.map((time, index) => (
+        {timeSlotsRef.current.map((time, index) => (
           <Pressable
             key={index}
             style={[
@@ -87,7 +90,7 @@ export const ShowTimeSelection = ({availableTimes, setSelectedTime, selectedTime
           </Pressable>
         ))}
       </View>
-    </>
+    </View>
   )
 }
 
@@ -142,6 +145,7 @@ export const PeopleOrder = ({setShowPeoplePicker, showPeoplePicker, selectedPeop
 export const BookingOptions = ({
   availableTimes, orderDateTime, setOrderDateTime,
   selectedTime, setSelectedTime, selectedPeople, setSelectedPeople,
+  timeSlotsRef,
 }) => {
    
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -173,12 +177,6 @@ export const BookingOptions = ({
       }
   };
 
-  // // Theo dõi ref để hiện/ẩn grid
-  // useEffect(() => {
-  //   setShowTimeGrid(!!showTimeSlotsRef.current);
-  //   console.log("Show Time Slots Ref:", showTimeSlotsRef.current);
-  //   console.log("Show Time Grid:", showTimeGrid);
-  // }, [showTimeSlotsRef.current]);
 
   return (
 
@@ -229,6 +227,7 @@ export const BookingOptions = ({
       )}
 
       <ShowTimeSelection
+        timeSlotsRef={timeSlotsRef}
         availableTimes={availableTimes}
         setSelectedTime={setSelectedTime}
         selectedTime={selectedTime}

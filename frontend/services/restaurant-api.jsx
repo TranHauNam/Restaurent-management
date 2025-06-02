@@ -46,6 +46,7 @@ export const fetchRestaurantById = async (id) => {
 //need token
 // Lay khung gio dat ban - get Time Slots
 export const postAvailableTime = async ({restaurantId, date, time, people}) => {
+    const dateError = "Không tìm thấy lịch";
     try {
         const response = await api.post(
             "/api/restaurant/available-times",
@@ -53,8 +54,10 @@ export const postAvailableTime = async ({restaurantId, date, time, people}) => {
         );
         return response.data;
     } catch (error) {
-        console.error("postAvailableTime error:", error);
-        throw error;
+        // Lấy message từ API nếu có
+        const apiMessage = error.response?.data?.message || error.message;
+        throw new Error(apiMessage);
+    
     }
 }
 

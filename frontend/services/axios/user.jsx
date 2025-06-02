@@ -24,10 +24,9 @@ api.interceptors.response.use(
     (res) => res,
     async (err) => {
         const originalRequest = err.config;
-        console.log("Error in response interceptor:", err);
         if (err.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
-            console.log("token hết hạn, đăng xuất");
+            console.log("axios interceptor user: 401");
         }
             // await AsyncStorage.removeItem('userToken');
         // Luôn trả về Promise.reject để hàm gọi nhận được lỗi

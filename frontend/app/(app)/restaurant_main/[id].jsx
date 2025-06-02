@@ -3,7 +3,12 @@ import React, {
   useState ,
   useRef,
 } from "react";
-import { View, Text, Image, ActivityIndicator, Pressable, TouchableOpacity, ScrollView } from "react-native";
+import { 
+  View, Text, Image, 
+  ActivityIndicator, Pressable, 
+  TouchableOpacity, ScrollView, 
+  Alert, StatusBar, SafeAreaView,
+} from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 import { 
@@ -58,13 +63,15 @@ const RestaurantMain = () => {
   const [orderDateTime, setOrderDateTime] = useState(null);
   const [selectedTime, setSelectedTime] = useState(time || null);
   const [selectedPeople, setSelectedPeople] = useState(null);
-  const [availableTimes, setAvailableTimes] = useState([]);
+  const [findSlotMessage, setFindSlotMessage] = useState("Find Slots");
+  const availableTimes = useRef({});
+  const timeSlotsRef = useRef([]); // Reference to store available times
 
   useEffect(() => {
     setLoading(true);
     fetchRestaurantById(id).then((data) => {
       setRestaurant(data.restaurent);
-      setAvailableTimes(data.restaurent.availableTimes || []);
+      timeSlotsRef.current = data.restaurent.availableTimes || [];
       setLoading(false);
       console.log("id", id);
     }).catch((error) => {
@@ -78,6 +85,7 @@ const RestaurantMain = () => {
       // setBookingModalVisible(true); //for futther user information
       if (!orderDateTime || !selectedTime || !selectedPeople) {
         console.log("Please select date, time, and people before finding slots.");
+        setFindSlotMessage("Vui lòng nhập đủ thông tin");
         return;
       }
 
@@ -92,10 +100,22 @@ const RestaurantMain = () => {
           time: formattedTime,
           people: selectedPeople,
         });
-        setAvailableTimes(result.availableTimes || []);
-        console.log("Available slots:", result.availableTimes);
+        // setAvailableTimes(result.availableTimes || []);
+        console.log("Result:", result);
+        if (result.availableTimes) {
+          availableTimes.current = { message: "success", data: result.availableTimes };
+        } else {
+          availableTimes.current = { message: "error", data: result.message };
+        }
+        console.log(" restaurant_main/[id] HandleAvialbleTime: Available slots:", result.availableTimes);
       } catch (error) {
-        console.error("Error fetching available slots:", error);
+        if (error.message.includes("lịch")) {
+            // Alert.alert("[id] Lỗi ngày đặt", error.message);
+            setFindSlotMessage("Ngày chọn không có lịch");
+        } else {
+            // Alert.alert("[id] Lỗi", error.message);
+            setFindSlotMessage("Vui lòng thử lại sau");
+        }
       }
     }
     
@@ -116,27 +136,7 @@ const RestaurantMain = () => {
   };
 
   const handleFindSlots = () => {
-    // // setBookingModalVisible(true); //for futther user information
-    // if (!orderDateTime || !selectedTime || !selectedPeople) {
-    //   console.log("Please select date, time, and people before finding slots.");
-    //   return;
-    // }
-    // // Format lại trước khi gọi API
-    // const formattedDate = getFormattedDate(orderDateTime);
-    // const formattedTime = getFormattedTime(selectedTime);
 
-    // try {
-    //   const result = await postAvailableTime({
-    //     restaurantId: id,
-    //     date: formattedDate,
-    //     time: formattedTime,
-    //     people: selectedPeople,
-    //   });
-    //   availableTimesRef.current = result.availableTimes || [];
-    //   console.log("Available slots:", result.availableTimes);
-    // } catch (error) {
-    //   console.error("Error fetching available slots:", error);
-    // }
   }
 
   const handleMapPress = () => {
@@ -145,14 +145,22 @@ const RestaurantMain = () => {
 
   return (
     <>
-      <ScrollView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <SafeAreaView style={styles.container}>
         {/* Header */}
-        <View style={styles.headerContainer}>
-          <TouchableOpacity  onPress={handleBackPress}>
-            <MaterialIcons name="arrow-back" size={hp("3.5%")} color={Color.black} />
+        <View style={styles.header}>
+          <TouchableOpacity  onPress={handleBackPress} style={styles.backBut}>
+            <MaterialIcons name="arrow-back" size={hp("3.5%")} 
+            color={Color.black}  />
           </TouchableOpacity>
-          <Text style={[Typography.header3, styles.restaurantTitle]}>{restaurant.name}</Text>
+          <Text style={[Typography.header3, styles.headerText]}>{restaurant.name}</Text>
         </View>
+
+
+
+      
+      <ScrollView style={styles.mainLayout} contentContainerStyle={styles.mainContent}>
+        {/* Header */}
         <View style={styles.headerLine} />
 
         {/* Restaurant Image */}
@@ -196,7 +204,8 @@ const RestaurantMain = () => {
         </Text>
 
         {/* Booking Options */}
-        <BookingOptions 
+        <BookingOptions
+          timeSlotsRef={timeSlotsRef}
           availableTimes={availableTimes}
           orderDateTime={orderDateTime}
           setOrderDateTime={setOrderDateTime}
@@ -205,16 +214,17 @@ const RestaurantMain = () => {
           selectedPeople={selectedPeople}
           setSelectedPeople={setSelectedPeople}
         />
-        
 
         {/* Find Slots Button */}
-        <Pressable 
+        <TouchableOpacity 
           style={styles.findSlotsButton}
           onPress={() => handleFindSlots()}
         >
-          <Text style={styles.findSlotsText}>Find Slots</Text>
-        </Pressable>
+          <Text style={[Typography.smallButton, styles.findSlotsText]}>{findSlotMessage}</Text>
+        </TouchableOpacity>
+        
       </ScrollView>
+      </SafeAreaView>
 
       {/* Booking Modal */}
       {isBookingModalVisible && (
