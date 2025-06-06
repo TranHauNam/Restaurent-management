@@ -21,9 +21,11 @@ import {
   View, Text, StatusBar,
   TouchableOpacity, ScrollView,
   Image, FlatList, SafeAreaView,
+  Alert,
 } from 'react-native'
 
 import { useFoodContext } from '@/contexts/food-context';
+import { useCart } from '@/contexts/cart-context';
 import { foodData } from '@/data/mocking/food';
 import { Header } from '@/components/Header';
 import { styles } from '@/styles/menu/main';
@@ -106,9 +108,9 @@ const CartSummary = ({ totalAmount, onViewCart }) => {
 
 const Menu = () => {
   const { getContextFoodList } = useFoodContext();
+  const { cartItems, loading, addItemToCart } = useCart();
   const [foodList, setFoodList] = useState([]);
   const [filteredFoodList, setFilteredFoodList] = useState([]);
-  const [quantities, setQuantities] = useState({});
   const { id: resId } = useLocalSearchParams();
 
   useEffect(() => {
@@ -123,17 +125,27 @@ const Menu = () => {
     fetchFoodList();
   }, [getContextFoodList, resId]);
 
-  const handleUpdateQuantity = (foodId, newQuantity) => {
-    setQuantities(prev => ({
-      ...prev,
-      [foodId]: newQuantity
-    }));
+  const handleUpdateQuantity = async (foodId, newQuantity) => {
+    try {
+      const foodItem = filteredFoodList.find(food => food._id === foodId);
+      if (!foodItem) return;
+
+      const currentQuantity = cartItems.find(item => item.foodId === foodId)?.quantity || 0;
+      const quantityDiff = newQuantity - currentQuantity;
+      
+      if (quantityDiff !== 0) {
+        await addItemToCart(foodId, quantityDiff, foodItem);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to update cart. Please try again.');
+      console.error('Failed to update cart:', error);
+    }
   };
 
   const calculateTotal = () => {
-    return filteredFoodList.reduce((total, item) => {
-      const quantity = quantities[item._id] || 0;
-      return total + (item.price * quantity);
+    return cartItems.reduce((total, item) => {
+      const foodItem = item.food;
+      return total + ((foodItem?.price || 0) * item.quantity);
     }, 0);
   };
 
@@ -144,7 +156,7 @@ const Menu = () => {
   }
 
   const handleViewCart = () => {
-    router.push('/cart');
+    router.push('/(app)/cart');
   };
 
   return (
@@ -163,10 +175,9 @@ const Menu = () => {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => renderFoodCard(
             item,
-            quantities[item._id] || 0,
+            cartItems.find(cartItem => cartItem.foodId === item._id)?.quantity || 0,
             handleUpdateQuantity
           )}
-          
           contentContainerStyle={styles.menuContainer}
           ListEmptyComponent={() => (
             <View style={styles.emptyContainer}>

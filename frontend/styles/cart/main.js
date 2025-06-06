@@ -84,10 +84,31 @@ export const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
 
+  quantityControls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Color.lightGray,
+    borderRadius: 999,
+    paddingHorizontal: wp("2%"),
+    paddingVertical: hp("0.5%"),
+    justifyContent: 'space-between',
+    minWidth: wp("25%"),
+  },
+
+  quantityButton: {
+    backgroundColor: Color.primary,
+    borderRadius: 999,
+    width: wp("8%"),
+    height: wp("8%"),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   quantityText: {
-    fontSize: FontSize.small,
+    fontSize: FontSize.medium,
     fontWeight: '600',
     color: Color.secondary,
+    marginHorizontal: wp("2%"),
   },
 
   footer: {

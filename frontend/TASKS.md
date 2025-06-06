@@ -14,22 +14,81 @@
 
 ## Task Tracking
 
-### 1. Booking System (PHASE 1)
+### 1. Menu & Cart System (PHASE 1 - IN PROGRESS)
+
+| Task | Priority | Complexity | Dependencies | Status | Notes |
+|------|----------|------------|--------------|--------|-------|
+| **Menu UI & Integration** | P0 | C2 | - | DONE | Core feature |
+| ├─ Menu List UI | P0 | C1 | - | DONE | Basic layout, styling |
+| ├─ Food Context Integration | P0 | C1 | - | DONE | Real data display |
+| ├─ Restaurant Filter | P0 | C1 | Food Context | DONE | Filter by restaurant |
+| └─ Quantity Controls | P0 | C1 | - | DONE | Add/remove items |
+| **Cart Implementation** | P0 | C3 | Menu UI | IN PROGRESS | Core feature |
+| ├─ Cart UI Components | P0 | C1 | - | DONE | List, total, checkout |
+| ├─ Cart Context Setup | P0 | C2 | - | TODO | State management |
+| ├─ Add to Cart Logic | P0 | C2 | Cart Context | TODO | Menu integration |
+| └─ Cart Operations | P0 | C1 | Cart Context | TODO | Update/remove items |
+| **Payment Integration** | P0 | C3 | Cart | TODO | Core feature |
+| ├─ VNPay Setup | P0 | C2 | - | TODO | API configuration |
+| ├─ Payment Flow | P0 | C2 | VNPay Setup | TODO | Process handling |
+| └─ Order Confirmation | P0 | C1 | Payment Flow | TODO | Success/failure |
+
+### 2. Booking System (PHASE 2)
 
 | Task | Priority | Complexity | Dependencies | Status | Notes |
 |------|----------|------------|--------------|--------|-------|
 | **Table Booking Flow** | P0 | C3 | - | TODO | Core feature |
-| ├─ UI Components | P0 | C1 | - | TODO | Date/Time picker, guest count |
-| ├─ API Integration | P0 | C2 | UI Components | TODO | CRUD operations |
-| ├─ VNPay Integration | P0 | C3 | API Integration | TODO | Sandbox mode |
-| └─ Booking Status Tracking | P0 | C2 | API Integration | TODO | Real-time updates |
-| **Food Pre-order** | P0 | C3 | - | TODO | Core feature |
-| ├─ Menu UI | P0 | C1 | - | TODO | List, details, quantity |
-| ├─ Cart System | P0 | C2 | Menu UI | TODO | Add/remove items |
-| ├─ Order API Integration | P0 | C2 | Cart System | TODO | Submit orders |
-| └─ Payment Flow | P0 | C2 | VNPay Integration | TODO | 40% pre-payment |
+| ├─ Booking UI | P0 | C2 | - | TODO | Date/time, guests |
+| ├─ Table Selection | P0 | C2 | - | TODO | Visual layout |
+| ├─ Booking Context | P0 | C2 | - | TODO | State management |
+| └─ Confirmation | P0 | C1 | - | TODO | Success/failure |
 
-### 2. Chat System (PHASE 2)
+### Next Immediate Tasks (Broken down by prompt)
+
+1. Cart Context Implementation (2-3 prompts):
+   - Setup CartContext structure
+   - Implement add/remove/update methods
+   - Connect Menu with CartContext
+
+2. Cart Operations (2-3 prompts):
+   - Add quantity adjustment in cart
+   - Implement remove item functionality
+   - Add cart item persistence
+
+3. Payment Flow (3-4 prompts):
+   - Setup VNPay service
+   - Implement payment initiation
+   - Handle payment callbacks
+   - Add order confirmation
+
+4. Table Booking (4-5 prompts):
+   - Create booking UI components
+   - Implement date/time selection
+   - Add table visualization
+   - Setup booking context
+   - Add confirmation flow
+
+## Dependencies Graph
+```
+Cart System
+└─ Cart Context
+   ├─ Menu Integration
+   └─ Payment Flow
+      └─ Order Confirmation
+
+Booking System
+└─ Booking Context
+   ├─ Table Selection
+   └─ Confirmation Flow
+```
+
+## Next Actions (Immediate)
+1. Implement CartContext and connect with Menu
+2. Add cart operations (update/remove)
+3. Setup VNPay integration
+4. Begin booking system UI
+
+### 3. Chat System (PHASE 2)
 
 | Task | Priority | Complexity | Dependencies | Status | Notes |
 |------|----------|------------|--------------|--------|-------|
@@ -42,7 +101,7 @@
 | ├─ Push Notifications | P1 | C2 | Firebase Setup | TODO | Firebase Cloud Messaging |
 | └─ In-app Notifications | P1 | C2 | - | TODO | Local notifications |
 
-### 3. User Experience (PHASE 3)
+### 4. User Experience (PHASE 3)
 
 | Task | Priority | Complexity | Dependencies | Status | Notes |
 |------|----------|------------|--------------|--------|-------|
@@ -53,7 +112,7 @@
 | ├─ History UI | P2 | C1 | - | TODO | List view |
 | └─ API Integration | P2 | C1 | History UI | TODO | Fetch history |
 
-### 4. Restaurant Discovery (PHASE 3)
+### 5. Restaurant Discovery (PHASE 3)
 
 | Task | Priority | Complexity | Dependencies | Status | Notes |
 |------|----------|------------|--------------|--------|-------|
