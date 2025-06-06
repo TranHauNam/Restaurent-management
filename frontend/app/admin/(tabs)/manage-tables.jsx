@@ -13,13 +13,33 @@ const ManageTables = () => {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [schedule, setSchedule] = useState([]);
+  const [tableTypes, setTableTypes] = useState({}); // {id: {people, quantity}}
   const [selectedTime, setSelectedTime] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [tableData, setTableData] = useState({
     people: '',
     quantity: ''
   });
+  const [selectedTableId, setSelectedTableId] = useState(null);
 
+  // Lấy danh sách TableType của nhà hàng
+  const fetchTableTypes = async (token) => {
+    try {
+      const res = await axios.get(`${API_URL}/api/admin/tabletype`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      // Trả về dạng {id: {people, quantity}}
+      const map = {};
+      (res.data || []).forEach(t => {
+        map[t._id] = { people: t.people, quantity: t.quantity };
+      });
+      setTableTypes(map);
+    } catch (err) {
+      setTableTypes({});
+    }
+  };
+
+  // Lấy lịch bàn theo ngày
   const fetchSchedule = async (selectedDate) => {
     try {
       const token = await AsyncStorage.getItem('adminToken');
@@ -28,11 +48,10 @@ const ManageTables = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSchedule(response.data.schedule || []);
+      await fetchTableTypes(token);
     } catch (error) {
-      if (error.response && error.response.status === 404) {
-        setSchedule([]);
-      } else {
-        setSchedule([]);
+      setSchedule([]);
+      if (!(error.response && error.response.status === 404)) {
         console.error('Lỗi khi lấy lịch:', error);
         alert('Không thể lấy thông tin lịch');
       }
@@ -49,19 +68,29 @@ const ManageTables = () => {
 
   const handleTimeSelect = (time) => {
     setSelectedTime(time);
+    setEditMode(false);
+    setSelectedTableId(null);
+  };
+
+  const handleTableEdit = (table) => {
     setEditMode(true);
+    setSelectedTableId(table._id);
+    setTableData({
+      people: tableTypes[table.tableType]?.people?.toString() || '',
+      quantity: tableTypes[table.tableType]?.quantity?.toString() || ''
+    });
   };
 
   const handleUpdateTable = async () => {
     try {
       const token = await AsyncStorage.getItem('adminToken');
       const formattedDate = format(date, 'yyyy-MM-dd');
-      
       await axios.patch(
         `${API_URL}/admin/table/single-table`,
         {
           date: formattedDate,
           time: selectedTime,
+          tableId: selectedTableId,
           people: parseInt(tableData.people),
           quantity: parseInt(tableData.quantity)
         },
@@ -69,11 +98,11 @@ const ManageTables = () => {
           headers: { Authorization: `Bearer ${token}` }
         }
       );
-
       alert('Cập nhật bàn thành công');
       fetchSchedule(date);
       setEditMode(false);
       setTableData({ people: '', quantity: '' });
+      setSelectedTableId(null);
     } catch (error) {
       console.error('Lỗi khi cập nhật bàn:', error);
       alert('Không thể cập nhật bàn');
@@ -82,6 +111,7 @@ const ManageTables = () => {
 
   useEffect(() => {
     fetchSchedule(date);
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -89,7 +119,7 @@ const ManageTables = () => {
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View style={styles.headerContent}>
-            <FontAwesome name="calendar" size={24} color={Color.primary} />
+            <FontAwesome name="calendar" size={22} color={Color.primary} />
             <Text style={styles.title}>Quản lý bàn</Text>
           </View>
           <Text style={styles.subtitle}>Xem và chỉnh sửa lịch bàn theo ngày</Text>
@@ -117,20 +147,31 @@ const ManageTables = () => {
             Array.isArray(schedule) && schedule.length > 0 ? (
               <View style={styles.timeSlotContainer}>
                 {schedule.map((slot, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={styles.timeSlot}
-                    onPress={() => handleTimeSelect(slot.time)}
-                  >
+                  <View key={index} style={styles.timeSlot}>
                     <Text style={styles.timeText}>{slot.time}</Text>
                     <View style={styles.tableInfo}>
-                      {slot.tables.map((table, tIndex) => (
-                        <Text key={tIndex} style={styles.tableText}>
-                          {table.people} người: {table.quantity} bàn (Đã đặt: {table.booked})
-                        </Text>
-                      ))}
+                      {Array.isArray(slot.tables) && slot.tables.length > 0 ? (
+                        slot.tables.map((table, tIndex) => (
+                          <View key={tIndex} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 4 }}>
+                            <Text style={styles.tableText}>
+                              {tableTypes[table.tableType]?.people || '?'} người: {tableTypes[table.tableType]?.quantity || '?'} bàn (Đã đặt: {table.booked})
+                            </Text>
+                            <TouchableOpacity
+                              style={{ marginLeft: 10 }}
+                              onPress={() => {
+                                setSelectedTime(slot.time);
+                                handleTableEdit(table);
+                              }}
+                            >
+                              <FontAwesome name="edit" size={18} color={Color.primary} />
+                            </TouchableOpacity>
+                          </View>
+                        ))
+                      ) : (
+                        <Text style={styles.tableText}>Không có loại bàn</Text>
+                      )}
                     </View>
-                  </TouchableOpacity>
+                  </View>
                 ))}
               </View>
             ) : (
@@ -140,7 +181,7 @@ const ManageTables = () => {
             )
           ) : (
             <View style={styles.editContainer}>
-              <Text style={styles.editTitle}>Cập nhật bàn - {selectedTime}</Text>
+              <Text style={styles.editTitle}>Cập nhật bàn</Text>
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Số người/bàn:</Text>
                 <View style={styles.inputWrapper}>
@@ -148,7 +189,7 @@ const ManageTables = () => {
                   <TextInput
                     style={styles.input}
                     value={tableData.people}
-                    onChangeText={(text) => setTableData({...tableData, people: text})}
+                    onChangeText={(text) => setTableData({ ...tableData, people: text })}
                     keyboardType="numeric"
                     placeholder="Nhập số người/bàn"
                     placeholderTextColor={Color.sub}
@@ -162,7 +203,7 @@ const ManageTables = () => {
                   <TextInput
                     style={styles.input}
                     value={tableData.quantity}
-                    onChangeText={(text) => setTableData({...tableData, quantity: text})}
+                    onChangeText={(text) => setTableData({ ...tableData, quantity: text })}
                     keyboardType="numeric"
                     placeholder="Nhập số lượng bàn"
                     placeholderTextColor={Color.sub}
@@ -170,18 +211,19 @@ const ManageTables = () => {
                 </View>
               </View>
               <View style={styles.buttonContainer}>
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={[styles.button, styles.updateButton]}
                   onPress={handleUpdateTable}
                 >
                   <FontAwesome name="save" size={20} color={Color.white} style={styles.buttonIcon} />
                   <Text style={styles.buttonText}>Cập nhật</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={[styles.button, styles.cancelButton]}
                   onPress={() => {
                     setEditMode(false);
                     setTableData({ people: '', quantity: '' });
+                    setSelectedTableId(null);
                   }}
                 >
                   <FontAwesome name="times" size={20} color={Color.white} style={styles.buttonIcon} />
@@ -216,16 +258,18 @@ const styles = StyleSheet.create({
     marginBottom: hp('1%'),
   },
   title: {
-    fontSize: wp('6%'),
+    fontSize: wp('5.5%'),
     color: Color.primary,
     fontFamily: FontFamily.segoeUI,
     fontWeight: '700',
     marginLeft: wp('2%'),
   },
   subtitle: {
-    fontSize: wp('3.5%'),
+    fontSize: wp("4%"),
     color: Color.sub,
     fontFamily: FontFamily.segoeUI,
+    marginLeft: wp("0.5%"),
+    marginTop: hp("0.5%"),
   },
   form: {
     padding: wp('5%'),
@@ -234,11 +278,12 @@ const styles = StyleSheet.create({
     marginBottom: hp('2.5%'),
   },
   label: {
-    fontSize: wp('4%'),
+    fontSize: wp('4.5%'),
     color: Color.secondary,
     fontFamily: FontFamily.segoeUI,
     marginBottom: hp('1%'),
     fontWeight: '600',
+    marginLeft: hp('0.5%'),
   },
   inputWrapper: {
     flexDirection: 'row',
@@ -260,12 +305,20 @@ const styles = StyleSheet.create({
     color: Color.secondary,
   },
   scheduleTitle: {
-    fontSize: FontSize.size_l,
-    color: Color.secondary,
+    fontSize: wp('4.5%'),
+    color: Color.primary,
     fontWeight: '700',
     marginBottom: hp('2%'),
     fontFamily: FontFamily.segoeUI,
     textAlign: 'center',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    borderBottomWidth: 2,
+    borderBottomColor: Color.primary,
+    paddingVertical: hp('1%'),
+    // marginHorizontal: wp('4%'),
+    backgroundColor: '#fffbe7',
+    borderRadius: 4,
   },
   timeSlotContainer: {
     gap: hp('1.5%'),
