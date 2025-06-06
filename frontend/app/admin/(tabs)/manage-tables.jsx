@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput, Pressable, SafeAreaView } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 import axios from 'axios';
 import { API_URL } from '../../../services/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Color, Border, FontSize, FontFamily } from '../../../styles/GlobalStyles';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { FontAwesome } from '@expo/vector-icons';
 
 const ManageTables = () => {
   const [date, setDate] = useState(new Date());
@@ -21,13 +24,18 @@ const ManageTables = () => {
     try {
       const token = await AsyncStorage.getItem('adminToken');
       const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-      const response = await axios.get(`${API_URL}/admin/tables/schedule/${formattedDate}`, {
+      const response = await axios.get(`${API_URL}/api/admin/table/schedule/${formattedDate}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setSchedule(response.data.schedule);
+      setSchedule(response.data.schedule || []);
     } catch (error) {
-      console.error('Lỗi khi lấy lịch:', error);
-      alert('Không thể lấy thông tin lịch');
+      if (error.response && error.response.status === 404) {
+        setSchedule([]);
+      } else {
+        setSchedule([]);
+        console.error('Lỗi khi lấy lịch:', error);
+        alert('Không thể lấy thông tin lịch');
+      }
     }
   };
 
@@ -72,182 +80,259 @@ const ManageTables = () => {
     }
   };
 
+  useEffect(() => {
+    fetchSchedule(date);
+  }, []);
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Quản lý bàn</Text>
-        <TouchableOpacity 
-          style={styles.dateButton}
-          onPress={() => setShowDatePicker(true)}
-        >
-          <Text style={styles.dateButtonText}>
-            {format(date, 'dd/MM/yyyy')}
-          </Text>
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <View style={styles.headerContent}>
+            <FontAwesome name="calendar" size={24} color={Color.primary} />
+            <Text style={styles.title}>Quản lý bàn</Text>
+          </View>
+          <Text style={styles.subtitle}>Xem và chỉnh sửa lịch bàn theo ngày</Text>
+        </View>
 
-      {showDatePicker && (
-        <DateTimePicker
-          value={date}
-          mode="date"
-          onChange={handleDateChange}
-        />
-      )}
+        <View style={styles.form}>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Chọn ngày</Text>
+            <Pressable style={styles.inputWrapper} onPress={() => setShowDatePicker(true)}>
+              <FontAwesome name="calendar-o" size={20} color={Color.sub} style={styles.inputIcon} />
+              <Text style={styles.input}>{format(date, 'dd/MM/yyyy')}</Text>
+            </Pressable>
+            {showDatePicker && (
+              <DateTimePicker
+                value={date}
+                mode="date"
+                onChange={handleDateChange}
+              />
+            )}
+          </View>
 
-      {!editMode ? (
-        <View style={styles.timeSlotContainer}>
-          {schedule.map((slot, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.timeSlot}
-              onPress={() => handleTimeSelect(slot.time)}
-            >
-              <Text style={styles.timeText}>{slot.time}</Text>
-              <View style={styles.tableInfo}>
-                {slot.tables.map((table, tIndex) => (
-                  <Text key={tIndex} style={styles.tableText}>
-                    {table.people} người: {table.quantity} bàn (Đã đặt: {table.booked})
-                  </Text>
+          <Text style={styles.scheduleTitle}>Lịch bàn ngày: {format(date, 'dd/MM/yyyy')}</Text>
+
+          {!editMode ? (
+            Array.isArray(schedule) && schedule.length > 0 ? (
+              <View style={styles.timeSlotContainer}>
+                {schedule.map((slot, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.timeSlot}
+                    onPress={() => handleTimeSelect(slot.time)}
+                  >
+                    <Text style={styles.timeText}>{slot.time}</Text>
+                    <View style={styles.tableInfo}>
+                      {slot.tables.map((table, tIndex) => (
+                        <Text key={tIndex} style={styles.tableText}>
+                          {table.people} người: {table.quantity} bàn (Đã đặt: {table.booked})
+                        </Text>
+                      ))}
+                    </View>
+                  </TouchableOpacity>
                 ))}
               </View>
-            </TouchableOpacity>
-          ))}
+            ) : (
+              <Text style={{ textAlign: 'center', color: 'gray', marginTop: 20 }}>
+                Không có lịch cho ngày này
+              </Text>
+            )
+          ) : (
+            <View style={styles.editContainer}>
+              <Text style={styles.editTitle}>Cập nhật bàn - {selectedTime}</Text>
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Số người/bàn:</Text>
+                <View style={styles.inputWrapper}>
+                  <FontAwesome name="users" size={20} color={Color.sub} style={styles.inputIcon} />
+                  <TextInput
+                    style={styles.input}
+                    value={tableData.people}
+                    onChangeText={(text) => setTableData({...tableData, people: text})}
+                    keyboardType="numeric"
+                    placeholder="Nhập số người/bàn"
+                    placeholderTextColor={Color.sub}
+                  />
+                </View>
+              </View>
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Số lượng bàn:</Text>
+                <View style={styles.inputWrapper}>
+                  <FontAwesome name="table" size={20} color={Color.sub} style={styles.inputIcon} />
+                  <TextInput
+                    style={styles.input}
+                    value={tableData.quantity}
+                    onChangeText={(text) => setTableData({...tableData, quantity: text})}
+                    keyboardType="numeric"
+                    placeholder="Nhập số lượng bàn"
+                    placeholderTextColor={Color.sub}
+                  />
+                </View>
+              </View>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity 
+                  style={[styles.button, styles.updateButton]}
+                  onPress={handleUpdateTable}
+                >
+                  <FontAwesome name="save" size={20} color={Color.white} style={styles.buttonIcon} />
+                  <Text style={styles.buttonText}>Cập nhật</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={[styles.button, styles.cancelButton]}
+                  onPress={() => {
+                    setEditMode(false);
+                    setTableData({ people: '', quantity: '' });
+                  }}
+                >
+                  <FontAwesome name="times" size={20} color={Color.white} style={styles.buttonIcon} />
+                  <Text style={styles.buttonText}>Hủy</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
         </View>
-      ) : (
-        <View style={styles.editContainer}>
-          <Text style={styles.editTitle}>Cập nhật bàn - {selectedTime}</Text>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Số người/bàn:</Text>
-            <TextInput
-              style={styles.input}
-              value={tableData.people}
-              onChangeText={(text) => setTableData({...tableData, people: text})}
-              keyboardType="numeric"
-              placeholder="Nhập số người/bàn"
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Số lượng bàn:</Text>
-            <TextInput
-              style={styles.input}
-              value={tableData.quantity}
-              onChangeText={(text) => setTableData({...tableData, quantity: text})}
-              keyboardType="numeric"
-              placeholder="Nhập số lượng bàn"
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity 
-              style={[styles.button, styles.updateButton]}
-              onPress={handleUpdateTable}
-            >
-              <Text style={styles.buttonText}>Cập nhật</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[styles.button, styles.cancelButton]}
-              onPress={() => {
-                setEditMode(false);
-                setTableData({ people: '', quantity: '' });
-              }}
-            >
-              <Text style={styles.buttonText}>Hủy</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: Color.white,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    padding: 16,
   },
   header: {
+    padding: wp('5%'),
+    backgroundColor: '#f8f9fa',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e9ecef',
+  },
+  headerContent: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: hp('1%'),
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: wp('6%'),
+    color: Color.primary,
+    fontFamily: FontFamily.segoeUI,
+    fontWeight: '700',
+    marginLeft: wp('2%'),
   },
-  dateButton: {
-    backgroundColor: '#007AFF',
-    padding: 10,
-    borderRadius: 8,
+  subtitle: {
+    fontSize: wp('3.5%'),
+    color: Color.sub,
+    fontFamily: FontFamily.segoeUI,
   },
-  dateButtonText: {
-    color: '#fff',
-    fontSize: 16,
+  form: {
+    padding: wp('5%'),
   },
-  timeSlotContainer: {
-    gap: 12,
-  },
-  timeSlot: {
-    backgroundColor: '#f5f5f5',
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  timeText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  tableInfo: {
-    gap: 4,
-  },
-  tableText: {
-    fontSize: 16,
-  },
-  editContainer: {
-    padding: 16,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 8,
-  },
-  editTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  inputContainer: {
-    marginBottom: 16,
+  inputGroup: {
+    marginBottom: hp('2.5%'),
   },
   label: {
-    fontSize: 16,
-    marginBottom: 8,
+    fontSize: wp('4%'),
+    color: Color.secondary,
+    fontFamily: FontFamily.segoeUI,
+    marginBottom: hp('1%'),
+    fontWeight: '600',
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    borderRadius: Border.br_9xs,
+    backgroundColor: '#f8f9fa',
+    paddingHorizontal: wp('3%'),
+  },
+  inputIcon: {
+    marginRight: wp('2%'),
   },
   input: {
-    backgroundColor: '#fff',
-    padding: 12,
-    borderRadius: 8,
-    fontSize: 16,
+    flex: 1,
+    padding: wp('3%'),
+    fontSize: wp('4%'),
+    fontFamily: FontFamily.segoeUI,
+    color: Color.secondary,
+  },
+  scheduleTitle: {
+    fontSize: FontSize.size_l,
+    color: Color.secondary,
+    fontWeight: '700',
+    marginBottom: hp('2%'),
+    fontFamily: FontFamily.segoeUI,
+    textAlign: 'center',
+  },
+  timeSlotContainer: {
+    gap: hp('1.5%'),
+  },
+  timeSlot: {
+    backgroundColor: Color.lightPrimary,
+    padding: hp('2%'),
+    borderRadius: Border.br_8xs,
+    marginBottom: hp('1.2%'),
+    borderWidth: 1,
+    borderColor: Color.sub,
+  },
+  timeText: {
+    fontSize: FontSize.size_l,
+    fontWeight: '700',
+    color: Color.secondary,
+    marginBottom: hp('1%'),
+    fontFamily: FontFamily.segoeUI,
+  },
+  tableInfo: {
+    gap: hp('0.5%'),
+  },
+  tableText: {
+    fontSize: FontSize.size_m,
+    color: Color.tertiary,
+    fontFamily: FontFamily.segoeUI,
+  },
+  editContainer: {
+    padding: hp('2%'),
+    backgroundColor: Color.lightsub,
+    borderRadius: Border.br_8xs,
+  },
+  editTitle: {
+    fontSize: FontSize.size_xl,
+    fontWeight: '700',
+    color: Color.primary,
+    marginBottom: hp('2%'),
+    fontFamily: FontFamily.segoeUI,
+    textAlign: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',
-    gap: 12,
-    marginTop: 16,
+    gap: wp('3%'),
+    marginTop: hp('2%'),
   },
   button: {
     flex: 1,
-    padding: 12,
-    borderRadius: 8,
+    paddingVertical: hp('1.2%'),
+    borderRadius: Border.br_9xs,
     alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   updateButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: Color.primary,
   },
   cancelButton: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: Color.sub,
+  },
+  buttonIcon: {
+    marginRight: wp('2%'),
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: Color.white,
+    fontSize: wp('4%'),
+    fontFamily: FontFamily.segoeUI,
+    fontWeight: '700',
   },
 });
 

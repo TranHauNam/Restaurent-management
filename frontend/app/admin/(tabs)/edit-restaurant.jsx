@@ -144,7 +144,7 @@ const EditRestaurant = () => {
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View style={styles.headerContent}>
-            <FontAwesome name="edit" size={24} color={Color.primary} />
+            <FontAwesome name="edit" size={22} color={Color.primary} style={styles.headerIcon} />
             <Text style={styles.title}>Chỉnh sửa thông tin nhà hàng</Text>
           </View>
           <Text style={styles.subtitle}>Cập nhật thông tin cơ bản của nhà hàng</Text>
@@ -261,17 +261,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: hp("1%"),
   },
+  headerIcon: {
+    marginRight: wp("2%"),
+    marginTop: 2,
+  },
   title: {
-    fontSize: wp("6%"),
+    fontSize: wp("5.5%"),
     color: Color.primary,
     fontFamily: FontFamily.segoeUI,
     fontWeight: "700",
-    marginLeft: wp("2%"),
   },
   subtitle: {
     fontSize: wp("3.5%"),
     color: Color.sub,
     fontFamily: FontFamily.segoeUI,
+    marginLeft: wp("0.5%"),
+    marginTop: hp("0.5%"),
   },
   form: {
     padding: wp("5%"),

@@ -13,8 +13,6 @@ module.exports.verifyToken = (req, res, next) => {
             });
         }
 
-        console.log(authHeader);
-
         const token = authHeader.split(' ')[1];
         
         // Xác thực token
@@ -24,7 +22,6 @@ module.exports.verifyToken = (req, res, next) => {
                     message: 'Token không hợp lệ hoặc đã hết hạn'
                 });
             }
-            console.log(decoded);
             // Gán thông tin người dùng vào request
             req.user = decoded;
             next();
