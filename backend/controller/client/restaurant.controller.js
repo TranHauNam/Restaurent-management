@@ -2,6 +2,7 @@ const Restaurent = require('../../models/restaurant.model');
 const Schedule = require('../../models/schedule.model');
 const Reservation = require('../../models/reservation.model');
 const parseToMinutes = require('../../utils/parseToMinutes');
+const TableType = require('../../models/tabletype.model');
 const mongoose = require('mongoose');
 
 module.exports.getAllRestaurents = async (req, res) => {
@@ -48,7 +49,6 @@ module.exports.getAvailableTimes = async (req, res) => {
     }
 
     try {
-              
         const schedule = await Schedule.findOne({
             restaurantId: restaurantId,
             date: date,
@@ -61,19 +61,27 @@ module.exports.getAvailableTimes = async (req, res) => {
         }
 
         const userTimeMinute = parseToMinutes(time);
-
         const availableTimes = [];
 
         for (const slot of schedule.timeSlots) {
             const slotMinute = parseToMinutes(slot.time);
-
             if (slotMinute >= userTimeMinute) {
-                const matchingTable = slot.tables.find((t) => {
-                    return t.people >= people && t.booked < t.quantity;
-                })
-
+                // Populate tableType cho từng bàn
+                const tablesWithType = await Promise.all(
+                  slot.tables.map(async (t) => {
+                    const tableType = await TableType.findById(t.tableType);
+                    return {
+                      ...t.toObject(),
+                      people: tableType?.people,
+                      quantity: tableType?.quantity
+                    };
+                  })
+                );
+                const matchingTable = tablesWithType.find((t) => {
+                  return t.people >= people && t.booked < t.quantity;
+                });
                 if (matchingTable) {
-                    availableTimes.push(slot.time);
+                  availableTimes.push(slot.time);
                 }
             }
         }
