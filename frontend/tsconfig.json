@@ -5,6 +5,9 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "tailwind.config": [
+        "./tailwind.config.js"
       ]
     }
   },
@@ -13,6 +16,8 @@
     "**/*.tsx",
     "**/*.jsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-, "styles/restaurant_main/restaurant-main.js"  ]
+    "expo-env.d.ts",
+    "styles/restaurant_main/restaurant-main.js",
+    "nativewind-env.d.ts"
+  ]
 }

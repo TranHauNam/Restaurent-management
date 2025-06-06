@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
 
+import "@/global.css";
+import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
+
 import { AuthContextProvider } from "../contexts/auth-context";
 
 import { Stack } from "expo-router";
@@ -33,38 +36,38 @@ export default function Layout() {
   }
 
   return (
-    <AuthContextProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false, // This hides the header
-        }}
-      >
-        <Stack.Screen 
-          name="index" 
-          options={{ 
-            headerShown: false 
-          }} 
-        />
-        <Stack.Screen 
-          name="sign-in" 
-          options={{ 
-            headerShown: false 
-          }} 
-        />
-        <Stack.Screen 
-          name="admin/sign-in" 
-          options={{ 
-            headerShown: false,
-            title: 'Đăng nhập Admin'
-          }} 
-        />
-        <Stack.Screen 
-          name="admin" 
-          options={{ 
-            headerShown: false 
-          }} 
-        />
-      </Stack>
-    </AuthContextProvider>
+    <GluestackUIProvider mode="light"><AuthContextProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false, // This hides the header
+          }}
+        >
+          <Stack.Screen 
+            name="index" 
+            options={{ 
+              headerShown: false 
+            }} 
+          />
+          <Stack.Screen 
+            name="sign-in" 
+            options={{ 
+              headerShown: false 
+            }} 
+          />
+          <Stack.Screen 
+            name="admin/sign-in" 
+            options={{ 
+              headerShown: false,
+              title: 'Đăng nhập Admin'
+            }} 
+          />
+          <Stack.Screen 
+            name="admin" 
+            options={{ 
+              headerShown: false 
+            }} 
+          />
+        </Stack>
+      </AuthContextProvider></GluestackUIProvider>
   );
 }
