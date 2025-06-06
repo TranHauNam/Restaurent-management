@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Pressable, TextInput, Alert, ScrollView, SafeAreaView } from "react-native";
+import { StyleSheet, View, Text, Pressable, TextInput, Alert, ScrollView, SafeAreaView, Image } from "react-native";
 import { Color, Border, FontSize, FontFamily } from "../../../styles/GlobalStyles";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { useRouter } from "expo-router";
@@ -7,6 +7,7 @@ import { useAuthContext } from "../../../contexts/auth-context";
 import { API_URL } from "../../../services/config";
 import { FontAwesome } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as ImagePicker from 'expo-image-picker';
 
 const TABS = [
   { key: "info", label: "Thông tin cơ bản" },
@@ -22,7 +23,8 @@ const EditRestaurant = () => {
     address: "",
     openTime: "",
     closeTime: "",
-    description: ""
+    description: "",
+    image: ""
   });
 
   const [loading, setLoading] = useState(false);
@@ -74,7 +76,8 @@ const EditRestaurant = () => {
             address: data.restaurant.address || "",
             openTime: data.restaurant.openTime || "",
             closeTime: data.restaurant.closeTime || "",
-            description: data.restaurant.description || ""
+            description: data.restaurant.description || "",
+            image: data.restaurant.image || ""
           }));
         }
       } catch (error) {
@@ -287,7 +290,8 @@ const EditRestaurant = () => {
           address: restaurant.address,
           openTime: restaurant.openTime,
           closeTime: restaurant.closeTime,
-          description: restaurant.description || ''
+          description: restaurant.description || '',
+          image: restaurant.image || ''
         })
       });
 
@@ -323,15 +327,55 @@ const EditRestaurant = () => {
     }
   };
 
+  const pickImage = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permissionResult.granted) {
+      Alert.alert('Lỗi', 'Bạn cần cho phép truy cập thư viện ảnh');
+      return;
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 0.7,
+    });
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      const localUri = result.assets[0].uri;
+      const formData = new FormData();
+      formData.append('image', {
+        uri: localUri,
+        name: 'photo.jpg',
+        type: 'image/jpeg',
+      });
+      try {
+        const res = await fetch(`${API_URL}/api/admin/restaurant/upload-image`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${adminToken}`
+            // 'Content-Type': 'multipart/form-data',
+          },
+          body: formData,
+        });
+        const data = await res.json();
+        if (data.url) {
+          setRestaurant(prev => ({ ...prev, image: `${API_URL}${data.url}` }));
+        } else {
+          Alert.alert('Lỗi', 'Không upload được ảnh');
+        }
+      } catch (err) {
+        Alert.alert('Lỗi', 'Không upload được ảnh');
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View style={styles.headerContent}>
             <FontAwesome name="edit" size={22} color={Color.primary} style={styles.headerIcon} />
-            <Text style={styles.title}>Chỉnh sửa thông tin nhà hàng</Text>
+            <Text style={styles.title}>Quản lý thông tin nhà hàng</Text>
           </View>
-          <Text style={styles.subtitle}>Cập nhật thông tin của nhà hàng</Text>
+          <Text style={styles.subtitle}>Theo dõi, cập nhật và quản lý dữ liệu nhà hàng</Text>
         </View>
 
         <View style={styles.tabNav}>
@@ -429,6 +473,19 @@ const EditRestaurant = () => {
                     numberOfLines={4}
                     textAlignVertical="top"
                   />
+                </View>
+              </View>
+
+              <View style={styles.inputGroup}>
+                <Text style={styles.label}>Ảnh nhà hàng</Text>
+                <View style={{ alignItems: 'flex-start', marginBottom: 8 }}>
+                  {restaurant.image ? (
+                    <Image source={{ uri: restaurant.image }} style={{ width: 120, height: 120, borderRadius: 10, marginBottom: 8 }} />
+                  ) : null}
+                  <Pressable style={styles.saveBtn} onPress={pickImage}>
+                    <FontAwesome name="image" size={16} color={Color.white} style={{marginRight: 4}} />
+                    <Text style={styles.actionText}>Chọn ảnh</Text>
+                  </Pressable>
                 </View>
               </View>
 

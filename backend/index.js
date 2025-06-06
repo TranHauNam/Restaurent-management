@@ -6,6 +6,7 @@ const adminRoutes = require('./routes/admin/index.route');
 const cors = require('cors'); 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swagger');
+const path = require('path');
 
 
 
@@ -26,6 +27,9 @@ app.use(cors());
 
 // Middleware để parse dữ liệu JSON từ request body
 app.use(express.json());
+
+// Public static folder for uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Thiết lập các route bên phía client (ví dụ: /api/auth, /api/courses, ...)
 clientRoutes(app);
