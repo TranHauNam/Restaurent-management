@@ -57,6 +57,15 @@ export default function TabsLayout() {
                     ),
                 }}
             />
+            <Tabs.Screen
+                name="manage-food"
+                options={{
+                    title: 'Quản lý món ăn',
+                    tabBarIcon: ({ color }) => (
+                        <FontAwesome name="cutlery" size={24} color={color} />
+                    ),
+                }}
+            />
         </Tabs>
     );
 } 
