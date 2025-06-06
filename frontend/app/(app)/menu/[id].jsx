@@ -1,3 +1,15 @@
+// xu ly cai back end cua book mon di
+// dau tien la get list ve thanh food context - tai sao
+// fetch ve mot lan su dung trong ca restaurant_main
+// booked
+
+// Hoc cop cach minh lam cai 
+// Da nho chat sinh va hieu mot it cua food-context -- Done
+// Vao trang fetch list nha hang:
+// Thuc hien fetch api danh sach food va set vao food context luon
+
+
+
 import React from 'react'
 import { 
   View, Text, StatusBar,
