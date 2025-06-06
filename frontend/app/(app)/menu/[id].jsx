@@ -67,24 +67,30 @@ const renderFoodCard = (item) => {
 }
 
 const Menu = () => {
-  const { getContextFoodList } = useFoodContext(); // Get the food context functions
-  // Fetch the food list from context
+  const { getContextFoodList } = useFoodContext();
   const [foodList, setFoodList] = useState([]); // State to hold the food list
+  const [filteredFoodList, setFilteredFoodList] = useState([]); // State to hold filtered foods
+  const { id: resId } = useLocalSearchParams(); // Get the restaurant ID from the URL parameters
 
   useEffect(() => {
     const fetchFoodList = async () => {
       const list = await getContextFoodList();
-      setFoodList(list?.foods || []); // Extract foods array from the response
+      const foods = list?.foods || [];
+      setFoodList(foods);
+      
+      // Filter foods for this restaurant
+      const restaurantFoods = foods.filter(food => food.restaurantId == resId);
+      setFilteredFoodList(restaurantFoods);
     };
     fetchFoodList();
-  }, [getContextFoodList]);
+  }, [getContextFoodList, resId]);
 
-  const resId = useLocalSearchParams().resId; // Get the restaurant ID from the URL parameters
-  const router = useRouter(); // Initialize the router
+  const router = useRouter();
 
   const handleBackPress = () => {
-    router.back(); // Navigate back to the previous screen
+    router.back();
   }
+
   return (
     <>
     <StatusBar barStyle="dark-content" backgroundColor="#fff" />
@@ -95,11 +101,16 @@ const Menu = () => {
       {/* Scroll View */}
       <View style={styles.notiLayout}>
         <FlatList
-          data={foodList}
-          keyExtractor={(item) => item._id} 
+          data={filteredFoodList}
+          keyExtractor={(item) => item._id}
           renderItem={({ item }) => renderFoodCard(item)}
           numColumns={2}
           contentContainerStyle={styles.notiContainer}
+          ListEmptyComponent={() => (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>No menu items available for this restaurant.</Text>
+            </View>
+          )}
         />
       </View>
     </SafeAreaView>

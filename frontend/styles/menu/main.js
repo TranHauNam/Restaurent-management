@@ -108,4 +108,17 @@ export const styles = StyleSheet.create({
     borderRadius: 999,
   },
 
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: hp("4%"),
+    width: '100%',
+  },
+  emptyText: {
+    fontSize: FontSize.medium,
+    color: Color.secondary,
+    textAlign: 'center',
+  },
+
 });
