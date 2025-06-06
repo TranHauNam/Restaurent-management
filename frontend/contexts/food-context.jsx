@@ -13,7 +13,7 @@ export const useFoodContext = () => {
 
 export const FoodContextProvider = ({ children }) => {
   // Lấy danh sách món ăn từ AsyncStorage
-  const getFoodList = async () => {
+  const getContextFoodList = async () => {
     try {
       const stored = await AsyncStorage.getItem("foodlist");
       return stored ? JSON.parse(stored) : [];
@@ -23,40 +23,34 @@ export const FoodContextProvider = ({ children }) => {
   };
 
   // Lưu danh sách món ăn vào AsyncStorage
-  const saveFoodList = async (list) => {
+  const saveContextFoodList = async (list) => {
     await AsyncStorage.setItem("foodlist", JSON.stringify(list));
   };
 
   // Thêm món ăn
-  const addFood = async (food) => {
-    const list = await getFoodList();
+  const addContextFood = async (food) => {
+    const list = await getContextFoodList();
     const newList = [...list, food];
-    await saveFoodList(newList);
+    await saveContextFoodList(newList);
   };
 
   // Xóa món ăn theo id
-  const removeFood = async (id) => {
-    const list = await getFoodList();
+  const removeContextFood = async (id) => {
+    const list = await getContextFoodList();
     const newList = list.filter((item) => item.id !== id);
-    await saveFoodList(newList);
+    await saveContextFoodList(newList);
   };
 
   // Xóa toàn bộ món ăn
-  const clearFood = async () => {
+  const clearContextFood = async () => {
     await AsyncStorage.removeItem("foodlist");
   };
 
-  return (
-    <FoodContext.Provider
-      value={{
-        getFoodList,
-        saveFoodList,
-        addFood,
-        removeFood,
-        clearFood,
-      }}
-    >
-      {children}
-    </FoodContext.Provider>
-  );
+  return <FoodContext.Provider value={{
+    getContextFoodList,
+    saveContextFoodList,
+    addFood: addContextFood,
+    removeFood: removeContextFood,
+    clearFood: clearContextFood,
+  }}>{children}</FoodContext.Provider>;
 };

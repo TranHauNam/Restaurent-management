@@ -29,7 +29,8 @@ const Divider = ({ color = "#ccc", thickness = 1, marginVertical = 10 }) => (
 const HomeView = () => {
   const foodListRef = useRef([]);
   const [restaurantData, setRestaurantData] = useState([]);
-  const { saveFoodList, getFoodList } = useFoodContext();
+  const { saveContextFoodList, getContextFoodList } = useFoodContext();
+
 
   useEffect(() => {
     //fetch restaurants and food list
@@ -37,11 +38,12 @@ const HomeView = () => {
       setRestaurantData(data.restaurents);
       // console.log("Fetched restaurants:", restaurantData);
       getFoodList().then((foodList) => {
-        saveFoodList(foodList);
+        console.log("Fetched food list:", foodList);
+        saveContextFoodList(foodList);
         foodListRef.current = foodList; // Save to ref for later use
       })
       //debug
-      // console.log("Food list saved to context:", getFoodList());
+      console.log("Food list saved to context:", getContextFoodList());
     }).catch((error) => {
       console.error("Error fetching restaurants:", error);
     });
