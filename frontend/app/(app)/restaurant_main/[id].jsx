@@ -93,6 +93,7 @@ const RestaurantMain = () => {
       const formattedDate = getFormattedDate(orderDateTime);
       const formattedTime = getFormattedTime(selectedTime);
 
+
       try {
         const result = await postAvailableTime({
           restaurantId: id,
@@ -100,6 +101,7 @@ const RestaurantMain = () => {
           time: formattedTime,
           people: selectedPeople,
         });
+        console.log("AvialableTIme result", result);
         // setAvailableTimes(result.availableTimes || []);
         availableTimes.current = result.availableTimes;
         if (availableTimes.current.length === 0) {

@@ -98,11 +98,11 @@ export const BookingModal = ({
                 tableReservationTime: timeRS,
             });
 
-            // Nếu đặt bàn thành công
-            if (result.success) {
+            // Nếu có reservation trong response thì đặt bàn thành công
+            if (result.reservation) {
                 Alert.alert(
-                    "Đặt bàn thành công",
-                    "Bạn có muốn đặt món trước không?",
+                    "Thành công",
+                    "Đặt bàn thành công! Bạn có muốn đặt món trước không?",
                     [
                         {
                             text: "Không",
@@ -118,7 +118,7 @@ export const BookingModal = ({
                                 router.push({
                                     pathname: `/menu/${resId}`,
                                     params: { 
-                                        bookingId: result.bookingId,
+                                        bookingId: result.reservation._id,
                                         requirePayment: true
                                     }
                                 });
@@ -127,11 +127,11 @@ export const BookingModal = ({
                     ]
                 );
             } else {
-                Alert.alert("Lỗi", result.message);
+                Alert.alert("Lỗi", result.message || "Không thể đặt bàn. Vui lòng thử lại sau.");
             }
         } catch (error) {
             console.log("ERROR booking table:", error);
-            Alert.alert("Lỗi khi đặt bàn", `${error.message}`);
+            Alert.alert("Lỗi", error.message || "Không thể đặt bàn. Vui lòng thử lại sau.");
         }
     }
 

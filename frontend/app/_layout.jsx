@@ -5,6 +5,7 @@ import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 
 import { AuthContextProvider } from "../contexts/auth-context";
 import { FoodContextProvider } from '@/contexts/food-context';
+import { CartProvider } from '@/contexts/cart-context';
 
 import { Stack } from "expo-router";
 import { useFonts } from 'expo-font';
@@ -37,38 +38,44 @@ export default function Layout() {
   }
 
   return (
-    <GluestackUIProvider mode="light"><AuthContextProvider><FoodContextProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false, // This hides the header
-          }}
-        >
-          <Stack.Screen 
-            name="index" 
-            options={{ 
-              headerShown: false 
-            }} 
-          />
-          <Stack.Screen 
-            name="sign-in" 
-            options={{ 
-              headerShown: false 
-            }} 
-          />
-          <Stack.Screen 
-            name="admin/sign-in" 
-            options={{ 
-              headerShown: false,
-              title: 'Đăng nhập Admin'
-            }} 
-          />
-          <Stack.Screen 
-            name="admin" 
-            options={{ 
-              headerShown: false 
-            }} 
-          />
-        </Stack>
-    </FoodContextProvider></AuthContextProvider></GluestackUIProvider>
+    <GluestackUIProvider mode="light">
+      <AuthContextProvider>
+        <FoodContextProvider>
+          <CartProvider>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen 
+                name="index" 
+                options={{ 
+                  headerShown: false 
+                }} 
+              />
+              <Stack.Screen 
+                name="sign-in" 
+                options={{ 
+                  headerShown: false 
+                }} 
+              />
+              <Stack.Screen 
+                name="admin/sign-in" 
+                options={{ 
+                  headerShown: false,
+                  title: 'Đăng nhập Admin'
+                }} 
+              />
+              <Stack.Screen 
+                name="admin" 
+                options={{ 
+                  headerShown: false 
+                }} 
+              />
+            </Stack>
+          </CartProvider>
+        </FoodContextProvider>
+      </AuthContextProvider>
+    </GluestackUIProvider>
   );
 }

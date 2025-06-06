@@ -20,6 +20,7 @@ frontend/
 ├── contexts/           # Auth và Food contexts
 │   ├── auth-context.jsx
 │   └── food-context.jsx
+|   |___cart-context.jsx
 ├── services/          # API integration (20% complete)
 └── navigation/       # React Navigation setup
 ```
