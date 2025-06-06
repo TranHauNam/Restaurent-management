@@ -1,4 +1,6 @@
 const Food = require('../../models/food.model');
+const path = require('path');
+const fs = require('fs');
 
 // Lấy tất cả món ăn của nhà hàng
 exports.getAll = async (req, res) => {
@@ -79,6 +81,18 @@ exports.search = async (req, res) => {
       name: { $regex: q, $options: 'i' }
     });
     res.json(foods);
+  } catch (err) {
+    res.status(500).json({ message: 'Lỗi server', error: err.message });
+  }
+};
+
+// Upload ảnh món ăn
+exports.uploadImage = async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ message: 'Không có file ảnh' });
+    // Đường dẫn public cho ảnh
+    const imageUrl = `/uploads/food/${req.file.filename}`;
+    res.json({ url: imageUrl });
   } catch (err) {
     res.status(500).json({ message: 'Lỗi server', error: err.message });
   }

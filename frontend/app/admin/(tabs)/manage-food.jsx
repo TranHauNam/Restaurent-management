@@ -5,6 +5,7 @@ import { API_URL } from "../../../services/config";
 import { useAuthContext } from "../../../contexts/auth-context";
 import { Color, FontFamily, Border, FontSize } from '../../../styles/GlobalStyles';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import * as ImagePicker from 'expo-image-picker';
 
 const emptyForm = {
     name: '',
@@ -103,6 +104,46 @@ export default function ManageFood() {
         setShowForm(true);
     };
 
+    const pickImage = async () => {
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (!permissionResult.granted) {
+            Alert.alert('Lỗi', 'Bạn cần cho phép truy cập thư viện ảnh');
+            return;
+        }
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            quality: 0.7,
+        });
+        if (!result.canceled && result.assets && result.assets.length > 0) {
+            const localUri = result.assets[0].uri;
+            const formData = new FormData();
+            formData.append('image', {
+                uri: localUri,
+                name: 'photo.jpg',
+                type: 'image/jpeg',
+            });
+            try {
+                const res = await fetch(`${API_URL}/api/admin/food/upload-image`, {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${adminToken}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    body: formData,
+                });
+                const data = await res.json();
+                if (data.url) {
+                    setForm(f => ({ ...f, image: `${API_URL}${data.url}` }));
+                } else {
+                    Alert.alert('Lỗi', 'Không upload được ảnh');
+                }
+            } catch (err) {
+                Alert.alert('Lỗi', 'Không upload được ảnh');
+            }
+        }
+    };
+
     const renderFood = ({ item }) => (
         <View style={styles.foodItem}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -198,13 +239,15 @@ export default function ManageFood() {
                                 multiline
                                 placeholderTextColor={Color.sub}
                             />
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Link hình ảnh (URL)"
-                                value={form.image}
-                                onChangeText={v => setForm(f => ({ ...f, image: v }))}
-                                placeholderTextColor={Color.sub}
-                            />
+                            <View style={{ marginBottom: 12 }}>
+                                {form.image ? (
+                                    <Image source={{ uri: form.image }} style={{ width: 100, height: 100, borderRadius: 8, marginBottom: 8 }} />
+                                ) : null}
+                                <Pressable style={styles.saveBtn} onPress={pickImage}>
+                                    <FontAwesome name="image" size={16} color={Color.white} style={{marginRight: 4}} />
+                                    <Text style={styles.saveBtnText}>Chọn ảnh</Text>
+                                </Pressable>
+                            </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                                 <Pressable style={styles.saveBtn} onPress={handleSave}>
                                     <FontAwesome name="save" size={16} color={Color.white} style={{marginRight: 4}} />
