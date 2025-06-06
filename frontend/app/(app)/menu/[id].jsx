@@ -41,15 +41,22 @@ const renderFoodCard = (item) => {
     <>
       <View style={styles.card}>
       {/* Hình ảnh món ăn */}
-      <Image source={require("@/assets/images/image.png")} style={styles.image} 
-             resizeMode="cover" />
+      <Image 
+        source={{ uri: item.image }} 
+        style={styles.image} 
+        resizeMode="cover"
+        defaultSource={require("@/assets/images/image.png")} // Fallback image
+      />
 
       {/* Tên món và địa điểm */}
       <Text style={styles.title}>{item.name}</Text>
 
+      {/* Description */}
+      <Text numberOfLines={2} style={styles.location}>{item.description}</Text>
+
       {/* Giá và nút thêm */}
       <View style={styles.footer}>
-        <Text style={styles.price}>${item.price}</Text>
+        <Text style={styles.price}>{item.price.toLocaleString('vi-VN')}đ</Text>
         <TouchableOpacity style={styles.addButton}>
           <Icon name="add" size={16} color="#fff" />
         </TouchableOpacity>
@@ -67,12 +74,10 @@ const Menu = () => {
   useEffect(() => {
     const fetchFoodList = async () => {
       const list = await getContextFoodList();
-      setFoodList(list);
+      setFoodList(list?.foods || []); // Extract foods array from the response
     };
     fetchFoodList();
   }, [getContextFoodList]);
-  console.log("Food List:", foodList); // Log the food list for debugging
-
 
   const resId = useLocalSearchParams().resId; // Get the restaurant ID from the URL parameters
   const router = useRouter(); // Initialize the router
@@ -91,8 +96,8 @@ const Menu = () => {
       <View style={styles.notiLayout}>
         <FlatList
           data={foodList}
-          keyExtractor={(item) => item._id.toString()} 
-          renderItem={({ item }) => (renderFoodCard(item))}
+          keyExtractor={(item) => item._id} 
+          renderItem={({ item }) => renderFoodCard(item)}
           numColumns={2}
           contentContainerStyle={styles.notiContainer}
         />
