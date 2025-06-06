@@ -140,7 +140,7 @@ const RestaurantMain = () => {
   }
 
   const handleMapPress = () => {
-    route.push(`/map-view/show-map?id=${id}`);
+    // route.push(`/map-view/show-map?id=${id}`);
   }
 
   return (

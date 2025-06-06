@@ -35,6 +35,12 @@ const HomeView = () => {
     });
   }, []);
 
+  const handleShortToMenu = () => {
+    router.push({ 
+      pathname: `/menu/${"1"}`, 
+    });
+  }
+
   // useEffect(() => {
   //   console.log("Restaurant data time available updated:", restaurantData.availableTimes);
   // }, [restaurantData]);
@@ -43,11 +49,11 @@ const HomeView = () => {
     style={styles.timeSlotContainer}
     onPress={() => {
       // temp comment out
-      // router.push({
-      //   pathname: `/restaurant_main/${restaurantId}`,
-      //   params: { time: item }
-      // })
-      router.push(`/menu/${restaurantId}`);
+      router.push({
+        pathname: `/restaurant_main/${restaurantId}`,
+        params: { time: item }
+      })
+      
     }}
     >
       <Text style={[Typography.smallButton, styles.timeSlotText]}>{item}</Text>
@@ -59,8 +65,8 @@ const HomeView = () => {
       <Pressable
         style={styles.cardPressable}
         onPress={() => {
-          // router.push(`/restaurant_main/${item._id}`); // Navigate to restaurant details
-          router.push(`/menu/${item._id}`); // Navigate to menu
+          router.push(`/restaurant_main/${item._id}`); // Navigate to restaurant details
+          // router.push(`/menu/${item._id}`); // Navigate to menu
         }}
       >
         <Image style={styles.cardImage}
@@ -116,7 +122,11 @@ const HomeView = () => {
           numColumns={1}
           contentContainerStyle={styles.listContainer}   
         />
+
       </View>
+      <TouchableOpacity onPress={handleShortToMenu} >
+      short but to Menu
+      </TouchableOpacity>
     </View>
   );
 };
