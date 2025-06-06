@@ -21,7 +21,7 @@ import Octicons from '@expo/vector-icons/Octicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import DatePicker from 'react-native-date-picker';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import { useRouter } from 'expo-router';
 
 // Hàm format date về yyyy-mm-dd
 const getFormattedDate = (date) => {
@@ -36,9 +36,10 @@ const getFormattedDate = (date) => {
 
 export const BookingModal = ({
     restaurant, onCloseBookingModal, orderDateTime, setOrderDateTime,
-    selectedTime, setSelectedTime, selectedPeople, setSelectedPeople
+    selectedTime, setSelectedTime, selectedPeople, setSelectedPeople,
+    resId,
 }) => {
-
+    const router = useRouter();
     // console.log("restaurant", restaurant); // correct
 
     // Date and Time Picker States
@@ -86,17 +87,25 @@ export const BookingModal = ({
         const timeRS = selectedTime;
         
         try {
-            const result = await postTableBooking({
-                restaurantId: residRS,
-                name: nameRS,
-                phone: phoneRS,
-                email: email,
-                date: dateRS,
-                people: peopleRS,
-                tableReservationTime: timeRS,
-            })
-            console.log("Booking result:", result.message);
-            Alert.alert("Đặt bàn thành công", result.message);
+            // temporary comment out
+            // const result = await postTableBooking({
+            //     restaurantId: residRS,
+            //     name: nameRS,
+            //     phone: phoneRS,
+            //     email: email,
+            //     date: dateRS,
+            //     people: peopleRS,
+            //     tableReservationTime: timeRS,
+            // })
+            // console.log("Booking result:", result.message);
+            // Alert.alert("Đặt bàn thành công", result.message);
+
+            // thanh cong thi den phan dat mon
+            // Y tuong: Hien ra them mot modol thong bao dat ban thanh cong
+            // Kiem tra neu thoi gian con nhieu hon 2h thi hien nut dat mon
+            // chuyen den trang dat mon
+            router.push(`/menu/${resId}`)
+            
         } catch (error) {
             console.log("ERROR booking table:", error);
             Alert.alert("Lỗi khi đặt bàn", `${error.message}`);

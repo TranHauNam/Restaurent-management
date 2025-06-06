@@ -256,6 +256,7 @@ const RestaurantMain = () => {
           setSelectedTime={setSelectedTime}
           selectedPeople={selectedPeople}
           setSelectedPeople={setSelectedPeople}
+          resId={id}
         />
       )}
     </>

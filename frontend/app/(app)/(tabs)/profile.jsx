@@ -96,8 +96,6 @@ const Profile = () => {
         {renderMenuItem('file-document', 'Điều khoản sử dụng')}
         {/* {renderMenuItem('account-group-outline', 'Giới thiệu bạn bè')} */}
         {renderMenuItem('information-outline', 'Về TableBooking')}
-
-
       </View>
 
       <View style={styles.versionSection}>
