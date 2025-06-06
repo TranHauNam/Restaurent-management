@@ -5,7 +5,6 @@ import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 
 import { AuthContextProvider } from "../contexts/auth-context";
 import { FoodContextProvider } from '@/contexts/food-context';
-import { serviceContainer, ServiceContext } from '@/contexts/service-context';
 
 import { Stack } from "expo-router";
 import { useFonts } from 'expo-font';
@@ -38,7 +37,7 @@ export default function Layout() {
   }
 
   return (
-    <GluestackUIProvider mode="light"><ServiceContext.Provider value={serviceContainer}>
+    <GluestackUIProvider mode="light"><AuthContextProvider><FoodContextProvider>
         <Stack
           screenOptions={{
             headerShown: false, // This hides the header
@@ -70,6 +69,6 @@ export default function Layout() {
             }} 
           />
         </Stack>
-    </ServiceContext.Provider></GluestackUIProvider>
+    </FoodContextProvider></AuthContextProvider></GluestackUIProvider>
   );
 }

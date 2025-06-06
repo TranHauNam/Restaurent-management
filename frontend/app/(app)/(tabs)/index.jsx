@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {  View, Text, Pressable, Image, FlatList, ScrollView, TouchableOpacity, } from "react-native";
 
 import { useFoodContext } from "@/contexts/food-context";
@@ -11,7 +11,7 @@ import { Typography } from "@/styles/Typography";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import Entypo from '@expo/vector-icons/Entypo';
-import { set } from "date-fns";
+
 
 
 
@@ -27,8 +27,9 @@ const Divider = ({ color = "#ccc", thickness = 1, marginVertical = 10 }) => (
 );
 
 const HomeView = () => {
+  const foodListRef = useRef([]);
   const [restaurantData, setRestaurantData] = useState([]);
-  const { setfoodList } = useFoodContext(); // Get the setFoodList function from context
+  const { saveFoodList, getFoodList } = useFoodContext();
 
   useEffect(() => {
     //fetch restaurants and food list
@@ -36,13 +37,30 @@ const HomeView = () => {
       setRestaurantData(data.restaurents);
       // console.log("Fetched restaurants:", restaurantData);
       getFoodList().then((foodList) => {
-        console.log("Fetched food list:", foodList);
-        setfoodList(foodList); // Set the food list in context
-      });
+        saveFoodList(foodList);
+        foodListRef.current = foodList; // Save to ref for later use
+      })
+      //debug
+      // console.log("Food list saved to context:", getFoodList());
     }).catch((error) => {
       console.error("Error fetching restaurants:", error);
     });
   }, []);
+
+//   useEffect(() => {
+//   const fetchData = async () => {
+//     try {
+//       const data = await fetchRestaurants();
+//       setRestaurantData(data.restaurents);
+//       const foodList = await getFoodList(); // Lấy data từ AsyncStorage
+//       await saveFoodList(foodList);         // Lưu lại nếu cần
+//       foodListRef.current = foodList;       // Lưu vào ref nếu muốn dùng sau
+//     } catch (error) {
+//       console.error("Error fetching restaurants:", error);
+//     }
+//   };
+//   fetchData();
+// }, []);
 
   const handleShortToMenu = () => {
     router.push({ 
