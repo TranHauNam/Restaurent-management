@@ -36,41 +36,75 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
-const renderFoodCard = (item) => {
+const QuantityControl = ({ quantity, onIncrease, onDecrease }) => {
+  if (quantity === 0) {
+    return (
+      <TouchableOpacity style={styles.addButton} onPress={onIncrease}>
+        <Icon name="add" size={16} color="#fff" />
+      </TouchableOpacity>
+    );
+  }
+
   return (
-    <>
-      <View style={styles.card}>
+    <View style={styles.quantityContainer}>
+      <TouchableOpacity style={styles.quantityButton} onPress={onDecrease}>
+        <Icon name="remove" size={16} color="#fff" />
+      </TouchableOpacity>
+      <Text style={styles.quantityText}>{quantity}</Text>
+      <TouchableOpacity style={styles.quantityButton} onPress={onIncrease}>
+        <Icon name="add" size={16} color="#fff" />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const renderFoodCard = (item, quantity, onUpdateQuantity) => {
+  return (
+    <View style={styles.card}>
       {/* Hình ảnh món ăn */}
       <Image 
         source={{ uri: item.image }} 
         style={styles.image} 
         resizeMode="cover"
-        defaultSource={require("@/assets/images/image.png")} // Fallback image
+        defaultSource={require("@/assets/images/image.png")}
       />
 
-      {/* Tên món và địa điểm */}
+      {/* Tên món và mô tả */}
       <Text style={styles.title}>{item.name}</Text>
+      <Text numberOfLines={2} style={styles.description}>{item.description}</Text>
 
-      {/* Description */}
-      <Text numberOfLines={2} style={styles.location}>{item.description}</Text>
-
-      {/* Giá và nút thêm */}
+      {/* Giá và điều chỉnh số lượng */}
       <View style={styles.footer}>
         <Text style={styles.price}>{item.price.toLocaleString('vi-VN')}đ</Text>
-        <TouchableOpacity style={styles.addButton}>
-          <Icon name="add" size={16} color="#fff" />
-        </TouchableOpacity>
+        <QuantityControl 
+          quantity={quantity}
+          onIncrease={() => onUpdateQuantity(item._id, quantity + 1)}
+          onDecrease={() => onUpdateQuantity(item._id, Math.max(0, quantity - 1))}
+        />
       </View>
     </View>
-    </>
   );
-}
+};
+
+const CartSummary = ({ totalAmount, onViewCart }) => {
+  if (totalAmount <= 0) return null;
+
+  return (
+    <View style={styles.cartSummary}>
+      <Text style={styles.totalAmount}>Tạm tính: {totalAmount.toLocaleString('vi-VN')}đ</Text>
+      <TouchableOpacity style={styles.viewCartButton} onPress={onViewCart}>
+        <Icon name="cart-outline" size={24} color="#fff" />
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const Menu = () => {
   const { getContextFoodList } = useFoodContext();
-  const [foodList, setFoodList] = useState([]); // State to hold the food list
-  const [filteredFoodList, setFilteredFoodList] = useState([]); // State to hold filtered foods
-  const { id: resId } = useLocalSearchParams(); // Get the restaurant ID from the URL parameters
+  const [foodList, setFoodList] = useState([]);
+  const [filteredFoodList, setFilteredFoodList] = useState([]);
+  const [quantities, setQuantities] = useState({});
+  const { id: resId } = useLocalSearchParams();
 
   useEffect(() => {
     const fetchFoodList = async () => {
@@ -78,34 +112,58 @@ const Menu = () => {
       const foods = list?.foods || [];
       setFoodList(foods);
       
-      // Filter foods for this restaurant
       const restaurantFoods = foods.filter(food => food.restaurantId == resId);
       setFilteredFoodList(restaurantFoods);
     };
     fetchFoodList();
   }, [getContextFoodList, resId]);
 
+  const handleUpdateQuantity = (foodId, newQuantity) => {
+    setQuantities(prev => ({
+      ...prev,
+      [foodId]: newQuantity
+    }));
+  };
+
+  const calculateTotal = () => {
+    return filteredFoodList.reduce((total, item) => {
+      const quantity = quantities[item._id] || 0;
+      return total + (item.price * quantity);
+    }, 0);
+  };
+
   const router = useRouter();
 
   const handleBackPress = () => {
-    router.back();
+    router.push('/'); //Navigate to home  - bug not working here but fix later
   }
 
-  return (
-    <>
-    <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-    <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <Header title="Menu" hasReturn={true} onPressReturn={handleBackPress}/>
+  const handleViewCart = () => {
+    // TODO: Navigate to cart page
+    console.log("View cart clicked");
+  };
 
-      {/* Scroll View */}
-      <View style={styles.notiLayout}>
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      
+      {/* Fixed Header */}
+      <View style={styles.headerContainer}>
+        <Header title="Menu" hasReturn={true} onPressReturn={handleBackPress}/>
+      </View>
+
+      {/* Scrollable Content */}
+      <View style={styles.contentContainer}>
         <FlatList
           data={filteredFoodList}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => renderFoodCard(item)}
-          numColumns={2}
-          contentContainerStyle={styles.notiContainer}
+          renderItem={({ item }) => renderFoodCard(
+            item,
+            quantities[item._id] || 0,
+            handleUpdateQuantity
+          )}
+          
+          contentContainerStyle={styles.menuContainer}
           ListEmptyComponent={() => (
             <View style={styles.emptyContainer}>
               <Text style={styles.emptyText}>No menu items available for this restaurant.</Text>
@@ -113,9 +171,14 @@ const Menu = () => {
           )}
         />
       </View>
+
+      {/* Fixed Cart Summary */}
+      <CartSummary 
+        totalAmount={calculateTotal()}
+        onViewCart={handleViewCart}
+      />
     </SafeAreaView>
-    </>
-  )
-}
+  );
+};
 
 export default Menu;
