@@ -17,14 +17,14 @@ module.exports.getScheduleByDate = async (req, res) => {
       return res.status(404).json({ message: 'Chưa có lịch cho ngày này' });
     }
 
-    return res.json({ 
+    return res.status(200).json({ 
       message: 'Lấy lịch thành công', 
       schedule: schedule.timeSlots 
     });
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Lỗi server' });
+    return res.status(500).json({ message: 'Lỗi server' });
   }
 };
 
