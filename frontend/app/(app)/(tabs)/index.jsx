@@ -42,10 +42,12 @@ const HomeView = () => {
     <TouchableOpacity 
     style={styles.timeSlotContainer}
     onPress={() => {
-      router.push({
-        pathname: `/restaurant_main/${restaurantId}`,
-        params: { time: item }
-      })
+      // temp comment out
+      // router.push({
+      //   pathname: `/restaurant_main/${restaurantId}`,
+      //   params: { time: item }
+      // })
+      router.push(`/menu/${restaurantId}`);
     }}
     >
       <Text style={[Typography.smallButton, styles.timeSlotText]}>{item}</Text>
@@ -57,7 +59,8 @@ const HomeView = () => {
       <Pressable
         style={styles.cardPressable}
         onPress={() => {
-          router.push(`/restaurant_main/${item._id}`); // Navigate to restaurant details
+          // router.push(`/restaurant_main/${item._id}`); // Navigate to restaurant details
+          router.push(`/menu/${item._id}`); // Navigate to menu
         }}
       >
         <Image style={styles.cardImage}

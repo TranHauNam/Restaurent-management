@@ -104,7 +104,7 @@ export const BookingModal = ({
             // Y tuong: Hien ra them mot modol thong bao dat ban thanh cong
             // Kiem tra neu thoi gian con nhieu hon 2h thi hien nut dat mon
             // chuyen den trang dat mon
-            router.push(`/menu/${resId}`)
+            router.push(`/menu/${resId}`);
             
         } catch (error) {
             console.log("ERROR booking table:", error);
