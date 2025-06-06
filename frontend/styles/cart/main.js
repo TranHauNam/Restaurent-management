@@ -1,11 +1,8 @@
 import { StyleSheet } from "react-native";
-
 import { 
   Color, FontFamily, FontSize, 
-  Border, marginLeftSAV, marginTopSAV, 
-  screenWidthSAV 
+  Border
 } from "@/styles/GlobalStyles";
-
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 export const styles = StyleSheet.create({
@@ -15,7 +12,6 @@ export const styles = StyleSheet.create({
   },
 
   headerContainer: {
-    marginTop: hp("2%"),
     width: '100%',
     backgroundColor: Color.white,
     elevation: 4,
@@ -24,112 +20,82 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     zIndex: 1,
+    marginTop: hp("2%"),
   },
 
   contentContainer: {
     flex: 1,
     width: '100%',
-    marginBottom: hp("10%"),
   },
 
-  menuContainer: {
-    padding: wp("2%"),
+  contentWithFooter: {
+    marginBottom: hp("15%"), // Space for footer when it's visible
   },
 
-  card: {
-    flex: 1,
-    margin: wp("2%"),
+  listContent: {
+    padding: wp("4%"),
+    flexGrow: 1, // Ensures content fills available space
+  },
+
+  cartItem: {
+    flexDirection: 'row',
     backgroundColor: Color.white,
-    borderRadius: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 3,
-    padding: wp("3%"),
-  },
-
-  image: {
-    width: '100%',
-    height: hp("15%"),
     borderRadius: 12,
-    marginBottom: hp("1%"),
+    marginBottom: hp("2%"),
+    padding: wp("4%"),
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
 
-  title: {
+  itemContent: {
+    flex: 1,
+    marginRight: wp("3%"),
+  },
+
+  itemTitle: {
     fontSize: FontSize.medium,
     fontWeight: '600',
     color: Color.secondary,
     marginBottom: hp("0.5%"),
   },
 
-  description: {
+  itemDescription: {
     fontSize: FontSize.small,
     color: Color.gray,
     marginBottom: hp("1%"),
-    lineHeight: hp("2.2%"),
   },
 
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 'auto',
-  },
-
-  price: {
+  itemPrice: {
     fontSize: FontSize.medium,
     fontWeight: '700',
     color: Color.secondary,
   },
 
-  // Quantity Control Styles
-  quantityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  quantityBadge: {
     backgroundColor: Color.lightGray,
     borderRadius: 999,
-    padding: wp("0.2%"),
-  },
-
-  quantityButton: {
-    backgroundColor: Color.primary,
-    borderRadius: 999,
-    width: wp("8%"),
-    height: wp("8%"),
+    paddingHorizontal: wp("3%"),
+    paddingVertical: hp("0.5%"),
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'flex-start',
   },
 
   quantityText: {
-    fontSize: FontSize.medium,
+    fontSize: FontSize.small,
     fontWeight: '600',
     color: Color.secondary,
-    marginHorizontal: wp("3%"),
-    minWidth: wp("6%"),
-    textAlign: 'center',
   },
 
-  addButton: {
-    backgroundColor: Color.primary,
-    padding: wp("0.5%"),
-    borderRadius: 999,
-    width: wp("8%"),
-    height: wp("8%"),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  // Cart Summary Styles
-  cartSummary: {
+  footer: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
     backgroundColor: Color.white,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     padding: wp("4%"),
     borderTopWidth: 1,
     borderTopColor: Color.lightGray,
@@ -140,25 +106,46 @@ export const styles = StyleSheet.create({
     shadowRadius: 4,
   },
 
-  totalAmount: {
+  totalContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: hp("2%"),
+  },
+
+  totalLabel: {
     fontSize: FontSize.medium,
+    fontWeight: '600',
+    color: Color.secondary,
+  },
+
+  totalAmount: {
+    fontSize: FontSize.large,
     fontWeight: '700',
     color: Color.secondary,
   },
 
-  viewCartButton: {
+  checkoutButton: {
     backgroundColor: Color.primary,
-    padding: wp("3%"),
-    borderRadius: 999,
-    width: wp("12%"),
-    height: wp("12%"),
-    justifyContent: 'center',
+    borderRadius: 12,
+    padding: hp("2%"),
     alignItems: 'center',
+    justifyContent: 'center',
   },
 
-  viewCartButtonDisabled: {
+  checkoutButtonDisabled: {
     backgroundColor: Color.gray,
     opacity: 0.5,
+  },
+
+  checkoutButtonText: {
+    color: Color.white,
+    fontSize: FontSize.medium,
+    fontWeight: '600',
+  },
+
+  checkoutButtonTextDisabled: {
+    opacity: 0.7,
   },
 
   emptyContainer: {
@@ -166,12 +153,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: hp("4%"),
-    width: '100%',
   },
 
   emptyText: {
     fontSize: FontSize.medium,
-    color: Color.secondary,
+    color: Color.gray,
     textAlign: 'center',
   },
-});
+}); 

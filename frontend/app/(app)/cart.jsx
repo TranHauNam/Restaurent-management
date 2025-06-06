@@ -1,198 +1,118 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import {
-  View,
-  Text,
-  SafeAreaView,
-  StatusBar,
-  FlatList,
-  TouchableOpacity,
-  Alert,
-  Linking,
+  View, Text, StatusBar,
+  TouchableOpacity, ScrollView,
+  SafeAreaView, FlatList
 } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import { useCart } from '@/contexts/cart-context';
-import { Header } from '@/components/Header';
+import { useRouter } from 'expo-router';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { StyleSheet } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { styles } from '@/styles/cart/main';
+import { Header } from '@/components/Header';
+
+const CartItem = ({ item }) => (
+  <View style={styles.cartItem}>
+    <View style={styles.itemContent}>
+      <Text style={styles.itemTitle}>{item.name}</Text>
+      <Text style={styles.itemDescription}>{item.description}</Text>
+      <Text style={styles.itemPrice}>{item.price.toLocaleString('vi-VN')}đ</Text>
+    </View>
+    <View style={styles.quantityBadge}>
+      <Text style={styles.quantityText}>x{item.quantity}</Text>
+    </View>
+  </View>
+);
 
 const Cart = () => {
   const router = useRouter();
-  const { bookingId, requirePayment } = useLocalSearchParams();
-  const { cart, loading, initiatePayment, handlePaymentReturn } = useCart();
-  const [totalAmount, setTotalAmount] = useState(0);
 
-  // Calculate total amount
-  useEffect(() => {
-    if (cart?.items) {
-      const total = cart.items.reduce((sum, item) => {
-        return sum + (item.price * item.quantity);
-      }, 0);
-      setTotalAmount(total);
+  // Mock data - will be replaced with real cart data
+  const cartItems = [
+    {
+      _id: '1',
+      name: 'Phở Bò',
+      description: 'Phở bò truyền thống với nước dùng đậm đà',
+      price: 45000,
+      quantity: 2
+    },
+    {
+      _id: '2',
+      name: 'Bún Chả',
+      description: 'Bún chả Hà Nội với thịt nướng thơm ngon',
+      price: 40000,
+      quantity: 1
     }
-  }, [cart]);
+  ];
 
-  // Handle back press
-  const handleBackPress = useCallback(() => {
+  const hasItems = cartItems.length > 0;
+
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
+
+  const handleBackPress = () => {
     router.back();
-  }, [router]);
+  };
 
-  // Handle payment
-  const handlePayment = useCallback(async () => {
-    try {
-      if (!cart?._id) {
-        Alert.alert('Lỗi', 'Không tìm thấy giỏ hàng');
-        return;
-      }
-
-      const paymentUrl = await initiatePayment(cart._id);
-      if (paymentUrl) {
-        // Open payment URL in browser
-        await Linking.openURL(paymentUrl);
-      }
-    } catch (error) {
-      Alert.alert('Lỗi', error.message);
-    }
-  }, [cart, initiatePayment]);
-
-  // Render cart item
-  const renderCartItem = useCallback(({ item }) => (
-    <View style={styles.cartItem}>
-      <View style={styles.itemInfo}>
-        <Text style={styles.itemName}>{item.name}</Text>
-        <Text style={styles.itemQuantity}>x{item.quantity}</Text>
-      </View>
-      <Text style={styles.itemPrice}>${item.price * item.quantity}</Text>
-    </View>
-  ), []);
+  const handleCheckout = () => {
+    // TODO: Implement checkout logic
+    console.log('Proceeding to checkout...');
+  };
 
   return (
-    <>
+    <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-      <SafeAreaView style={styles.container}>
-        <Header 
-          title="Giỏ hàng" 
-          hasReturn={true} 
-          onPressReturn={handleBackPress}
-        />
 
-        <View style={styles.content}>
-          {cart?.items?.length > 0 ? (
-            <>
-              <FlatList
-                data={cart.items}
-                keyExtractor={(item) => item._id}
-                renderItem={renderCartItem}
-                contentContainerStyle={styles.listContainer}
-              />
+      {/* Fixed Header */}
+      <View style={styles.headerContainer}>
+        <Header title="Giỏ Hàng" hasReturn={true} onPressReturn={handleBackPress} />
+      </View>
 
-              <View style={styles.footer}>
-                <View style={styles.totalContainer}>
-                  <Text style={styles.totalLabel}>Tổng cộng:</Text>
-                  <Text style={styles.totalAmount}>${totalAmount}</Text>
-                </View>
-
-                <TouchableOpacity 
-                  style={styles.paymentButton}
-                  onPress={handlePayment}
-                  disabled={loading}
-                >
-                  <Text style={styles.paymentButtonText}>
-                    {loading ? 'Đang xử lý...' : 'Thanh toán'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </>
-          ) : (
+      {/* Scrollable Content */}
+      <View style={[
+        styles.contentContainer,
+        hasItems && styles.contentWithFooter
+      ]}>
+        <FlatList
+          data={cartItems}
+          keyExtractor={item => item._id}
+          renderItem={({ item }) => <CartItem item={item} />}
+          contentContainerStyle={styles.listContent}
+          ListEmptyComponent={() => (
             <View style={styles.emptyContainer}>
-              <Icon name="cart-outline" size={64} color="#ccc" />
               <Text style={styles.emptyText}>Giỏ hàng trống</Text>
             </View>
           )}
+        />
+      </View>
+
+      {/* Fixed Footer - Only show when there are items */}
+      {hasItems && (
+        <View style={styles.footer}>
+          <View style={styles.totalContainer}>
+            <Text style={styles.totalLabel}>Tổng cộng:</Text>
+            <Text style={styles.totalAmount}>
+              {calculateTotal().toLocaleString('vi-VN')}đ
+            </Text>
+          </View>
+          <TouchableOpacity 
+            style={[
+              styles.checkoutButton,
+              !hasItems && styles.checkoutButtonDisabled
+            ]}
+            onPress={handleCheckout}
+            disabled={!hasItems}
+          >
+            <Text style={[
+              styles.checkoutButtonText,
+              !hasItems && styles.checkoutButtonTextDisabled
+            ]}>
+              Thanh Toán
+            </Text>
+          </TouchableOpacity>
         </View>
-      </SafeAreaView>
-    </>
+      )}
+    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: wp('4%'),
-  },
-  listContainer: {
-    paddingVertical: hp('2%'),
-  },
-  cartItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: hp('2%'),
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  itemInfo: {
-    flex: 1,
-  },
-  itemName: {
-    fontSize: hp('2%'),
-    fontWeight: 'bold',
-  },
-  itemQuantity: {
-    fontSize: hp('1.8%'),
-    color: '#666',
-    marginTop: hp('0.5%'),
-  },
-  itemPrice: {
-    fontSize: hp('2%'),
-    fontWeight: 'bold',
-    color: '#2E8B57',
-  },
-  footer: {
-    paddingVertical: hp('2%'),
-    borderTopWidth: 1,
-    borderTopColor: '#eee',
-  },
-  totalContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: hp('2%'),
-  },
-  totalLabel: {
-    fontSize: hp('2.2%'),
-    fontWeight: 'bold',
-  },
-  totalAmount: {
-    fontSize: hp('2.4%'),
-    fontWeight: 'bold',
-    color: '#2E8B57',
-  },
-  paymentButton: {
-    backgroundColor: '#2E8B57',
-    paddingVertical: hp('2%'),
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  paymentButtonText: {
-    color: '#fff',
-    fontSize: hp('2%'),
-    fontWeight: 'bold',
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyText: {
-    fontSize: hp('2%'),
-    color: '#666',
-    marginTop: hp('1%'),
-  },
-});
 
 export default Cart;

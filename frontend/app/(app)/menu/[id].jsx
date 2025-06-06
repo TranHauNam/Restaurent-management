@@ -28,7 +28,7 @@ import { foodData } from '@/data/mocking/food';
 import { Header } from '@/components/Header';
 import { styles } from '@/styles/menu/main';
 import { Typography } from '@/styles/Typography';
-
+import { Color } from '@/styles/GlobalStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
@@ -87,13 +87,18 @@ const renderFoodCard = (item, quantity, onUpdateQuantity) => {
 };
 
 const CartSummary = ({ totalAmount, onViewCart }) => {
-  if (totalAmount <= 0) return null;
-
   return (
     <View style={styles.cartSummary}>
       <Text style={styles.totalAmount}>Tạm tính: {totalAmount.toLocaleString('vi-VN')}đ</Text>
-      <TouchableOpacity style={styles.viewCartButton} onPress={onViewCart}>
-        <Icon name="cart-outline" size={24} color="#fff" />
+      <TouchableOpacity 
+        style={[
+          styles.viewCartButton,
+          totalAmount <= 0 && styles.viewCartButtonDisabled
+        ]}
+        onPress={onViewCart}
+        disabled={totalAmount <= 0}
+      >
+        <Icon name="cart-outline" size={24} color={totalAmount <= 0 ? Color.gray : "#fff"} />
       </TouchableOpacity>
     </View>
   );
@@ -139,8 +144,7 @@ const Menu = () => {
   }
 
   const handleViewCart = () => {
-    // TODO: Navigate to cart page
-    console.log("View cart clicked");
+    router.push('/cart');
   };
 
   return (
