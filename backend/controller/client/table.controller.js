@@ -1,8 +1,8 @@
 const Restaurent = require('../../models/restaurant.model');
 const Schedule = require('../../models/schedule.model');
 const Reservation = require('../../models/reservation.model');
-const parseToMinutes = require('../../utils/parseToMinutes');
 const notificationController = require('./notification.controller');
+const TableType = require('../../models/tabletype.model');
 
 module.exports.tableReservation = async (req, res) => {
     const userId = req.user.id;
@@ -15,43 +15,51 @@ module.exports.tableReservation = async (req, res) => {
     }
 
     try {
-        // Kiểm tra xem nhà hàng có tồn tại không
+        // Kiểm tra nhà hàng
         const restaurant = await Restaurent.findById(restaurantId);
         if (!restaurant) {
-            return res.status(404).json({
-                message: "Không tìm thấy nhà hàng"
-            });
+            return res.status(404).json({ message: "Không tìm thấy nhà hàng" });
         }
 
-        // Kiểm tra lịch của nhà hàng cho ngày đã chọn
+        // Lấy schedule của ngày
         const schedule = await Schedule.findOne({ restaurantId, date });
         if (!schedule) {
-            return res.status(404).json({
-                message: "Không tìm thấy lịch đặt bàn cho ngày này"
-            });
+            return res.status(404).json({ message: "Không tìm thấy lịch đặt bàn cho ngày này" });
         }
 
-        // Kiểm tra xem khung giờ đã chọn có hợp lệ và có bàn trống không
-        const slot = schedule.timeSlots.find((slot) => {
-            return slot.time === tableReservationTime
-        });
+        // Tìm timeslot theo giờ
+        const slot = schedule.timeSlots.find(ts => ts.time === tableReservationTime);
         if (!slot) {
-            return res.status(404).json({
-                message: "Khung giờ không hợp lệ"
-            });
+            return res.status(404).json({ message: "Khung giờ không hợp lệ" });
         }
 
-        // Tìm bàn trống cho số lượng người yêu cầu
-        const matchingTable = slot.tables.find((t) => {
-            return t.people >= people && t.booked < t.quantity;
-        });
-        if (!matchingTable) {
-            return res.status(400).json({
-                message: "Không có bàn trống cho số lượng người này"
-            });
+        // Lấy thông tin loại bàn (TableType) cho từng loại bàn trong timeslot
+        // Populate tableType cho từng bàn
+        await Promise.all(slot.tables.map(async (t, idx) => {
+            const tableType = await TableType.findById(t.tableType);
+            slot.tables[idx].tableTypeObj = tableType;
+        }));
+
+        // Tìm loại bàn phù hợp
+        let matchingTableIdx = -1;
+        for (let i = 0; i < slot.tables.length; i++) {
+            const t = slot.tables[i];
+            if (t.tableTypeObj && t.tableTypeObj.people >= people && t.booked < t.tableTypeObj.quantity) {
+                matchingTableIdx = i;
+                break;
+            }
+        }
+        if (matchingTableIdx === -1) {
+            return res.status(400).json({ message: "Không có bàn trống cho số lượng người này" });
         }
 
-        // Tạo một đặt bàn mới
+        // Tăng số bàn đã đặt
+        slot.tables[matchingTableIdx].booked += 1;
+        // Xóa trường phụ
+        delete slot.tables[matchingTableIdx].tableTypeObj;
+        await schedule.save();
+
+        // Tạo đặt bàn mới
         const newReservation = new Reservation({
             userId,
             restaurantId,
@@ -62,21 +70,14 @@ module.exports.tableReservation = async (req, res) => {
             time: tableReservationTime,
             people
         });
-
-        // Lưu đặt bàn vào cơ sở dữ liệu
         const savedReservation = await newReservation.save();
 
-        // Cập nhật trạng thái bàn đã đặt
-        matchingTable.booked += 1;
-        await schedule.save();
-
-        // Tạo thông báo đặt bàn thành công
+        // Tạo thông báo
         let notification = null;
         try {
             notification = await notificationController.createReservationNotification(userId, savedReservation._id);
         } catch (error) {
             console.error('Lỗi khi tạo thông báo:', error);
-            // Không trả về lỗi vì đặt bàn vẫn thành công, thông báo chỉ là tính năng bổ sung
         }
 
         return res.status(200).json({

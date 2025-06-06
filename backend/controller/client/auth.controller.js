@@ -79,7 +79,6 @@ module.exports.verifyOTP = async (req, res) => {
         );
 
         user.tokenUser = tokenUser;
-
         await user.save();
       } else {
         user = existingUser;
@@ -90,6 +89,7 @@ module.exports.verifyOTP = async (req, res) => {
         );
 
         user.tokenUser = tokenUser;
+        await user.save();
       }
   
       
@@ -137,7 +137,10 @@ module.exports.login  = async (req, res) => {
 
     await sendMail(email, 'Mã OTP xác thực', `<p>Mã OTP của bạn là: <b>${otp}</b></p>`);
     
-    return res.status(200).json({ message: 'OTP đã được gửi đến email' });
+    return res.status(200).json({ 
+      message: 'OTP đã được gửi đến email',
+      otp: otp
+    });
   } catch (error) {
     return res.status(500).json({ 
       message: 'Lỗi server.',
