@@ -87,25 +87,48 @@ export const BookingModal = ({
         const timeRS = selectedTime;
         
         try {
-            // temporary comment out
-            // const result = await postTableBooking({
-            //     restaurantId: residRS,
-            //     name: nameRS,
-            //     phone: phoneRS,
-            //     email: email,
-            //     date: dateRS,
-            //     people: peopleRS,
-            //     tableReservationTime: timeRS,
-            // })
-            // console.log("Booking result:", result.message);
-            // Alert.alert("Đặt bàn thành công", result.message);
+            // Gọi API đặt bàn
+            const result = await postTableBooking({
+                restaurantId: residRS,
+                name: nameRS,
+                phone: phoneRS,
+                email: email,
+                date: dateRS,
+                people: peopleRS,
+                tableReservationTime: timeRS,
+            });
 
-            // thanh cong thi den phan dat mon
-            // Y tuong: Hien ra them mot modol thong bao dat ban thanh cong
-            // Kiem tra neu thoi gian con nhieu hon 2h thi hien nut dat mon
-            // chuyen den trang dat mon
-            router.push(`/menu/${resId}`);
-            
+            // Nếu đặt bàn thành công
+            if (result.success) {
+                Alert.alert(
+                    "Đặt bàn thành công",
+                    "Bạn có muốn đặt món trước không?",
+                    [
+                        {
+                            text: "Không",
+                            onPress: () => {
+                                onCloseBookingModal();
+                            },
+                            style: "cancel"
+                        },
+                        {
+                            text: "Có",
+                            onPress: () => {
+                                // Chuyển đến trang menu với bookingId
+                                router.push({
+                                    pathname: `/menu/${resId}`,
+                                    params: { 
+                                        bookingId: result.bookingId,
+                                        requirePayment: true
+                                    }
+                                });
+                            }
+                        }
+                    ]
+                );
+            } else {
+                Alert.alert("Lỗi", result.message);
+            }
         } catch (error) {
             console.log("ERROR booking table:", error);
             Alert.alert("Lỗi khi đặt bàn", `${error.message}`);

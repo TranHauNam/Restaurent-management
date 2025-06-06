@@ -37,13 +37,20 @@ const HomeView = () => {
     fetchRestaurants().then((data) => {
       setRestaurantData(data.restaurents);
       // console.log("Fetched restaurants:", restaurantData);
-      getFoodList().then((foodList) => {
-        console.log("Fetched food list:", foodList);
-        saveContextFoodList(foodList);
-        foodListRef.current = foodList; // Save to ref for later use
-      })
-      //debug
-      console.log("Food list saved to context:", getContextFoodList());
+      const fetchFoodList = async () => {
+        try {
+          const foodList = await getFoodList();
+          // console.log("Fetched food list:", foodList);
+          foodListRef.current = foodList; // Save to ref for later use
+
+          await saveContextFoodList(foodList);
+          // const updatedList = await getContextFoodList();
+          // console.log("Updated food list from context:", updatedList); //scussess
+        } catch (error) {
+          console.error("Error fetching food list:", error);
+        }
+      };
+      fetchFoodList();
     }).catch((error) => {
       console.error("Error fetching restaurants:", error);
     });

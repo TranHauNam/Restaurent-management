@@ -1,22 +1,29 @@
+//---------------------- Book Mon An.-------------------
+// Nhan chon so luong mon - xac nhan gia tien
+// Thanh toan
+// Nhan thong bao
+
 // xu ly cai back end cua book mon di
-// dau tien la get list ve thanh food context - tai sao
-// fetch ve mot lan su dung trong ca restaurant_main
-// booked
+// bookecontext - done
+// Hien thi menu theo nha hang
 
-// Hoc cop cach minh lam cai 
-// Da nho chat sinh va hieu mot it cua food-context -- Done
-// Vao trang fetch list nha hang:
-// Thuc hien fetch api danh sach food va set vao food context luon
+// Hien full menu - chua
 
 
 
-import React from 'react'
+import React from 'react';
+
+import {
+  useState, useEffect, useRef,
+} from 'react'
+
 import { 
   View, Text, StatusBar,
   TouchableOpacity, ScrollView,
   Image, FlatList, SafeAreaView,
 } from 'react-native'
 
+import { useFoodContext } from '@/contexts/food-context';
 import { foodData } from '@/data/mocking/food';
 import { Header } from '@/components/Header';
 import { styles } from '@/styles/menu/main';
@@ -53,6 +60,20 @@ const renderFoodCard = (item) => {
 }
 
 const Menu = () => {
+  const { getContextFoodList } = useFoodContext(); // Get the food context functions
+  // Fetch the food list from context
+  const [foodList, setFoodList] = useState([]); // State to hold the food list
+
+  useEffect(() => {
+    const fetchFoodList = async () => {
+      const list = await getContextFoodList();
+      setFoodList(list);
+    };
+    fetchFoodList();
+  }, [getContextFoodList]);
+  console.log("Food List:", foodList); // Log the food list for debugging
+
+
   const resId = useLocalSearchParams().resId; // Get the restaurant ID from the URL parameters
   const router = useRouter(); // Initialize the router
 
@@ -69,8 +90,8 @@ const Menu = () => {
       {/* Scroll View */}
       <View style={styles.notiLayout}>
         <FlatList
-          data={foodData}
-          keyExtractor={(item) => item.id.toString()}
+          data={foodList}
+          keyExtractor={(item) => item._id.toString()} 
           renderItem={({ item }) => (renderFoodCard(item))}
           numColumns={2}
           contentContainerStyle={styles.notiContainer}

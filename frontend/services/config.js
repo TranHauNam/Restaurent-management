@@ -1,5 +1,5 @@
 // Cấu hình API URL
-export const API_URL = 'http://192.168.242.16:5001';
+export const API_URL = 'http://10.1.3.152:5001';    
 
 
 
