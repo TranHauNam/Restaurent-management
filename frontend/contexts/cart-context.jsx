@@ -6,16 +6,19 @@ import { createVNPayUrl, handleVNPayReturn } from '@/services/api/payment-api';
 export const CartContext = createContext({
     cartItems: [],
     loading: false,
+    lastOrder: null,
     addItemToCart: async () => {},
     removeItemFromCart: async () => {},
     clearCart: () => {},
     initiatePayment: async () => {},
     handlePaymentReturn: async () => {},
+    setLastOrder: () => {},
 });
 
 export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState([]); // [{ foodId, quantity, food }]
     const [loading, setLoading] = useState(false);
+    const [lastOrder, setLastOrder] = useState(null);
 
     // Thêm hoặc cập nhật số lượng món trong giỏ hàng
     const addItemToCart = useCallback(async (foodId, quantity, foodDetails) => {
@@ -112,35 +115,10 @@ export const CartProvider = ({ children }) => {
     }, [cartItems]);
 
     // Xóa toàn bộ giỏ hàng
-    const clearCart = useCallback(async () => {
-        try {
-            setLoading(true);
-            // Lưu state cũ để có thể rollback
-            const oldItems = [...cartItems];
-            
-            // Cập nhật state local
-            setCartItems([]);
-
-            // Gọi API để xóa từng món
-            await Promise.all(
-                oldItems.map(item => 
-                    addToCart({
-                        foodId: item.foodId,
-                        quantity: 0
-                    })
-                )
-            );
-
-            return true;
-        } catch (error) {
-            Alert.alert('Lỗi', 'Không thể xóa giỏ hàng');
-            // Rollback state nếu API call thất bại
-            setCartItems(oldItems);
-            throw error;
-        } finally {
-            setLoading(false);
-        }
-    }, [cartItems]);
+    const clearCart = useCallback(() => {
+        // Chỉ xóa state local, không gọi API
+        setCartItems([]);
+    }, []);
 
     // Bắt đầu thanh toán
     const initiatePayment = useCallback(async () => {
@@ -157,16 +135,24 @@ export const CartProvider = ({ children }) => {
     }, []);
 
     // Xử lý callback từ VNPay
-    const handlePaymentReturn = useCallback(async (params) => {
+    const handlePaymentReturn = useCallback(async (response) => {
         try {
             setLoading(true);
-            const result = await handleVNPayReturn(params);
-            if (result.success) {
-                await clearCart(); // Xóa giỏ hàng sau khi thanh toán thành công
+            
+            // Kiểm tra và lưu thông tin đơn hàng
+            if (response.order) {
+                setLastOrder(response.order);
+                clearCart(); // Xóa giỏ hàng local sau khi thanh toán thành công
             }
-            return result;
+
+            return {
+                success: true,
+                message: response.message,
+                order: response.order
+            };
         } catch (error) {
-            Alert.alert('Lỗi', error.message);
+            console.error('Payment return error:', error);
+            Alert.alert('Lỗi', 'Không thể cập nhật trạng thái đơn hàng');
             throw error;
         } finally {
             setLoading(false);
@@ -176,11 +162,13 @@ export const CartProvider = ({ children }) => {
     const value = {
         cartItems,
         loading,
+        lastOrder,
         addItemToCart,
         removeItemFromCart,
         clearCart,
         initiatePayment,
         handlePaymentReturn,
+        setLastOrder,
     };
 
     return (

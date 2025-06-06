@@ -74,8 +74,13 @@ const Cart = () => {
   const handleCheckout = async () => {
     try {
       const paymentUrl = await initiatePayment();
-      // TODO: Handle payment URL (e.g., open in WebView)
-      console.log('Payment URL:', paymentUrl);
+      if (paymentUrl) {
+        // Chuyển đến trang thanh toán VNPay với URL đã mã hóa
+        router.push({
+          pathname: '/(app)/payment/vnpay',
+          params: { paymentUrl: encodeURIComponent(paymentUrl) }
+        });
+      }
     } catch (error) {
       Alert.alert('Error', 'Failed to initiate payment. Please try again.');
       console.error('Failed to initiate payment:', error);
