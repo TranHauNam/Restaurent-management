@@ -8,7 +8,6 @@ import {
 import { API_URL } from '../services/config';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { set } from "date-fns";
 
 const APILINK = API_URL;
 export const AuthContext = createContext(undefined);

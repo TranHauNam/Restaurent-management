@@ -2,13 +2,16 @@ import React from "react";
 import { useState, useEffect } from "react";
 import {  View, Text, Pressable, Image, FlatList, ScrollView, TouchableOpacity, } from "react-native";
 
+import { useFoodContext } from "@/contexts/food-context";
 import { fetchRestaurants } from "@/services/restaurant-api";
+import { getFoodList } from "@/services/api/food-api";
 import { styles } from "@/styles/tabs/home";
 import { Typography } from "@/styles/Typography";
 
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import Entypo from '@expo/vector-icons/Entypo';
+import { set } from "date-fns";
 
 
 
@@ -25,11 +28,17 @@ const Divider = ({ color = "#ccc", thickness = 1, marginVertical = 10 }) => (
 
 const HomeView = () => {
   const [restaurantData, setRestaurantData] = useState([]);
+  const { setfoodList } = useFoodContext(); // Get the setFoodList function from context
 
   useEffect(() => {
+    //fetch restaurants and food list
     fetchRestaurants().then((data) => {
       setRestaurantData(data.restaurents);
       // console.log("Fetched restaurants:", restaurantData);
+      getFoodList().then((foodList) => {
+        console.log("Fetched food list:", foodList);
+        setfoodList(foodList); // Set the food list in context
+      });
     }).catch((error) => {
       console.error("Error fetching restaurants:", error);
     });
