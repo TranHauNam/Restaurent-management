@@ -8,6 +8,7 @@ const orderSchema = new mongoose.Schema({
             quantity: { type: Number, required: true }
         }
     ],
+    restaurantId: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
     total: { type: Number, required: true },
     status: { type: String, default: 'pending' }, // pending, paid, failed
     vnp_TxnRef: { type: String },
