@@ -104,16 +104,20 @@ const styles = StyleSheet.create({
     marginBottom: hp("4%"),
   },
   logoText: {
-    fontSize: wp("6%"),
+    // fontSize: wp("6%"),
+    // color: Color.primary,
+    // fontFamily: FontFamily.segoeUI,
+    // fontWeight: "700",
     color: Color.primary,
-    fontFamily: FontFamily.segoeUI,
-    fontWeight: "700",
+    fontSize: FontSize.size_3xl,
   },
   logoTable: {
-    fontWeight: "400",
+    color: Color.secondary,
+    fontWeight: "700",
   },
   logoBooky: {
     fontWeight: "700",
+    color: Color.primary,
   },
   welcomeText: {
     fontSize: wp("5%"),
