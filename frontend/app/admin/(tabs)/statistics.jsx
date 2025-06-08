@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView, ActivityIndicator, SafeAreaView, Pressable } from 'react-native';
-import { LineChart, BarChart } from 'react-native-chart-kit';
+import { BarChart, LineChart } from 'react-native-gifted-charts';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useAuthContext } from '../../../contexts/auth-context';
 import { API_URL } from '../../../services/config';
@@ -43,20 +43,32 @@ export default function Statistics() {
           const endDate = range.end.toISOString().slice(0, 10);
           url = `${API_URL}/api/admin/revenue/range?startDate=${startDate}&endDate=${endDate}`;
         }
+        console.log('Fetching data from:', url);
         const res = await fetch(url, {
           headers: { Authorization: `Bearer ${adminToken}` },
         });
         if (!res.ok) throw new Error('Lỗi server');
         const resData = await res.json();
+        console.log('Received data:', resData);
         if (cancel) return;
         if (tab === 'week') {
-          setData(resData.map((item, idx) => ({ ...item, label: getWeekdayLabel(idx) })));
+          setData(resData.map((item, idx) => {
+            console.log('Weekly data item:', item);
+            return { ...item, label: getWeekdayLabel(idx) };
+          }));
         } else if (tab === 'year') {
-          setData(resData.map((item, idx) => ({ ...item, label: `T${idx + 1}` })));
+          setData(resData.map((item, idx) => {
+            console.log('Yearly data item:', item);
+            return { ...item, label: `T${idx + 1}` };
+          }));
         } else {
-          setData(resData.map(item => ({ ...item, label: item._id || item.date || item.month })));
+          setData(resData.map(item => {
+            console.log('Range data item:', item);
+            return { ...item, label: item._id || item.date || item.month };
+          }));
         }
       } catch (err) {
+        console.error('Error fetching data:', err);
         setError('Không thể tải dữ liệu.');
         setData([]);
       } finally {
@@ -80,6 +92,19 @@ export default function Statistics() {
       },
     ],
   };
+
+  // Convert data for Gifted Charts - Fix data transformation
+  const giftedData = data.map(item => ({
+    value: parseFloat(item.total) || 0,  // Ensure number conversion
+    label: item.label,
+    frontColor: Color.primary,
+    topLabelComponent: () => (
+      <Text style={{ color: Color.secondary, fontSize: 10 }}>
+        {(item.total || 0).toLocaleString()}đ
+      </Text>
+    )
+  }));
+
   const total = data.reduce((sum, d) => sum + (d.total || 0), 0);
 
   // Hàm làm tròn max value lên số đẹp (5tr, 10tr, 100tr...)
@@ -114,7 +139,99 @@ export default function Statistics() {
     avgLabelTitle = 'Trung bình/ngày';
   }
   const avgPerDay = data.length ? Math.round(total / data.length) : 0;
+  const chartWidth = Math.max(screenWidth - 32, data.length * 60);
   const chartHeight = 350;
+
+  const renderChart = () => {
+    if (loading) {
+      return <ActivityIndicator size="large" color={Color.primary} style={{ marginTop: 40 }} />;
+    }
+    if (error) {
+      return <Text style={styles.error}>{error}</Text>;
+    }
+    if (data.length === 0) {
+      return <Text style={styles.empty}>Không có dữ liệu</Text>;
+    }
+
+    const commonProps = {
+      data: giftedData,
+      width: chartWidth,
+      height: chartHeight - 50,
+      hideRules: false,  // Show grid lines
+      backgroundColor: Color.white,
+      noOfSections: 5,
+      maxValue: niceMax,
+      yAxisTextStyle: { color: Color.secondary },
+      xAxisTextStyle: { color: Color.secondary },
+      yAxisLabelWidth: 60,
+      spacing: data.length > 10 ? chartWidth / data.length : 40,
+      formatYLabel: (y) => Math.round(y).toLocaleString(),
+      showFractionalValues: false,
+      showXAxisIndices: true,
+      showYAxisIndices: true,
+      xAxisIndicesHeight: 2,
+      xAxisIndicesColor: Color.primary,
+      yAxisIndicesWidth: 2,
+      yAxisIndicesColor: Color.primary,
+      yAxisThickness: 1,
+      xAxisThickness: 1,
+      yAxisTextNumberOfLines: 1,
+      yAxisLabelPrefix: "",
+      yAxisLabelSuffix: "đ",
+      rulesType: 'solid',
+      rulesColor: 'lightgray',
+      showVerticalLines: true,
+      verticalLinesColor: 'rgba(0,0,0,0.1)',
+      initialSpacing: 20,
+      endSpacing: 20,
+    };
+
+    if (tab === 'range') {
+      return (
+        <LineChart
+          {...commonProps}
+          curved
+          color={Color.primary}
+          thickness={2}
+          hideDataPoints={false}
+          dataPointsColor={Color.primary}
+          dataPointsRadius={4}
+          startFillColor={Color.primary}
+          endFillColor={Color.white}
+          startOpacity={0.3}
+          endOpacity={0.1}
+          adjustToWidth
+          focusEnabled
+          pressEnabled
+          showDataPointOnPress
+          showTextOnPress
+          textShiftY={-20}
+          textShiftX={-20}
+          textColor={Color.primary}
+        />
+      );
+    }
+
+    return (
+      <BarChart
+        {...commonProps}
+        barWidth={data.length > 10 ? (chartWidth / data.length) - 10 : 30}
+        frontColor={Color.primary}
+        barBorderRadius={4}
+        disablePress={false}
+        pressEnabled
+        showGradient
+        gradientColor={Color.lightsub}
+        showReferenceLine1
+        referenceLine1Position={avgValue}
+        referenceLine1Config={{
+          color: Color.secondary,
+          dashWidth: 2,
+          dashGap: 3,
+        }}
+      />
+    );
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -176,43 +293,8 @@ export default function Statistics() {
           </View>
         )}
         {/* Biểu đồ */}
-        <ScrollView horizontal contentContainerStyle={{ minWidth: screenWidth - 32 }}>
-          {loading ? (
-            <ActivityIndicator size="large" color={Color.primary} style={{ marginTop: 40 }} />
-          ) : error ? (
-            <Text style={styles.error}>{error}</Text>
-          ) : data.length === 0 ? (
-            <Text style={styles.empty}>Không có dữ liệu</Text>
-          ) : tab === 'range' ? (
-            <LineChart
-              data={chartData}
-              width={Math.max(screenWidth - 32, data.length * 60)}
-              height={chartHeight}
-              yAxisLabel=""
-              chartConfig={chartConfig}
-              style={styles.chart}
-              bezier
-              fromZero
-              segments={5}
-              yAxisInterval={yInterval}
-              formatYLabel={y => parseInt(Number(y)).toLocaleString()}
-              yMax={niceMax}
-            />
-          ) : (
-            <BarChart
-              data={chartData}
-              width={Math.max(screenWidth - 32, data.length * 60)}
-              height={chartHeight}
-              yAxisLabel=""
-              chartConfig={chartConfig}
-              style={styles.chart}
-              fromZero
-              segments={5}
-              yAxisInterval={yInterval}
-              formatYLabel={y => parseInt(Number(y)).toLocaleString()}
-              yMax={niceMax}
-            />
-          )}
+        <ScrollView horizontal contentContainerStyle={{ minWidth: screenWidth - 32, paddingHorizontal: 16 }}>
+          {renderChart()}
         </ScrollView>
         {/* Tổng doanh thu, số liệu phụ */}
         <View style={styles.totalBox}>
@@ -231,16 +313,6 @@ export default function Statistics() {
     </SafeAreaView>
   );
 }
-
-const chartConfig = {
-  backgroundGradientFrom: Color.white,
-  backgroundGradientTo: Color.white,
-  decimalPlaces: 0,
-  color: (opacity = 1) => Color.primary,
-  labelColor: (opacity = 1) => Color.secondary,
-  style: { borderRadius: Border.br_8xs },
-  propsForDots: { r: '4', strokeWidth: '2', stroke: Color.primary },
-};
 
 const styles = StyleSheet.create({
   safeArea: {

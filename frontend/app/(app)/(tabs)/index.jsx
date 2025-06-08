@@ -160,9 +160,9 @@ const HomeView = () => {
         />
 
       </View>
-      <TouchableOpacity onPress={handleShortToMenu}>
+      {/* <TouchableOpacity onPress={handleShortToMenu}>
         <Text>Shrt o menu</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

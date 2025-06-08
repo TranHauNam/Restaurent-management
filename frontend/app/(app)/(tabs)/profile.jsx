@@ -50,7 +50,7 @@ const Profile = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Avatar & Tên */}Add commentMore actions
+      {/* Avatar & Tên */}
       <View style={styles.avatarSection}>
         <Image
           source={{ uri: "https://via.placeholder.com/40"}} // thay ảnh avatar phù hợp

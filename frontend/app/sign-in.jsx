@@ -21,34 +21,34 @@ const SignIn = () => {
 
   const handleSignIn = async () => {
     //--------------------Temporary Comment DO NOT DELETE--------------------
-    // if (!emailRef.current) {
-    //   Alert.alert("Please enter Email");
-    //   console.log("Please enter Email");
-    //   return;
-    // }
+    if (!emailRef.current) {
+      Alert.alert("Please enter Email");
+      console.log("Please enter Email");
+      return;
+    }
 
-    // if (otpRef.current.length < 6) {
-    //   Alert.alert("Please enter Send OTP button");
-    //   console.log("Please enter Send OTP button");
-    //   return;
-    // }
+    if (otpRef.current.length < 6) {
+      Alert.alert("Please enter Send OTP button");
+      console.log("Please enter Send OTP button");
+      return;
+    }
 
-    // let otpResponse = await verifyOTP(otpRef.current);
+    let otpResponse = await verifyOTP(otpRef.current);
     
-    // if (!otpResponse.success) {
-    //   Alert.alert(otpResponse.message);
-    //   console.log(otpResponse.message);
-    // } else if (otpResponse.success) {
-    //   // router.push("/(app)/(tabs)/");
-    //   setLoading(false);
-    //   setAuthenticated(true);
-    //   router.replace("/");
-    // }
+    if (!otpResponse.success) {
+      Alert.alert(otpResponse.message);
+      console.log(otpResponse.message);
+    } else if (otpResponse.success) {
+      // router.push("/(app)/(tabs)/");
+      setLoading(false);
+      setAuthenticated(true);
+      router.replace("/");
+    }
     //----------------------
 
-    setLoading(false);
-    setAuthenticated(true);
-    router.replace("/");
+    // setLoading(false);
+    // setAuthenticated(true);
+    // router.replace("/");
   }
 
   const handleSendOTP = async () => {
