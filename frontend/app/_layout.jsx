@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
 
-import "@/global.css";
-import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 
 import { AuthContextProvider } from "../contexts/auth-context";
 import { FoodContextProvider } from '@/contexts/food-context';
@@ -38,7 +36,7 @@ export default function Layout() {
   }
 
   return (
-    <GluestackUIProvider mode="light">
+   
       <AuthContextProvider>
         <FoodContextProvider>
           <CartProvider>
@@ -76,6 +74,5 @@ export default function Layout() {
           </CartProvider>
         </FoodContextProvider>
       </AuthContextProvider>
-    </GluestackUIProvider>
   );
 }

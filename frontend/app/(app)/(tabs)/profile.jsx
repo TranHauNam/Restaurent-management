@@ -16,12 +16,7 @@ import { Typography } from "@/styles/Typography"; // Import typography styles
 
 import { router, useRouter } from "expo-router"; // Import useRouter for navigation
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import {
-  Avatar,
-  AvatarBadge,
-  AvatarFallbackText,
-  AvatarImage,
-} from "@/components/ui/avatar"
+
 
 
 // Component render menu item
@@ -55,21 +50,13 @@ const Profile = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Avatar & Tên */}
+      {/* Avatar & Tên */}Add commentMore actions
       <View style={styles.avatarSection}>
-        <Avatar size="lg">
-          <AvatarFallbackText>Nguyen Thanh</AvatarFallbackText>
-          <AvatarImage
-            // source={{
-            //   uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-            // }}
-          />
-          <AvatarBadge />
-        </Avatar>
-        <Text style={styles.name}>NGUYEN THANH</Text>
-        <Text style={styles.customerCode}>Mã KH: 06155044</Text>
-      </View>
-      
+        <Image
+          source={{ uri: "https://via.placeholder.com/40"}} // thay ảnh avatar phù hợp
+          style={styles.avatar}
+        />
+      </View> 
 
       {/* Level + Ví ưu đãi */}
       {/* <View style={styles.levelSection}>
