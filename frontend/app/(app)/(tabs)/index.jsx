@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import {  View, Text, Pressable, Image, FlatList, ScrollView, TouchableOpacity, } from "react-native";
+import {  View, Text, Pressable, Image, FlatList, ScrollView, TouchableOpacity, TextInput } from "react-native";
 
 import { useFoodContext } from "@/contexts/food-context";
 import { fetchRestaurants } from "@/services/restaurant-api";
@@ -11,6 +11,7 @@ import { Typography } from "@/styles/Typography";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import Entypo from '@expo/vector-icons/Entypo';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 
@@ -29,6 +30,8 @@ const Divider = ({ color = "#ccc", thickness = 1, marginVertical = 10 }) => (
 const HomeView = () => {
   const foodListRef = useRef([]);
   const [restaurantData, setRestaurantData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const { saveContextFoodList, getContextFoodList } = useFoodContext();
 
 
@@ -36,6 +39,7 @@ const HomeView = () => {
     //fetch restaurants and food list
     fetchRestaurants().then((data) => {
       setRestaurantData(data.restaurents);
+      setFilteredRestaurants(data.restaurents);
       // console.log("Fetched restaurants:", restaurantData);
       const fetchFoodList = async () => {
         try {
@@ -80,6 +84,26 @@ const HomeView = () => {
   // useEffect(() => {
   //   console.log("Restaurant data time available updated:", restaurantData.availableTimes);
   // }, [restaurantData]);
+
+  // Search filter function
+  useEffect(() => {
+    const filterRestaurants = () => {
+      const query = searchQuery.toLowerCase().trim();
+      if (query === '') {
+        setFilteredRestaurants(restaurantData);
+        return;
+      }
+
+      const filtered = restaurantData.filter(restaurant => 
+        restaurant.name.toLowerCase().includes(query) ||
+        restaurant.address.toLowerCase().includes(query)
+      );
+      setFilteredRestaurants(filtered);
+    };
+
+    filterRestaurants();
+  }, [searchQuery, restaurantData]);
+
   const renderTimeSlot = (restaurantId) => ({ item }) => (
     <TouchableOpacity 
     style={styles.timeSlotContainer}
@@ -147,16 +171,58 @@ const HomeView = () => {
 
       <Text style={[Typography.header3, styles.welcomeText]}>Welcome to</Text>
       <Text style={[Typography.header2, styles.highlightText]}>Dine-in Florida</Text>
+
+      {/* Search Bar */}
+      <View style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#f0f0f0',
+        borderRadius: 10,
+        paddingHorizontal: 15,
+        marginHorizontal: 16,
+        marginVertical: 10,
+        height: 45,
+      }}>
+        <Ionicons name="search" size={20} color="#666" />
+        <TextInput
+          style={{
+            flex: 1,
+            marginLeft: 10,
+            fontSize: 16,
+            color: '#333',
+          }}
+          placeholder="Search restaurants by name or location"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholderTextColor="#999"
+        />
+        {searchQuery !== '' && (
+          <TouchableOpacity onPress={() => setSearchQuery('')}>
+            <Ionicons name="close-circle" size={20} color="#666" />
+          </TouchableOpacity>
+        )}
+      </View>
+
       <Text style={[Typography.header5, styles.sectionTitle]}>Our Restaurants</Text>
 
-       {/* Restaurant List */}
+      {/* Restaurant List */}
       <View style={styles.restaurantListContainer}> 
         <FlatList
-          data={restaurantData}
+          data={filteredRestaurants}
           renderItem={renderRestaurantCard}
           keyExtractor={(item) => item._id}
           numColumns={1}
-          contentContainerStyle={styles.listContainer}   
+          contentContainerStyle={styles.listContainer}
+          ListEmptyComponent={() => (
+            <View style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingTop: 20,
+            }}>
+              <Text style={[Typography.paragraph]}>No restaurants found</Text>
+            </View>
+          )}
         />
 
       </View>
