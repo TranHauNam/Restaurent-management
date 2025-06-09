@@ -65,7 +65,11 @@ const renderFoodCard = (item, quantity, onUpdateQuantity) => {
     <View style={styles.card}>
       {/* Hình ảnh món ăn */}
       <Image 
-        source={{ uri: item.image }} 
+        source={
+          item.image.startsWith('data:') 
+            ? { uri: item.image }
+            : { uri: `data:image/jpeg;base64,${item.image}` }
+        }
         style={styles.image} 
         resizeMode="cover"
         defaultSource={require("@/assets/images/image.png")}

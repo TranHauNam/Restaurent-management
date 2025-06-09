@@ -169,8 +169,8 @@ const HomeView = () => {
     <View style={styles.container}>
       <StatusBar style="dark" backgroundColor="white" />
 
-      <Text style={[Typography.header3, styles.welcomeText]}>Welcome to</Text>
-      <Text style={[Typography.header2, styles.highlightText]}>Dine-in Florida</Text>
+      <Text style={[Typography.header3, styles.welcomeText]}>Chào mừng đến</Text>
+      <Text style={[Typography.header2, styles.highlightText]}>TableBooking</Text>
 
       {/* Search Bar */}
       <View style={{
@@ -203,7 +203,7 @@ const HomeView = () => {
         )}
       </View>
 
-      <Text style={[Typography.header5, styles.sectionTitle]}>Our Restaurants</Text>
+      <Text style={[Typography.header5, styles.sectionTitle]}>Danh sách nhà hàng</Text>
 
       {/* Restaurant List */}
       <View style={styles.restaurantListContainer}> 
@@ -220,7 +220,7 @@ const HomeView = () => {
               justifyContent: 'center',
               paddingTop: 20,
             }}>
-              <Text style={[Typography.paragraph]}>No restaurants found</Text>
+              <Text style={[Typography.paragraph]}>Không tìm thấy nhà hàng</Text>
             </View>
           )}
         />

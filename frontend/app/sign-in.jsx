@@ -83,13 +83,13 @@ const SignIn = () => {
 
       {/* Welcome Text */}
       <Text style={[Typography.header4, styles.welcomeText]}>
-        <Text style={styles.welcomeBack}>Welcome Back, </Text>
-        <Text style={styles.signInText}>Sign In</Text>
+        <Text style={styles.welcomeBack}>Chào mừng bạn, </Text>
+        <Text style={styles.signInText}>Đăng nhập</Text>
       </Text>
 
       {/* Input Fields */}
       <View style={styles.inputGroup}>
-        <Text style={[Typography.label, styles.label]}>Email or Phone Number</Text>
+        <Text style={[Typography.label, styles.label]}>Email hoặc Số điện thoại</Text>
         <View style={styles.inputField}>
           <TextInput 
             style={[Typography.paragraph ,styles.inputText]} 
@@ -101,7 +101,7 @@ const SignIn = () => {
       </View>
 
       {/* OTP Section */}
-      <Text style={[Typography.label, styles.label]}>Enter OTP Received</Text>
+      <Text style={[Typography.label, styles.label]}>Nhập mã OTP nhận được</Text>
       <View style={styles.otpContainer}>
         <OtpInput 
           numberOfDigits={6}
@@ -115,19 +115,19 @@ const SignIn = () => {
 
       {/* Buttons */}
       <Pressable style={[styles.button, { backgroundColor: Color.primary}]} onPress={() => {handleSignIn()}}>
-        <Text style={[Typography.largeButton, styles.buttonText]}>Sign In</Text>
+        <Text style={[Typography.largeButton, styles.buttonText]}>Đăng nhập</Text>
       </Pressable>
       <Pressable style={[styles.button, { backgroundColor: Color.secondary }]} onPress={() => {handleSendOTP()}}>
-        <Text style={[Typography.largeButton, styles.buttonText]}>Send OTP</Text>
+        <Text style={[Typography.largeButton, styles.buttonText]}>Gửi mã OTP</Text>
       </Pressable>
 
       {/* Footer */}
       <View style={styles.footer}>
-        <Text style={styles.footerText}>Don't have an account?</Text>
+        <Text style={styles.footerText}>Không có tài khoản?</Text>
         <Pressable onPress={() => {
           router.push("/sign-up-email");
         }}>
-          <Text style={styles.signUpText}>Sign Up</Text>
+          <Text style={styles.signUpText}>Đăng ký</Text>
         </Pressable>
       </View>
 
@@ -136,7 +136,7 @@ const SignIn = () => {
         style={[styles.button, { backgroundColor: Color.primary, marginTop: hp("2%") }]} 
         onPress={() => router.push("/admin/sign-in")}
       >
-        <Text style={[Typography.largeButton, styles.backButtonText]}>Sign In as Admin</Text>
+        <Text style={[Typography.largeButton, styles.backButtonText]}>Đăng nhập Admin</Text>
       </Pressable>
     </View>
         

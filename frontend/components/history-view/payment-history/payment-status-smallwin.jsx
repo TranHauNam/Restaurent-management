@@ -11,16 +11,16 @@ const message = ({ status }) => {
     let msg;
     switch (status) {
         case "Paid":
-            msg = "Payment Successful";
+            msg = "Thanh toán thành công";
             break;
         case "Refunded":
-            msg = "Payment Refunded";
+            msg = "Thanh toán đã được hoàn trả";
             break;
         case "Cancelled":
-            msg = "Payment Cancelled";
+            msg = "Thanh toán đã bị hủy";
             break;
         default:
-            msg = "Payment Pending";
+            msg = "Thanh toán đang chờ";
     }
     return msg;
 }
@@ -29,16 +29,16 @@ const description = ({ status }) => {
     let desc;
     switch (status) {
         case "Paid":
-            desc = "Your payment has been successfully processed. Thank you for your purchase!";
+            desc = "Thanh toán của bạn đã được xử lý thành công. Cảm ơn bạn đã mua hàng!";
             break;
         case "Refunded":
-            desc = "Your payment has been refunded. Please check your account for the refund.";
+            desc = "Thanh toán của bạn đã được hoàn trả. Vui lòng kiểm tra tài khoản của bạn để biết thêm chi tiết.";
             break;
         case "Cancelled":
-            desc = "Your payment has been cancelled. If you have any questions, please contact support.";
+            desc = "Thanh toán của bạn đã bị hủy. Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ hỗ trợ.";   
             break;
         default:
-            desc = "Your payment is still pending. Please wait for confirmation.";
+            desc = "Thanh toán của bạn đang chờ. Vui lòng chờ xác nhận.";
             break;
     }
     return desc;

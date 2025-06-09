@@ -56,7 +56,7 @@ export const BookingModal = ({
 
     // Input Sates
     const [note, setNote] = useState([]);
-    const [name, setName] = useState("User Name");
+    const [name, setName] = useState("Nguyen Van A");
     const [phone, setPhone] = useState("0123456789");
     const [email, setEmail] = useState("example@email.com");
 

@@ -15,7 +15,7 @@ export const RestaurantSmallWindow = ({ restaurant }) => {
 
     return (
         <>
-            <Text style={[Typography.header5, styles.restaurantText]}>Restaurant</Text>
+            <Text style={[Typography.header5, styles.restaurantText]}>Nhà hàng</Text>
             <View style={styles.restaurantBox}>
                 <Image
                     style={styles.restaurantImage}
@@ -25,7 +25,7 @@ export const RestaurantSmallWindow = ({ restaurant }) => {
                     <Text style={styles.restaurantName}>{restaurant.name}</Text>
                     <Text style={styles.restaurantAddress}>{restaurant.address}</Text>
                     <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
-                        <Text style={styles.restaurantAddress}>Hotline</Text>
+                        <Text style={styles.restaurantAddress}>Hotline: </Text>
                         <Text style={styles.restaurantPhone}>{restaurant.phone}</Text>
                     </View>
                 </View>

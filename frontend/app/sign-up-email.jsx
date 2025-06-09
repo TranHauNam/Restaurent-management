@@ -19,8 +19,8 @@ export default function SignUpEmail() {
 
   const handleSignUp = async () => {
     if (!emailRef.current || !fullNameRef.current) {
-      Alert.alert("Sign Up", "Please fill in all fields!");
-      console.log("Please fill in all fields!");
+      Alert.alert("Đăng ký", "Vui lòng điền đầy đủ thông tin!");
+      // console.log("Please fill in all fields!");
       return;
     }
 
@@ -45,24 +45,24 @@ export default function SignUpEmail() {
       </Pressable>
 
       {/* Title */}
-      <Text style={[Typography.header4, styles.title]}>Let’s get you started</Text>
+      <Text style={[Typography.header4, styles.title]}>Hãy bắt đầu</Text>
 
       {/* Input Fields */}
       <View style={styles.inputGroup}>
-        <Text style={[Typography.label, styles.label]}>Full name</Text>
+        <Text style={[Typography.label, styles.label]}>Họ và tên</Text>
         <TextInput 
           style={[Typography.paragraph ,styles.input]} 
-          placeholder="Your usename" 
+          placeholder="Nhập họ và tên" 
           placeholderTextColor={Color.sub}
           onChangeText={(text) => { fullNameRef.current = text; }}
        />
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={[Typography.label, styles.label]}>Email address</Text>
+        <Text style={[Typography.label, styles.label]}>Email</Text>
         <TextInput 
           style={[Typography.paragraph ,styles.input]} 
-          placeholder="Enter your email" 
+          placeholder="Nhập email" 
           placeholderTextColor={Color.sub} 
           onChangeText={(text) => { emailRef.current = text; }}
         />
@@ -88,16 +88,16 @@ export default function SignUpEmail() {
       <Pressable style={styles.signUpButton} onPress={() => {
         handleSignUp();
       }}>
-        <Text style={[Typography.largeButton, styles.signUpButtonText]}>Sign Up</Text>
+        <Text style={[Typography.largeButton, styles.signUpButtonText]}>Đăng ký</Text>
       </Pressable>
 
       {/* Already a User */}
       <View style={styles.footer}>
-        <Text style={styles.footerText}>Already a user?</Text>
+        <Text style={styles.footerText}>Đã có tài khoản?</Text>
         <Pressable onPress={() => {
           router.push("/sign-in");
         }}>
-          <Text style={styles.signInText}>Sign in</Text>
+          <Text style={styles.signInText}>Đăng nhập</Text>
         </Pressable>
       </View>
     </View>

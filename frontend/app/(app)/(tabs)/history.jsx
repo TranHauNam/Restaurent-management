@@ -34,7 +34,7 @@ const History = () => {
       <SafeAreaView style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={[Typography.header5, styles.headerText]}>History</Text>
+          <Text style={[Typography.header5, styles.headerText]}>Lịch sử</Text>
         </View>
 
         <View style={styles.hisViewOption}>
@@ -50,7 +50,7 @@ const History = () => {
               color: paymentView ? "#000" : "#888",
               fontSize: paymentView ? FontSize.size_m : FontSize.size_s,
             }
-            ]}>Payments</Text>
+            ]}>Thanh toán</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.optionBox,
             {
@@ -64,7 +64,7 @@ const History = () => {
               color: !paymentView ? "#000" : "#888",
               fontSize: !paymentView ? FontSize.size_m : FontSize.size_s,
             }
-            ]}>Bookings</Text>
+            ]}>Đặt bàn</Text>
           </TouchableOpacity>
         </View>
 

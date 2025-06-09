@@ -21,15 +21,15 @@ const SubmitOTP = () => {
   const handleSignUp = async () => {
     console.log("Sign Up button pressed");
     if (otpRef.current.length < 6) {
-      Alert.alert("Sign Up", "Please enter full the OTP!");
-      console.log("Please enter full the OTP!");
+      Alert.alert("Đăng ký", "Vui lòng nhập đầy đủ mã OTP!");
+      // console.log("Please enter full the OTP!");
       return;
     }
 
     let response = await verifyOTP(otpRef.current);
     if (!response.success) {
-      Alert.alert("Sign Up", response.message);
-      console.log(response.message);
+      Alert.alert("Đăng ký", response.message);
+      // console.log(response.message);
     } else if (response.success) {
       router.replace("/");
     }
@@ -53,12 +53,12 @@ const SubmitOTP = () => {
       </View>
 
       <View style={{ alignItems: "center", color: Color.secondary, marginVertical: hp("3.5%") }}>
-        <Text style={[Typography.label, { fontSize: FontSize.size_l }]}>Check for OTP</Text>
+        <Text style={[Typography.label, { fontSize: FontSize.size_l }]}>Kiểm tra mã OTP</Text>
       </View>
 
       {/* style={styles.infoText} */}
       <Text style={[Typography.paragraph,{ alignItems: "center", color: Color.sub, marginVertical: hp("1%"), fontSize: FontSize.size_sm }]}>
-        You will get an OTP regarding registration on your provided medium.
+        Bạn sẽ nhận được mã OTP liên quan đến đăng ký trên kênh của bạn.
       </Text>
 
       {/* OTP Section */}
@@ -75,19 +75,19 @@ const SubmitOTP = () => {
 
       {/* Resend OTP */}
       <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginVertical: hp("1%") }}>
-        <Text style={[styles.lableOTPText, Typography.paragraph, { textDecorationLine: "underline",  }]}>Resend OTP</Text>
-        <Text style={[styles.lableOTPText, Typography.paragraph]}>in</Text>
+        <Text style={[styles.lableOTPText, Typography.paragraph, { textDecorationLine: "underline",  }]}>Gửi lại mã OTP</Text>
+        <Text style={[styles.lableOTPText, Typography.paragraph]}>trong</Text>
         <Text style={[styles.lableOTPText, Typography.paragraph]}>5:00</Text>
       </View>
       
       {/* Button */}
       <Pressable style={styles.signUpButton} onPress={handleSignUp}>
-        <Text style={[Typography.largeButton, styles.signUpText]}>Sign Up</Text>
+        <Text style={[Typography.largeButton, styles.signUpText]}>Đăng ký</Text>
       </Pressable>
       <View style={styles.signInContainer}>
-        <Text style={styles.alreadyUserText}>Already a user?</Text>
+        <Text style={styles.alreadyUserText}>Đã có tài khoản?</Text>
         <Pressable onPress={handleSignIn}>
-          <Text style={styles.signInText}>Sign in</Text>
+          <Text style={styles.signInText}>Đăng nhập</Text>
         </Pressable>
       </View>
       

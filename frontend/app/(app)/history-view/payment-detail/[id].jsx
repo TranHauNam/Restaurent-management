@@ -98,7 +98,7 @@ export default function HistoryPaymentDetail() {
       <SafeAreaView style={styles.container}>
         {/* Header */}
         <Header 
-          title="Payment Detail"
+          title="Chi tiết thanh toán"
           onBackPress={() => {handleBackPress()}}
           hasReturn={true}
         />
@@ -122,9 +122,9 @@ export default function HistoryPaymentDetail() {
 
           {/* Payment  */}
           <View style={styles.paymentContainer}>
-            <Text style={[Typography.header5, styles.payBoxHeader]}>Payment</Text>
+            <Text style={[Typography.header5, styles.payBoxHeader]}>Thanh toán</Text>
             <View style={styles.insideBox}>
-              <Text style={[Typography.paragraph, styles.payLaberText]}>Menu Price</Text>
+              <Text style={[Typography.paragraph, styles.payLaberText]}>Giá thực đơn</Text>
               {/* <Text style={[Typography.header6, styles.payValueText]}>
                 {(item.amount - item.vat).toLocaleString("vi-VN")} VND
               </Text> */}
@@ -143,7 +143,7 @@ export default function HistoryPaymentDetail() {
 
             {/* VAT  */}
             <View style={styles.insideBox}>
-              <Text style={[Typography.paragraph, styles.payLaberText]}>Value of Tax</Text>
+              <Text style={[Typography.paragraph, styles.payLaberText]}>Giá trị thuế</Text>
               <Text style={[Typography.header6, styles.payValueText]}>
                 {item.vat.toLocaleString("vi-VN")} VND
               </Text>
@@ -167,7 +167,7 @@ export default function HistoryPaymentDetail() {
             {/* Payment Code  */}
             <View style={[styles.insideBox, { marginTop: -hp("1.2%"), marginBottom: hp("4%")}]}>
                 <Text style={[Typography.header6, styles.payLaberText]}>
-                    Payment Code: {item.code}
+                    Mã thanh toán: {item.code}
                 </Text>
 
                 <Text style={[Typography.label, styles.timeLabelText,]}>

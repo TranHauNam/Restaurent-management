@@ -63,7 +63,7 @@ const RestaurantMain = () => {
   const [orderDateTime, setOrderDateTime] = useState(null);
   const [selectedTime, setSelectedTime] = useState(time || null);
   const [selectedPeople, setSelectedPeople] = useState(null);
-  const [findSlotMessage, setFindSlotMessage] = useState("Find Slots");
+  const [findSlotMessage, setFindSlotMessage] = useState("Tìm bàn");
   const availableTimes = useRef({});
   const timeSlotsRef = useRef([]); // Reference to store available times
 
@@ -142,7 +142,7 @@ const RestaurantMain = () => {
   }
 
   const handleMapPress = () => {
-    // route.push(`/map-view/show-map?id=${id}`);
+    route.push(`/map-view/show-map?id=${id}`);
   }
 
   return (
@@ -185,13 +185,13 @@ const RestaurantMain = () => {
         {/* Menu and Description */}
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
           <MaterialIcons name="menu-book" size={hp("3%")} color={Color.primary} />
-          <Text style={[Typography.paragraph, styles.menuLink]}>Menu</Text>
+          {/* <Text style={[Typography.paragraph, styles.menuLink]}>Thực đơn</Text> */}
         </View>
 
         <View style={{ flexDirection: "row", alignItems: "center", marginBottom: hp("2%") }}>
           <MaterialIcons name="access-time-filled" size={hp("3%")} color={Color.primary} />
           <TouchableOpacity onPress={() => {handleMapPress()}}>
-            <Text style={[Typography.paragraph, styles.mapLink]}>View on Map</Text>
+            <Text style={[Typography.paragraph, styles.mapLink]}>Xem trên bản đồ</Text>
           </TouchableOpacity>
         </View>
 
@@ -207,7 +207,7 @@ const RestaurantMain = () => {
           style={styles.readMore}
           onPress={() => setDescriptionExpanded(!isDescriptionExpanded)} // Toggle description
         >
-          {isDescriptionExpanded ? "Show Less" : "Read More"}
+          {isDescriptionExpanded ? "Hiển thị ít hơn" : "Xem thêm"}
         </Text>
 
         {/* Booking Options */}

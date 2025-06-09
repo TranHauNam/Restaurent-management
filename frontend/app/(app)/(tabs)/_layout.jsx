@@ -31,14 +31,14 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: "Trang chủ",
           tabBarIcon: ({ focused }) => <TabIcon name="home" label="Home" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="notifications"
         options={{
-          title: "Notifications",
+          title: "Thông báo",
           tabBarIcon: ({ focused }) => (
             <TabIcon name="notification" label="Notifications" focused={focused} />
           ),
@@ -47,14 +47,14 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="history"
         options={{
-          title: "History",
+          title: "Lịch sử",
           tabBarIcon: ({ focused }) => <TabIcon name="clockcircleo" label="History" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: "More",
+          title: "Thêm",
           tabBarIcon: ({ focused }) => <TabIcon name="ellipsis1" label="More" focused={focused} />,
         }}
       />
